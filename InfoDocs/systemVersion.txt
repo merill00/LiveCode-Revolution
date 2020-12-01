@@ -1,0 +1,13 @@
+What is the 'systemVersion' for Different Flavors of Windows?  (Windows Only)  
+
+--------------------------------------------------------------------------------
+
+The following is a list of what MetaCard/Revolution presents when you ask for the systemVersion on various flavors of Windows: 
+Windows Version systemVersion 
+Windows 95 Windows 4.0 
+Windows 98 Windows 4.10 
+Windows ME Windows 4.90 
+Windows NT 4.0 NT 4.0 
+Windows 2000 NT 5.0 
+Windows XP NT 5.1 
+
