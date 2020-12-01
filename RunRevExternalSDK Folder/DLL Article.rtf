@@ -1,0 +1,574 @@
+{\rtf1\ansi\ansicpg1252\uc1 \deff0\deflang1033\deflangfe1033{\fonttbl{\f0\froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f5\fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Helvetica;}
+{\f16\fswiss\fcharset77\fprq0{\*\panose 00000000000000000000}Helvetica-Bold;}{\f72\froman\fcharset238\fprq2 Times New Roman CE;}{\f73\froman\fcharset204\fprq2 Times New Roman Cyr;}{\f75\froman\fcharset161\fprq2 Times New Roman Greek;}
+{\f76\froman\fcharset162\fprq2 Times New Roman Tur;}{\f77\froman\fcharset186\fprq2 Times New Roman Baltic;}{\f102\fswiss\fcharset238\fprq2 Helvetica CE;}{\f103\fswiss\fcharset204\fprq2 Helvetica Cyr;}{\f105\fswiss\fcharset161\fprq2 Helvetica Greek;}
+{\f106\fswiss\fcharset162\fprq2 Helvetica Tur;}{\f107\fswiss\fcharset186\fprq2 Helvetica Baltic;}}{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;
+\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;\red128\green128\blue128;\red192\green192\blue192;}{\stylesheet{
+\widctlpar\adjustright \fs20\cgrid \snext0 Normal;}{\*\cs10 \additive Default Paragraph Font;}{\*\cs15 \additive \ul\cf2 \sbasedon10 Hyperlink;}}{\info{\author Mark Wieder}{\operator Mark Wieder}{\creatim\yr2004\mo4\dy29\hr20\min22}
+{\revtim\yr2004\mo8\dy29\min41}{\printim\yr2004\mo4\dy29\hr20\min22}{\version9}{\edmins47}{\nofpages14}{\nofwords3068}{\nofchars17490}{\*\company Ah, Software}{\nofcharsws0}{\vern113}}\margl1440\margr1440 
+\widowctrl\ftnbj\aenddoc\hyphcaps0\viewkind4\viewscale100 \fet0\sectd \linex0\sectdefaultcl {\*\pnseclvl1\pnucrm\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl2\pnucltr\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl3
+\pndec\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl4\pnlcltr\pnstart1\pnindent720\pnhang{\pntxta )}}{\*\pnseclvl5\pndec\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl6\pnlcltr\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}
+{\*\pnseclvl7\pnlcrm\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl8\pnlcltr\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl9\pnlcrm\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}\pard\plain \nowidctlpar
+\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\adjustright \fs20\cgrid {\b\f16\fs24\cgrid0 ----------------------------------------------------}{\f5\fs24\cgrid0 
+\par Mark Wieder
+\par mwieder@ahsoftware.net
+\par 27 August 2004
+\par 
+\par }\pard \qc\nowidctlpar\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\adjustright {\b\f16\fs24\cgrid0 Writing Windows External DLLs for Runtime Revolution:
+\par }\pard \nowidctlpar\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\adjustright {\f5\fs24\cgrid0 
+\par For some time now, my working definition of programming has been the act of getting a programming language to do something it wasn't designed to do. If there's something already built into the language, you just use it. If not, you have do some programmin
+g
+. If you want to print the string "hello, world" you will probably have some print function already built into the language: print(), printf(), system.println(), or whatever. If you want to display a traffic signal control on the screen and have it change
+ when some event happens, chances are you're going to have to write some code in whatever language you're using. I think part of the process of maturing as a programmer is being able to pick the right programming tool for any given task.
+\par 
+\par Runtime Revolution
+ <http://www.runrev.com> is a cross-platform development environment with a rich set of scripting keywords. Standalone executables can be generated from a single source that will run on Windows, Mac Classic, OSX, and linux platforms. The Transcript script
+ing language contains some 1700 keywords, but there are situations where you need something that you can't get to using the built-in operations. Fortunately, there's now an SDK at }{\field\flddirty{\*\fldinst {\f5\fs24\cgrid0 
+ HYPERLINK "http://www.runrev.com/revolution/downloads/distributions/sdk" }{\f5\cgrid0 {\*\datafield 
+00d0c9ea79f9bace118c8200aa004ba90b0200000003000000e0c9ea79f9bace118c8200aa004ba90b7a00000068007400740070003a002f002f007700770077002e00720075006e007200650076002e0063006f006d002f007200650076006f006c007500740069006f006e002f0064006f0077006e006c006f0061006400
+73002f0064006900730074007200690062007500740069006f006e0073002f00730064006b0000000000}}}{\fldrslt {\cs15\ul\cf2 <}{\cs15\fs24\ul\cf2 http://www.runrev.com/revolution/downloads/distributions/sdk}{\cs15\ul\cf2 >}}}{\f5\fs24\cgrid0 
+ for building external functions and commands (XFCNs and XCMDs i
+n xTalk / Transcript language). These external routines are written in (insert your favorite language here, but we'll talk about C in this article) and communicate with the Revolution engine using a well-defined API (Application Programming Interface
+) that details how arguments are passed back and forth.
+\par 
+\par Note that extending the language in native code obviously breaks the cross-platform utility of a Revolution stack, but if you can compile your externals on th
+e different platforms if the functions are supported and then you can regain your cross-platform capability by bundling the externals. This article will focus on creating DLLs for the Windows environment, but everything that is not specific to the Windows
+ 
+compiler or to specific operating system calls is also applicable in the Macintosh and linux environments as well. Note that in a Macintosh Classic environment the Runtime Revolution XCMD/XFCN interface is compatible with HyperCard's, so that existing res
+ources can be used without changes, although this again limits the stack to running on only that platform.
+\par 
+\par The Revolution engine is built on the MetaCard <http://www.metacard.com> engine (MetaCard was acquired in 2003 by Runtime Revolution) and some of the
+ nomenclature here reflects that fact. For example, the scripting engine internal binary element representation is MCstring, declared as
+\par 
+\par typedef MCstring
+\par \{
+\par \tab char\tab *sptr;\tab \tab // pointer to data
+\par \tab int\tab length;\tab // length of data
+\par \}
+\par 
+\par The MCstring structure will be necessary for the GetVariableEx(), SetVariableEx(), GetArray() and SetArray() methods below.
+\par 
+\par Transcript XCMDs (external commands) and XFCNs (external functions) differ in that XFCNs return values, while XCMDs do not. From Transcript they are treated somewhat differently:
+\par 
+\par }{\b\f16\fs24\cgrid0 myXCMD Arg1, Arg2
+\par put myXFCN (Arg1, Arg2) into field fldAnswer
+\par }{\f5\fs24\cgrid0 
+\par Note that from Transcript you can check the error result of an XCMD or XFCN by examining "the result", as opposed to examining "it" which contains the result of the function call. Naturally, since externals become extensions to the Transcript language, th
+is is true of all Transcript calls.
+\par 
+\par }{\b\f16\fs24\cgrid0 myXCMD field fldArg1, field fldArg2
+\par put the result into fldError}{\f5\fs24\cgrid0 
+\par 
+\par }{\b\f16\fs24\cgrid0 put myXFCN (field fldArg1, field fldArg2) into fldAnswer
+\par put the result into fldError
+\par }{\f5\fs24\cgrid0 
+\par The functions you can use in your external library to communicate with the Revolution engine are:
+\par 
+\par \tab // sending messages to the engine
+\par \tab }{\b\f16\fs24\cgrid0 SendMCMessage }{\f5\fs24\cgrid0 (char *, int *);
+\par \tab }{\b\f16\fs24\cgrid0 SendCardMessage }{\f5\fs24\cgrid0 (char *, int *);
+\par 
+\par \tab // dealing with variables
+\par }{\b\f16\fs24\cgrid0 \tab char *GetGlobal }{\f5\fs24\cgrid0 (char *, int *)
+\par }{\b\f16\fs24\cgrid0 \tab SetGlobal }{\f5\fs24\cgrid0 (char *, char *, int *)
+\par }{\b\f16\fs24\cgrid0 \tab char *GetVariable }{\f5\fs24\cgrid0 (char *, int *)
+\par }{\b\f16\fs24\cgrid0 \tab SetVariable }{\f5\fs24\cgrid0 (char *, char *, int *)
+\par 
+\par \tab // dealing with fields
+\par }{\b\f16\fs24\cgrid0 \tab char *GetFieldByName }{\f5\fs24\cgrid0 (char *, char *, int *)
+\par }{\b\f16\fs24\cgrid0 \tab char *GetFieldByNum }{\f5\fs24\cgrid0 (char *, char *, int *)
+\par }{\b\f16\fs24\cgrid0 \tab char *GetFieldByID }{\f5\fs24\cgrid0 (char *, char *, int *)
+\par }{\b\f16\fs24\cgrid0 \tab SetFieldByName }{\f5\fs24\cgrid0 (char *, char *, char *, int *)
+\par }{\b\f16\fs24\cgrid0 \tab SetFieldByNum }{\f5\fs24\cgrid0 (char *, char *, char *, int *)
+\par }{\b\f16\fs24\cgrid0 \tab SetFieldByID }{\f5\fs24\cgrid0 (char *, char *, char *, int *)
+\par 
+\par \tab // stack objects
+\par }{\b\f16\fs24\cgrid0 \tab GetVariableEx }{\f5\fs24\cgrid0 (char *, &strKey, &MCstrValue, int *)
+\par }{\b\f16\fs24\cgrid0 \tab SetVariableEx }{\f5\fs24\cgrid0 (char *, &strKey, &MCstrValue, int *)
+\par }{\b\f16\fs24\cgrid0 \tab GetArray }{\f5\fs24\cgrid0 (char *, *int, MCstring *, char **, int *)
+\par }{\b\f16\fs24\cgrid0 \tab SetArray  }{\f5\fs24\cgrid0 (char *, *int, MCstring *, char **, int *)
+\par 
+\par \tab // images
+\par \tab }{\b\f5\fs24\cgrid0 GetImageByNum}{\f5\fs24\cgrid0 ()
+\par \tab }{\b\f5\fs24\cgrid0 GetImageByID}{\f5\fs24\cgrid0 ()
+\par 
+\par \tab // status
+\par \tab }{\b\f5\fs24\cgrid0 GetMCStatus}{\f5\fs24\cgrid0 ()
+\par 
+\par }{\b\f16\fs24\cgrid0 ----------------------------------------------------}{\f5\fs24\cgrid0 
+\par }{\b\f16\fs24\cgrid0 
+\par Number one:}{\f5\fs24\cgrid0 
+\par 
+\par Use the proper compiler. You can't use Borland C
+++ Builder for this. I lost a couple of days deep in the debugger trying to figure out why I couldn't get this to work, and the answer turned out to be "it just can't be done". The Metacard / Revolution engine uses the Microsoft OBJ convention for Windows
+ DLLs. Here's the convention you need to support:
+\par 
+\par 1. arguments passed on the stack, not in registers
+\par 2. no prepended underscores in function names
+\par 3. function names are mixed case
+\par 4. calling, not called, function cleans up the stack
+\par 
+\par Borland's compiler switches let you select combinations of these factors, but there is no combination of switches that will let you select *all* the necessary ones at the same time. In particular, you can't turn off prepended underscores unless either a) 
+you use the __pascal option, which makes all function names uppercase; or b) you explicitly specify "turn off underscores" in the project options, which means you have to change all your standard library calls to include underscores.
+\par 
+\par }{\b\f16\fs24\cgrid0 Number two:}{\f5\fs24\cgrid0 
+\par 
+\par Make sure the getXtable function is exported properly:
+\par 
+\par extern "C"
+\par \{
+\par \tab void getXtable()
+\par \}
+\par 
+\par There are two header files you'll need to #include, }{\b\f16\fs24\cgrid0 XCmdGlue.h}{\f5\fs24\cgrid0  and }{\b\f16\fs24\cgrid0 external.h}{\f5\fs24\cgrid0 . XCmdGlue.h contains prototype and other useful things to glue your code to the Revolution engine
+. It probably shouldn't need to be modified. External.h contains the stuff you need to handle your own XCMDs and XFCNs.
+\par 
+\par }{\b\f16\fs24\cgrid0 ----------------------------------------------------}{\f5\fs24\cgrid0 
+\par 
+\par The Metacard/Revolution engine needs a single exported function "getXtable" (note
+ the mixed case here - that's important). The getXtable function returns a pointer to an array of Xternal structures which specify the XCMDs and XFCNs that the DLL supports. The Xternal structure is described in the sample XcmdGlue.h, but just to reiterat
+e:
+\par 
+\par /*
+\par  * This global table has one entry per XCMD/XFCN.
+\par  * The first entry is the name of the handler
+\par  * The second entry is the type (XCOMMAND or XFUNCTION)
+\par  * The third entry is a space for the atom (used by MetaCard)
+\par  * The fourth entry is the name of the 'C' function to call
+\par  * The fifth entry is a callback called if the user aborts
+\par  * Note that the last entry in the table is a NULL entry
+\par  * which is used to measure the size of the table.
+\par  */
+\par 
+\par Here's a simple Xtable with one XCMD and one XFCN:
+\par 
+\par Xternal Xtable[] = \{
+\par \tab \{"revXCMD", XCOMMAND, 0, _MyXCMD, XCabort\},
+\par \tab \{"revXFCN", XFUNCTION, 0, _MyXFCN, XCabort\},
+\par \tab \{"", XNONE, 0, NULL, NULL\}
+\par \};
+\par 
+\par In this example revXCMD and revXFCN are the commands you would use from Transcript code:
+\par 
+\par }{\b\f16\fs24\cgrid0 revXCMD "http://runrev.com"}{\f5\fs24\cgrid0 
+\par }{\b\f16\fs24\cgrid0 put revXFCN (3.1416) into card field result
+\par }{\f5\fs24\cgrid0 
+\par and _MyXCMD and _MyXFCN are the internal names of routines in the external library.
+\par 
+\par Each XFCN or XCMD receives the same set of arguments:
+\par 
+\par \tab a pointer to an array of null-terminated strings,
+\par \tab the number of arguments passed,
+\par \tab a pointer to a null-terminated return string for Transcript,
+\par \tab a pointer to a boolean indicating whether to pass the handler up the chain,
+\par \tab a pointer to a boolean error flag.
+\par 
+\par void _MyXCMD (char *args[], int nargs, char **retstring, Bool *pass, Bool *error);
+\par void _MyXFCN (char *args[], int nargs, char **retstring, Bool *pass, Bool *error);
+\par 
+\par Note that all arguments passed to and from the Transcript engine are C-style null-terminated character strings. They are internally converted by the engine when necessary, but you'll have to do your own conversion if you need to, either using the }{
+\b\f16\fs24\cgrid0 EvalExpr()}{\f5\fs24\cgrid0  function or some other conversion on your own.
+\par 
+\par Each XFCN is expected to return a string. Use the istrdup() function for this:
+\par 
+\par \tab *retstring = istrdup ("here is your result");
+\par 
+\par XCMDs should return a retstring indicating no error:
+\par 
+\par \tab *retstring = (char *) calloc(1,1);\tab // indicate no errors
+\par 
+\par }{\b\f16\fs24\cgrid0 Notes:
+\par 
+\par }{\f5\fs24\cgrid0 The pass flag should always return a false. Returning a True for the pass flag is a signal to the engi
+ne that the external did not handle the command and it should continue the search up the command hierarchy for an appropriate handler. If no other handler by that name is found the script will stop executing with a runtime error.
+\par 
+\par If you return a true in the error flag script execution will stop. If you do this it's good form to return a return string specifying the error.
+\par 
+\par \tab *retstring = istrdup ("error: wrong number of arguments");
+\par 
+\par 
+\par void _MyXCMD(char *args[], int nargs, char **retstring, Bool *pass, Bool *error)
+\par \{
+\par \tab *pass = False;\tab // we handled the command
+\par \tab *error = False;\tab // indicate no errors
+\par \tab *retstring = (char *) calloc(1,1);\tab // indicate no errors
+\par \}
+\par 
+\par void _MyXFCN(char *args[], int nargs, char **retstring, Bool *pass, Bool *error)
+\par \{
+\par \tab *pass = False;\tab // we handled the command
+\par \tab if (1 != nargs)
+\par \tab \{
+\par \tab \tab *error = True;\tab \tab // stop script processing here
+\par \tab \tab *retstring = istrdup ("wrong number of arguments");
+\par \tab \}
+\par \tab else
+\par \tab \{
+\par \tab \tab *error = False;\tab // indicate no errors
+\par \tab \tab *retstring = istrdup ("here is your result");
+\par \tab \}
+\par \}
+\par 
+\par }{\b\f16\fs24\cgrid0 ----------------------------------------------------}{\f5\fs24\cgrid0 
+\par 
+\par If you need to send a message to the current card you can use the }{\b\f16\fs24\cgrid0 SendCardMessage}{\f5\fs24\cgrid0 () function:
+\par 
+\par Example:
+\par 
+\par void reverse(char *args[], int nargs, char **retstring, Bool *pass, Bool *error)
+\par \{
+\par \tab int\tab retValue;
+\par \tab int\tab x, y, length;
+\par \tab char buffer[256];
+\par 
+\par \tab length = strlen(args[0]);
+\par \tab for (x=length, y=0; x>0; x--, y++)
+\par \tab \tab buffer[y] = args[0][x];
+\par \tab buffer[length] = 0;
+\par \tab }{\b\f16\fs24\cgrid0 SendCardMessage }{\f5\fs24\cgrid0 (buffer, &retValue);
+\par \tab *pass = False;\tab // we handled the command
+\par \tab *error = False;\tab // indicate no errors
+\par \tab *retstring = istrdup ("here is your result");
+\par \}
+\par 
+\par from Transcript:
+\par 
+\par }{\b\f16\fs24\cgrid0 reverse ("Magrat")}{\f5\fs24\cgrid0 
+\par 
+\par will invoke the }{\b\f16\fs24\cgrid0 on myHandler}{\f5\fs24\cgrid0  routine in the stack, using "Magrat" as an argument, internally generating the buffer string "myHandler Magrat", so that if you have a }{\b\f16\fs24\cgrid0 myHandler}{\f5\fs24\cgrid0 
+ function in your stack
+\par 
+\par }{\b\f16\fs24\cgrid0 on myHandler theString
+\par \tab put theString into field fldTest
+\par end myHandler
+\par }{\f5\fs24\cgrid0 
+\par you would end up with "Magrat" in field fldTest.
+\par 
+\par }{\b\f16\fs24\cgrid0 ----------------------------------------------------}{\f5\fs24\cgrid0 
+\par 
+\par You can also tell the Metacard/Revolution engine to execute a Transcript command line using the }{\b\f16\fs24\cgrid0 SendMCMessage}{\f5\fs24\cgrid0 () function:
+\par 
+\par Example:
+\par 
+\par Void XMessageTime(char *args[], int nargs, char **retstring, Bool *pass, Bool *error)
+\par \{
+\par \tab int\tab retValue;
+\par \tab char buffer[256];
+\par 
+\par \tab sprintf (buffer, "put  \\" Message time is %d\\" into field %s, (int)time(NULL), args[0]);
+\par \tab }{\b\f16\fs24\cgrid0 SendMCMessage }{\f5\fs24\cgrid0 (buffer, &retValue);
+\par \}
+\par 
+\par from Transcript:
+\par 
+\par }{\b\f16\fs24\cgrid0 XMessageTime (fldResult)}{\f5\fs24\cgrid0 
+\par 
+\par will put the current time into card field fldResult
+\par 
+\par }{\b\f16\fs24\cgrid0 ----------------------------------------------------}{\f5\fs24\cgrid0 
+\par 
+\par }{\b\f16\fs24\cgrid0 Getting and setting variables:}{\f5\fs24\cgrid0 
+\par 
+\par The following routines are available. The GetGlobal and SetGlobal functions operate on variables that have been declared using the "global" Transcript keyword. The GetVariable and SetVariable functions operate on local variables:
+\par 
+\par }{\b\f16\fs24\cgrid0 char *GetGlobal }{\f5\fs24\cgrid0 (strFieldName, &intRetValue)
+\par }{\b\f16\fs24\cgrid0 SetGlobal }{\f5\fs24\cgrid0 (strFieldName, strValue, &intRetValue)
+\par 
+\par }{\b\f16\fs24\cgrid0 char *GetVariable }{\f5\fs24\cgrid0 (strFieldName, &intRetValue)
+\par }{\b\f16\fs24\cgrid0 SetVariable }{\f5\fs24\cgrid0 (strFieldName, strValue, &intRetValue)
+\par 
+\par }{\b\f16\fs24\cgrid0 Note that the GetGlobal and GetVariable routines are responsible for freeing up the memory allocated automatically by the routines.
+\par }{\f5\fs24\cgrid0 
+\par }{\b\f16\fs24\cgrid0 ----------------------------------------------------}{\f5\fs24\cgrid0 
+\par 
+\par }{\b\f16\fs24\cgrid0 Getting and setting fields:}{\f5\fs24\cgrid0 
+\par 
+\par The first argument to the field routines (strWhere) should be a null-terminated string specifying where to look for the field:
+\par 
+\par \tab "true" to look for the field only on the card
+\par \tab "false" to look only on the background
+\par \tab "" to look on both the card and the background
+\par \tab or a group name to look for the field in that group.
+\par 
+\par The following routines are available:
+\par 
+\par }{\b\f16\fs24\cgrid0 char *GetFieldByName }{\f5\fs24\cgrid0 (strWhere, strFieldName, &intRetValue)
+\par }{\b\f16\fs24\cgrid0 char *GetFieldByNum }{\f5\fs24\cgrid0 (strWhere, strFieldNum, &intRetValue)
+\par }{\b\f16\fs24\cgrid0 char *GetFieldByID }{\f5\fs24\cgrid0 (strWhere, strFieldID, &intRetValue)
+\par 
+\par }{\b\f16\fs24\cgrid0 SetFieldByName }{\f5\fs24\cgrid0 (strWhere, strFieldName, strValue, &intRetValue)
+\par }{\b\f16\fs24\cgrid0 SetFieldByNum }{\f5\fs24\cgrid0 (strWhere, strFieldNum, strValue, &intRetValue)
+\par }{\b\f16\fs24\cgrid0 SetFieldByID }{\f5\fs24\cgrid0 (strWhere, strFieldID, strValue, &intRetValue)
+\par 
+\par Example:
+\par 
+\par The following routine copies a field contents from a field on the background (fldBackground) into a field on the current card (fldOnCard):
+\par 
+\par from Transcript:
+\par 
+\par }{\b\f16\fs24\cgrid0 XCopyFromBackground (fldSource, fldDestination)}{\f5\fs24\cgrid0 
+\par 
+\par Void XCopyFromBackground(char *args[], int nargs, char **retstring, Bool *pass, Bool *error)
+\par \{
+\par \tab int\tab intRetValue;
+\par \tab char\tab *strData;
+\par 
+\par \tab // get information from source field in background
+\par \tab strData = }{\b\f16\fs24\cgrid0 GetFieldByName }{\f5\fs24\cgrid0 ("false", args[0] & intRetValue);
+\par \tab // put the retrieved information into destination field on card
+\par }{\b\f16\fs24\cgrid0 \tab SetFieldByName }{\f5\fs24\cgrid0 ("true", args[1], strData, &intRetValue;
+\par \tab // GetFieldByName allocated memory, so we need to free it.
+\par \tab free (strData);
+\par \}
+\par 
+\par }{\b\f16\fs24\cgrid0 Note that the GetFieldByXXX routines are responsible for freeing up the memory allocated automatically by the routines in order to avoid memory leaks.
+\par 
+\par ----------------------------------------------------}{\f5\fs24\cgrid0 
+\par 
+\par }{\b\f16\fs24\cgrid0 Getting and setting stack objects:}{\f5\fs24\cgrid0 
+\par 
+\par The following routines are available. The GetVariableEx and SetVariableEx functions work with binary stack objects of variable sizes. GetArray and SetArray work with arrays of stack objects. The MCstring object is the internal scripting engine representat
+ion for binary objects. It is declared as:
+\par 
+\par typedef MCstring
+\par \{
+\par \tab char\tab *sptr;\tab \tab // pointer to data
+\par \tab int\tab length;\tab // length of data
+\par \}
+\par 
+\par }{\b\f16\fs24\cgrid0 GetVariableEx }{\f5\fs24\cgrid0 (strObjectName, &strKey, &MCstrValue, &intRetValue)
+\par }{\b\f16\fs24\cgrid0 SetVariableEx }{\f5\fs24\cgrid0 (strObjectName, &strKey, &MCstrValue, &intRetValue)
+\par }{\b\f16\fs24\cgrid0 GetArray }{\f5\fs24\cgrid0 (strObjectName, intNumElements, MCstrValues, MCstrKeys, &intRetValue)
+\par }{\b\f16\fs24\cgrid0 SetArray  }{\f5\fs24\cgrid0 (strObjectName, intNumElements, MCstrValues, MCstrKeys, &intRetValue)
+\par 
+\par Use the GetVariableEx function to retrieve a Revolution stack binary object, for example a.
+jpg image. A pointer to the object is returned in an MCstring structure. The MCstring.sptr member points to the object itself. Use the MCstring.length member to determine the size of the data.
+\par 
+\par \tab MCstring\tab mcData;
+\par \tab int\tab \tab intRetValue;
+\par \tab char\tab \tab *image;
+\par 
+\par \tab }{\b\f16\fs24\cgrid0 GetVariableEx}{\f5\fs24\cgrid0  ("myPicture", "", &mcData, &intRetValue);
+\par \tab if (NULL != mcData.sptr)
+\par \tab \{
+\par \tab \tab // now you can manipulate the data...
+\par \tab \}
+\par \tab }{\b\f16\fs24\cgrid0 SetVariableEx}{\f5\fs24\cgrid0  ("myPicture", "", &mcData, &intRetValue);
+\par 
+\par }{\b\f16\fs24\cgrid0 Note that GetVariableEx() retrieves raw data. If you need to retrieve strings from the stack, they will not be null-terminated. You will need to add the null termination yourself if necessary.
+\par 
+\par Arrays of stack objects:}{\f5\fs24\cgrid0 
+\par 
+\par Arrays in Transcript are associative and identified by an ArrayName and a Key, as in
+\par 
+\par }{\b\f16\fs24\cgrid0 put "A" into myList["firstLetter"]
+\par get myList["secondLetter"]
+\par put "Ringo" into band["drummer"]
+\par put "Monday" into days[2]
+\par put "Tuesday" into days[3]
+\par put "Wednesday" into days[4]
+\par }{\f5\fs24\cgrid0 
+\par Pass a NULL as the MCstrKeys argument to GetArray() to find the size of the data to be retrieved. Then you can allocate enough space for the data.
+\par 
+\par \tab int\tab \tab intNumElements;
+\par \tab MCstring\tab *MCstrValues = NULL;
+\par \tab char\tab \tab **strKeys = NULL;
+\par \tab int\tab \tab intRetValue;
+\par 
+\par \tab }{\b\f16\fs24\cgrid0 GetArray}{\f5\fs24\cgrid0 (args[0], &intNumElements, MCstrValues, strKeys, &intRetValue);
+\par \tab // since strKeys is NULL, this will not retrieve data,
+\par \tab // but will instead fill intNumElements and MCstrValues for you.
+\par 
+\par \tab // now that you know the size of the data you can allocate space for it.
+\par \tab if (0 != intNumElements)
+\par \tab \{
+\par \tab \tab MCstrValues = malloc (sizeof (MCstring) * intNumElements);
+\par \tab \tab strKeys = malloc (sizeof (char *) * intNumElements);
+\par 
+\par \tab \tab if ((NULL != MCstrValues) & (NULL != strKeys))
+\par \tab \tab \tab \{
+\par \tab \tab \tab // and get the data
+\par \tab \tab \tab }{\b\f16\fs24\cgrid0 GetArray}{\f5\fs24\cgrid0 (args[0], &intNumElements, MCstrValues, strKeys, &intRetValue);
+\par 
+\par \tab \tab \tab // now we can work with our array
+\par 
+\par \tab \tab \tab // and save it back to the stack
+\par \tab \tab \tab }{\b\f16\fs24\cgrid0 SetArray}{\f5\fs24\cgrid0 (args[0], &intNumElements, MCstrValues, strKeys, &intRetValue);
+\par 
+\par \tab \tab \tab // free up allocated memory when we're done
+\par \tab \tab \tab free (strKeys);
+\par \tab \tab \tab free (MCstrValues);
+\par \tab \tab \}
+\par \tab \tab else
+\par \tab \tab \{
+\par \tab \tab \tab fprintf(stderr, "oops - array doesn't exist");
+\par \tab \tab \}
+\par \tab \}
+\par 
+\par }{\b\f16\fs24\cgrid0 ----------------------------------------------------}{\f5\fs24\cgrid0 
+\par 
+\par }{\b\f16\fs24\cgrid0 Evaluate the given expression and return the result as a string:}{\f5\fs24\cgrid0 
+\par 
+\par char *}{\b\f16\fs24\cgrid0 EvalExpr }{\f5\fs24\cgrid0 (char *strExpression, int &intRetValue)
+\par 
+\par Example:
+\par 
+\par from Transcript (to update the global gameCounter by 1):
+\par 
+\par }{\b\f16\fs24\cgrid0 global gameCounter
+\par UpdateHitCount "gameCounter"}{\f5\fs24\cgrid0 
+\par 
+\par In the external library:
+\par 
+\par void UpdateHitCount (char *args[], int nargs, char **retstring, Bool *pass, Bool *error)
+\par \{
+\par \tab int\tab intRetValue;
+\par \tab char\tab *strData, *buffer;
+\par 
+\par \tab // read the global variable from the stack
+\par \tab strData = }{\b\f16\fs24\cgrid0 GetGlobal }{\f5\fs24\cgrid0 (args[0], &intRetValue);
+\par 
+\par \tab // prepare to add one to the variable
+\par \tab sprintf (buffer, "%s + 1", strData);
+\par \tab free (strData);\tab // free the memory allocated by GetGlobal
+\par 
+\par \tab // evaluate the expression in the buffer
+\par \tab //\tab (which now contains "variable + 1")
+\par \tab strData = }{\b\f16\fs24\cgrid0 EvalExpr }{\f5\fs24\cgrid0 (buffer, &intRetValue);
+\par 
+\par \tab // write the global variable back to the stack
+\par \tab }{\b\f16\fs24\cgrid0 SetGlobal }{\f5\fs24\cgrid0 (args[0], strData, &intRetValue);
+\par \tab free (strData);\tab // free the memory allocated by EvalExpr
+\par \}
+\par 
+\par }{\b\f16\fs24\cgrid0 Note that the EvalExpr routine is responsible for freeing up the memory allocated automatically by the routine in order to avoid memory leaks.
+\par 
+\par ----------------------------------------------------}{\f5\fs24\cgrid0 
+\par 
+\par }{\b\f16\fs24\cgrid0 An Example
+\par }{\f5\fs24\cgrid0 
+\par OK. Enough with the th
+eoretical stuff. Let's put this into action. Let's say we want to retrieve the computer name for robust error reporting. This functionality isn't built into the engine, so we'll need to extend the language to make a call out to the Win32 API. We'll do thi
+s by creating a new DLL project, including the XCMDGlue.h header file, and creating a source and header file of our own. We'll need to call the GetComputerName() function declared in winbase.h.
+\par 
+\par We'll use this function from a stack as in
+\par 
+\par }{\b\f16\fs24\cgrid0 put xgetcomputername() into card field fldComputerName
+\par }{\f5\fs24\cgrid0 
+\par Looking at the API, we see that this function takes two parameters: one a long pointer to a buffer for the name itself, and the other a long pointer to a DWORD that contains the length of the
+ buffer and contains the length of the name after the function returns. The function itself returns a BOOL informing the user as the the success or failure of the call.
+\par 
+\par #include "XCMDGlue.h"
+\par #include "winbase.h"\tab // GetComputerName(), SetComputerName()
+\par 
+\par void XGetName(char *args[], int nargs, char **retstring, Bool *pass, Bool *error)
+\par \{
+\par \tab char\tab \tab buffer[MAX_COMPUTERNAME_LENGTH+1];
+\par \tab DWORD\tab dwLength;
+\par \tab BOOL\tab \tab blnSuccess;
+\par 
+\par \tab dwLength = MAX_COMPUTERNAME_LENGTH+1;
+\par \tab blnSuccess = GetComputerName(buffer, &dwLength);
+\par \tab *pass = False;\tab // don't pass the command up the chain
+\par \tab if (blnSuccess)
+\par \tab \{
+\par \tab \tab *error = False;\tab // call was successful
+\par \tab \tab *retstring = istrdup (buffer);
+\par \tab \}
+\par \tab else
+\par \tab \{
+\par \tab \tab *error = True;\tab \tab // call failed
+\par \tab \tab *retstring = istrdup ("error: GetComputerName failed");
+\par \tab \}
+\par \}}{\b\f16\fs24\cgrid0 
+\par 
+\par }{\f5\fs24\cgrid0 Just for fun while we're here let's make a function to set the computer name as well. We'll need one argument this time, the new name for the computer. We'll pass this from Transcript as
+\par 
+\par }{\b\f16\fs24\cgrid0 xsetcomputername "weatherwax"
+\par }{\f5\fs24\cgrid0 
+\par and the next time we reboot the compu
+ter it will have a new name on the network. To do this we'll need to get the first passed argument out of the argument array. There's only one argument we need for this call. We could just ignore any extra arguments, but we want to make sure that at least
+ one argument was passed, so let's make sure nargs is exactly 1.
+\par }{\b\f16\fs24\cgrid0 
+\par }{\f5\fs24\cgrid0 void XSetName(char *args[], int nargs, char **retstring, Bool *pass, Bool *error)
+\par \{
+\par \tab char\tab \tab buffer[MAX_COMPUTERNAME_LENGTH+1];
+\par \tab BOOL\tab \tab blnSuccess = False;
+\par 
+\par \tab // get the new name from the array of arguments
+\par \tab if (1 == nargs)
+\par \tab \{
+\par \tab \tab blnSuccess = SetComputerName(args[0]);
+\par \tab \}
+\par 
+\par \tab *pass = False;\tab // don't pass the command up the chain
+\par \tab if (blnSuccess)
+\par \tab \{
+\par \tab \tab *error = False;\tab // call was successful
+\par \tab \tab *retstring = istrdup (buffer);
+\par \tab \}
+\par \tab else
+\par \tab \{
+\par \tab \tab *error = True;\tab \tab // call failed
+\par \tab \tab *retstring = istrdup ("error: SetComputerName failed");
+\par \tab \}
+\par \}}{\b\f16\fs24\cgrid0 
+\par 
+\par }{\f5\fs24\cgrid0 Now we're ready to set up our Xtable structure:
+\par 
+\par Xternal Xtable[] = \{
+\par \tab \{"xsetcomputername", XCOMMAND, 0, XSetName, XCabort\},
+\par \tab \{"xgetcomputername", XFUNCTION, 0, XGetName, XCabort\},
+\par \tab \{"", XNONE, 0, NULL, NULL\}
+\par \};
+\par }{\b\f16\fs24\cgrid0 
+\par }{\f5\fs24\cgrid0 Here }{\b\f16\fs24\cgrid0 xsetcomputername}{\f5\fs24\cgrid0  and }{\b\f16\fs24\cgrid0 xgetcomputername}{\f5\fs24\cgrid0  are the Transcript keywords we'll use in our stacks and }{\b\f16\fs24\cgrid0 XSetName}{\f5\fs24\cgrid0  and }{
+\b\f16\fs24\cgrid0 XGetName}{\f5\fs24\cgrid0  are the names of the functions we just created. Now compile your DLL project and you've got two new functions available.
+\par }{\b\f16\fs24\cgrid0 
+\par ----------------------------------------------------}{\f5\fs24\cgrid0 
+\par 
+\par }{\b\f16\fs24\cgrid0 Including and Testing
+\par 
+\par }{\f5\fs24\cgrid0 Testing external libraries is always tricky. If your library has compiled properly you can test it from Runtime Revolution in the following way:
+\par 
+\par From Revolution the Transcript command:
+\par 
+\par }{\b\f16\fs24\cgrid0 set the externals of this stack to "C:\\MyDirectory\\MyDll.dll"
+\par }{\f5\fs24\cgrid0 
+\par will tell your stack to look to your library for extensions to the Transcript language. However, this won't actually take effect until you either
+\par 
+\par \tab save your stack, close it, and open it again, or
+\par \tab quit Revolution and launch it again.
+\par 
+\par Once you've done that, the Transcript code:
+\par 
+\par }{\b\f16\fs24\cgrid0 \tab put the externalFunctions
+\par }{\f5\fs24\cgrid0 \tab \tab or
+\par }{\b\f16\fs24\cgrid0 \tab put the externalCommands
+\par }{\f5\fs24\cgrid0 
+\par will show you what's currently available. If you see the list of commands you've compiled then your linkage with the getXtable function is working properly.
+\par 
+\par To save typing, I use a button handler script to set the externals:
+\par 
+\par }{\b\f16\fs24\cgrid0 on mouseUp
+\par \tab ask file "Where is the external library?"
+\par \tab if it is not empty then
+\par \tab \tab set the externals of this stack to it
+\par \tab end if
+\par end mouseUp}{\f5\fs24\cgrid0 
+\par 
+\par and another to view them:
+\par 
+\par }\pard \nowidctlpar\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\adjustright {\b\f16\fs24\cgrid0 on mouseUp
+\par \tab put "Commands" & cr into field fldList
+\par \tab put the externalCommands of this stack after field fldList
+\par \tab put cr & cr & "Functions" & cr after field fldList
+\par \tab put the externalFunctions of this stack after field fldList
+\par end mouseUp
+\par }{\f5\fs24\cgrid0 
+\par }\pard \nowidctlpar\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\adjustright {\f5\fs24\cgrid0 
+Once your stack knows about the external routines compiled into a library you can specify bundling the library with the stack in the Revolution Distribution Builder so that you can cr
+eate a single standalone application without needing additional libraries (and without needing an installer to ensure that the libraries get put into the proper place).
+\par 
+\par Runtime Revolution offers a powerful and flexible development environment with the Tra
+nscript scripting language, and with the ability to extend the language by writing external commands and functions there are virtually no limits to what you can do in a stack.
+\par }}

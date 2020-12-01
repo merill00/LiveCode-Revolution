@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<extDoc name="" author="Tuviah Snyder" version="1.0" date="Tue, 30 Apr 2002 02:56:51 -0500" copyright="copyright 2002, Attainment Company, Inc." type=""><descr/><message name="xmlStartDocument" type="message"><sentwhen>starting to parse document</sentwhen><params></params><descr> </descr><examples>starting to parse document<example>on xmlStartDocument
+  put &quot;processing XML begun at&quot; &amp;&amp; the time
+end xmlStartDocument</example></examples></message><message name="xmlEndDocument" type="message"><sentwhen>finished parsing document</sentwhen><params></params><descr></descr><examples>finished parsing document<example>on xmlEndDocument
+  put &quot;processing XML ended at&quot; &amp;&amp; the time
+end xmlEndDocument</example></examples></message><message name="xmlStartElement" type="message"><sentwhen>an element's opening tag is encountered</sentwhen><params><arg name="attList" type="string">return- and comma-delimited list of attribute names and values</arg></params><descr></descr><examples>an element's opening tag is encountered<example>on xmlStartElement pList
+   put pList into fld &quot;attributes&quot;
+end xmlStartElement</example></examples></message><message name="xmlEndElement" type="message"><sentwhen>an element's closing tag is encountered, or immediately after start_element() if the tag is in &lt;tag/&gt; format.</sentwhen><params></params><descr></descr><examples>an element's closing tag is encountered, or immediately after start_element() if the tag is in &lt;tag/&gt; format.<example>on xmlEndElement
+   put &quot;finished element&quot;
+end xmlEndElement</example></examples></message><function name="XML_NewDocument"><syntax>XML_NewDocument(  xmlText, flag )</syntax><descr>Parses an XML document and creates an internal &quot;tree&quot; representation. If XML_BuildTree is false, the internal tree is not created (but error messages are sent). If XML_AllowCallbacks is true, messages will be sent as elements are processed, whether or not the tree is created.
+</descr><params><arg name="xmlText">xml data to parse</arg><arg name="flag"> (true or false) whether to try parse xml data that is not well formed  </arg></params><output>XML document ID or &quot;XMLerror&quot; with 'can't parse xml' ,and the parsing error
+</output><examples><example>if xml_newdocument(data, true) is not a number then beep</example></examples></function><command name="XML_AddDTD" type="command"><syntax>XML_AddDTD docID, DTDtext</syntax><descr>Adds DTD as an internal DTD to an existing XML document
+</descr><params><arg name="docID" type="number">XML document ID</arg><arg name="DTDtext" type="string">DTD data</arg></params><output>
+</output><examples>XML_AddDTD docID, DTDtext<example>xml_AddDTD docid, dtddata
+if the result &lt;&gt; empty then put &quot;Error!&quot;</example></examples><errmsgs>&quot;xmlerr, invalid number of arguments&quot;</errmsgs></command><function name="XML_ValidateDTD" type="function"><syntax>XML_ValidateDTD( docID, DTDtext )</syntax><descr>Validates DTD against the XML document
+</descr><params><arg name="docID" type="number">XML document ID</arg><arg name="DTDtext " type="string"> DTD data</arg></params><output>empty if validated
+</output><examples>XML_ValidateDTD( docID, DTDtext )<example>if xml_ValidateDTD(docid,dtddata) is empty then put &quot;validated&quot;</example></examples><errmsgs>&quot;xmlerr, validation error&quot;
+&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></function><function name="XML_NewDocumentFromFile" type="function"><syntax>XML_NewDocumentFromFile( filePath, flag )</syntax><descr>Parses an XML document in a file and creates an internal &quot;tree&quot; representation. If XML_BuildTree is false, the internal tree is not created (but error messages are sent). If XML_AllowCallbacks is true, messages will be sent as elements are processed, whether or not the tree is created.
+Be sure to convert MetaCard paths to the correct form for the current platform.</descr><params><arg name="filePath" type="string">path to a text file containing XML</arg><arg name="flag" type="boolean">try to parse XML data that is not well formed?</arg></params><output>XML document ID
+</output><examples>XML_NewDocumentFromFile( filePath, flag )<example>if XML_NewDocumentFromFile( tFile,  true ) is not a number then beep</example></examples><errmsgs>&quot;xmlerr, can't parse xml&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></function><function name="XML_GetDocText" type="function"><syntax>XML_GetDocText( docID, ePath)</syntax><descr>Dumps XML document or XML element as XML text
+</descr><params><arg name="docID" type="number">XML document ID</arg><arg name="ePath" type="string">element path (or empty for entire document)</arg></params><output>XML formatted data
+</output><examples>XML_GetDocText( docID, ePath)<example>put XML_GetDocText(docid,&quot;&quot;) into field &quot;xmlcontents&quot;</example></examples><errmsgs>&quot;xmlerr, can't find element&quot;
+&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></function><command name="XML_FreeDocument" type="command"><syntax>XML_FreeDocument docID</syntax><descr>Deletes XML document and releases memory
+</descr><params><arg name="docID" type="number">XML document ID</arg></params><output>
+</output><examples>XML_FreeDocument docID<example>XML_FreeDocument docID
+if the result &lt;&gt; empty then put &quot;document doesn't exist&quot; </example></examples><errmsgs>&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></command><command name="XML_BuildTree" type="command"><syntax>XML_BuildTree flag</syntax><descr>set true to build xml tree
+</descr><params><arg name="flag" type="boolean">build an internal representation of the XML document when parsing?</arg></params><output>empty or bad doc id error
+</output><examples>XML_BuildTree flag<example>XML_BuildTree true</example></examples><errmsgs>&quot;xmlerr, invalid number of arguments&quot;</errmsgs></command><command name="XML_AllowCallbacks" type="command"><syntax>XML_AllowCallbacks flag</syntax><descr>
+</descr><params><arg name="flag" type="boolean">send messages while parsing?</arg></params><output>
+</output><examples>XML_AllowCallbacks flag<example>XML_AllowCallbacks true</example></examples><errmsgs>&quot;xmlerr, invalid number of arguments&quot;</errmsgs></command><function name="XML_Documents" type="function"><syntax>XML_Documents()</syntax><descr>Returns list of loaded XML documents
+</descr><params></params><output>Return-delimited list of XML document IDs
+</output><examples>XML_Documents()<example>put XML_Documents() into docIDList</example></examples><errmsgs>&quot;xmlerr, invalid number of arguments&quot;</errmsgs></function><command name="XML_FreeAll" type="command"><syntax>XML_FreeAll</syntax><descr>Unloads/releases all XML documents in memory
+</descr><params></params><output>none
+</output><examples>XML_FreeAll<example>XML_FreeAll</example></examples></command><command name="XML_AddElement" type="command"><syntax>XML_AddElement docID, pPath, eName, eContents</syntax><descr>Add a child element and sets its value 
+</descr><params><arg name="docID" type="number">XML document ID</arg><arg name="pPath" type="string">parent element path </arg><arg name="eName" type="string">name for element</arg><arg name="eContents" type="string">contents for element</arg></params><output>Full path of new child element or bad doc id error
+</output><examples>XML_AddElement docID, pPath, eName, eContents<example>XML_AddElement docid, elementpath,&quot; newelement&quot;, newvalue</example></examples><errmsgs>&quot;xmlerr, can't find element&quot;
+&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></command><command name="XML_AddXML" type="command"><syntax>XML_AddXML docID, pPath, newXML</syntax><descr>Appends new XML to the document. 
+If the parent element path is included, the new XML is inserted as its children.
+</descr><params><arg name="docID" type="number">XML document ID</arg><arg name="pPath" type="string">parent element path  or empty </arg><arg name="newXML" type="string">XML-formatted text</arg></params><output></output><examples>XML_AddXML docID, pPath, newXML<example>on DuplicateXML pDocID, path1, path2
+   get XML_GetDocText( pDocID, path1)
+   XML_AddXML pDocID, pDocID, it
+end DuplicateXML</example></examples><errmsgs>&quot;xmlerr, can't find element&quot;
+&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></command><command name="XML_RemoveElement" type="command"><syntax>XML_RemoveElement docID, ePath</syntax><descr>Removes an element from the XML tree
+</descr><params><arg name="docID" type="number">XML document ID</arg><arg name="ePath" type="string">element path</arg></params><output></output><examples>XML_RemoveElement docID, ePath<example>XML_RemoveElement docid, elementpath
+if the result &lt;&gt; empty
+then answer &quot;Error removing&quot; &amp;&amp; elementpath with &quot;stop&quot; or &quot;continue&quot;</example></examples><errmsgs>&quot;xmlerr, can't find element&quot;
+&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></command><function name="XML_GetElementContents" type="function"><syntax>XML_GetElementContents( docID, ePath )</syntax><descr></descr><params><arg name="docID" type="number">XML document ID</arg><arg name="ePath" type="string">element path</arg></params><output>Contents of an element</output><examples>XML_GetElementContents( docID, ePath )<example>put XML_GetElementContents(docid, elementpath) into fld &quot;chapter&quot;</example></examples><errmsgs>&quot;xmlerr, can't find element&quot;
+&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></function><command name="XML_SetElementContents" type="command"><syntax>XML_SetElementContents docID, ePath, eContents</syntax><descr>Sets the character data contents of an existing element.  Use XML_AddTree to add XML data to the tree.
+</descr><params><arg name="docID" type="number">XML document ID</arg><arg name="ePath" type="string">element path </arg><arg name="eContents" type="string">element's new contents</arg></params><output>
+</output><examples>XML_SetElementContents docID, ePath, eContents<example>XML_SetElementContents docid, tChapterPath, tChapterText</example></examples><errmsgs>&quot;xmlerr, can't find element&quot;
+&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></command><function name="XML_RootName" type="function"><syntax>XML_RootName( docID )</syntax><descr></descr><params><arg name="docID" type="number">XML document ID</arg></params><output>Name of root element in the XML document tree.
+</output><examples>XML_RootName( docID )<example>put XML_RootName(docid) into rootname</example></examples><errmsgs>&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></function><function name="XML_GetChildPath" type="function"><syntax>XML_GetChildPath( docID, pPath )</syntax><descr>
+</descr><params><arg name="docID" type="number">XML document ID</arg><arg name="pPath" type="string">path of parent element</arg></params><output>Path of first child element
+</output><examples>XML_GetChildPath( docID, pPath )<example>put XML_GetChildPath(docid, elempath) into childpath</example></examples><errmsgs>&quot;xmlerr, can't find element&quot;
+&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></function><function name="XML_GetNextSiblingPath" type="function"><syntax>XML_GetNextSiblingPath( docID, ePath )</syntax><descr>
+</descr><params><arg name="docID" type="number">XML document ID</arg><arg name="ePath" type="string">element path</arg></params><output>Path of next sibling element
+</output><examples>XML_GetNextSiblingPath( docID, ePath )<example>repeat while elemPath &lt;&gt; empty
+   put XML_GetAttributeValue(docID, ePath, &quot;name&quot;) after fld &quot;names&quot;
+   put XML_GetNextSiblingPath(docID, ePath) into ePath
+end repeat
+</example></examples><errmsgs>&quot;xmlerr, can't find element&quot;
+&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></function><function name="XML_GetPrevSiblingPath" type="function"><syntax>XML_GetPrevSiblingPath( docID, ePath)</syntax><descr>
+</descr><params><arg name="docID" type="number">XML document ID</arg><arg name="ePath" type="string"> element path</arg></params><output>Path of previous sibling element</output><examples>XML_GetPrevSiblingPath( docID, ePath)<example>repeat while ePath &lt;&gt; empty
+   put XML_GetAttributeValue(docID, ePath, &quot;name&quot;) after fld &quot;reverse&quot;
+   put XML_GetPrevSiblingPath(docID, ePath) into ePath
+end repeat
+</example></examples><errmsgs>&quot;xmlerr, can't find element&quot;
+&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></function><function name="XML_GetParentPath" type="function"><syntax>XML_GetParentPath( docID, ePath)</syntax><descr>
+</descr><params><arg name="docID" type="number">XML document ID</arg><arg name="ePath" type="string">element path</arg></params><output>Path of parent element
+</output><examples>XML_GetParentPath( docID, ePath)<example>put XML_GetParentPath(docid, elempath) into parentpath</example></examples><errmsgs>&quot;xmlerr, can't find element&quot;
+&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></function><function name="XML_ChildCount" type="function"><syntax>XML_ChildCount( docID, ePath, cName [, depth] )</syntax><descr></descr><params><arg name="docID" type="number">XML document ID</arg><arg name="ePath" type="string">path to element </arg><arg name="cName" type="string">child name filter(empty for all) </arg><arg name="depth" type="number">depth (0,1 for child, 2 for child's children, etc, -1 to expand all of tree)</arg></params><output>Number of children (with name cName) (to depth cDepth)
+</output><examples>XML_ChildCount( docID, ePath, cName [, depth] )<example>put XML_ChildCount(docid, elempath, &quot;task&quot;, -1) into taskcount
+</example><example>put XML_ChildCount(docid, elementpath, &quot;&quot;, 0) into childcount</example></examples><errmsgs>&quot;xmlerr, can't find element&quot;
+&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></function><function name="XML_Children" type="function"><syntax>XML_Children( docID, ePath, delim, cName, cFlag)</syntax><descr></descr><params><arg name="docID" type="number">XML document ID</arg><arg name="ePath" type="string">path to element </arg><arg name="delim" type="string">delimiter text  (can be multi-character)</arg><arg name="cName" type="string">child name filter (empty for all) </arg><arg name="cFlag" type="boolean">include child counts in brackets after names?</arg></params><output>delimited list of names next generation elements
+</output><examples>XML_Children( docID, ePath, delim, cName, cFlag)<example>put XML_Children(docid, elementpath, &quot;,&quot;, &quot;task&quot;, &quot;true&quot;) into taskNames</example></examples><errmsgs>&quot;xmlerr, can't find element&quot;
+&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></function><function name="XML_Tree" type="function"><syntax>XML_Tree( docID, ePath, dText, pText, cntFlag, depth )</syntax><descr>
+</descr><params><arg name="docID" type="number">XML document ID</arg><arg name="ePath" type="string">path to element </arg><arg name="dText" type="string">delimiter text </arg><arg name="pText" type="string">pad text </arg><arg name="cntFlag" type="boolean">include child counts in brackets after names?</arg><arg name="depth" type="number">depth limit (how far to expand the tree, -1 for all)</arg></params><output>Text with the element at ePath as the top, followed by its children separated by dText  and padded with ptext, according to its depth in the tree</output><examples>XML_Tree( docID, ePath, dText, pText, cntFlag, depth )<example>put XML_Tree(docid, elementpath, return, tab, true, -1) into field &quot;outline&quot;</example></examples><errmsgs>&quot;xmlerr, can't find element&quot;
+&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></function><function name="XML_ListOfChildText" type="function"><syntax>XML_ListOfChildText( docID, ePath, itemSep, lineSep, cntFlag, depth )</syntax><descr>
+</descr><params><arg name="docID" type="number">XML document ID</arg><arg name="ePath" type="string">path to element </arg><arg name="itemSep" type="string">item delimiter (can be multi-character)</arg><arg name="lineSep" type="string">line delimiter (can be multi-character)</arg><arg name="cntFlag" type="boolean">include child counts in brackets after names?</arg><arg name="depth" type="number">depth limit (how far to expand the tree, -1 for all)</arg></params><output>List of all children's contents with their tags, in &quot;lines&quot; divided into &quot;items&quot;
+</output><examples>XML_ListOfChildText( docID, ePath, itemSep, lineSep, cntFlag, depth )<example>put XML_ListOfChildText( docid,  tPath, &quot; = &quot;, cr, false,  1) into fld &quot;labeledText&quot;</example></examples><errmsgs>&quot;xmlerr, can't find element&quot;
+&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></function><command name="XML_SetAttributeValue" type="command"><syntax>XML_SetAttributeValue docID, ePath, aName, aValue</syntax><descr>Sets attribute value (creates attribute if doesn't exist)
+</descr><params><arg name="docID" type="number">XML document ID</arg><arg name="ePath" type="string">path to element </arg><arg name="aName" type="string">attribute name </arg><arg name="aValue" type="string">attribute value</arg></params><output></output><examples>XML_SetAttributeValue docID, ePath, aName, aValue<example>XML_SetAttributeValue docid, elementpath, &quot;product&quot;, &quot;revolution&quot;</example></examples><errmsgs>&quot;xmlerr, can't find element&quot;
+&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></command><function name="XML_GetAttributeValue" type="function"><syntax>XML_GetAttributeValue( docID, ePath, aName)</syntax><descr>
+</descr><params><arg name="docID" type="number">XML document ID</arg><arg name="ePath" type="string">path to element </arg><arg name="aName" type="string">attribute name</arg></params><output>attribute value
+</output><examples>XML_GetAttributeValue( docID, ePath, aName)<example>put XML_GetAttributeValue(docid, elempath, &quot;product&quot;) into fld &quot;product&quot;</example></examples><errmsgs>&quot;xmlerr, can't find attribute&quot;
+&quot;xmlerr, can't find element&quot;
+&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></function><function name="XML_ListOfAttributes" type="function"><syntax>XML_ListOfAttributes( docID, ePath, itemSep, lineSep )</syntax><descr>
+</descr><params><arg name="docID" type="number">XML document ID</arg><arg name="ePath" type="string">path to element </arg><arg name="itemSep" type="string">item delimiter (can be multi-character )</arg><arg name="lineSep" type="string">line delimiter (can be multi-character )</arg></params><output>All attributes with their names and values in &quot;lines&quot; divided into &quot;items&quot;
+</output><examples>XML_ListOfAttributes( docID, ePath, itemSep, lineSep )<example>put XML_ListOfAttributes( tDoc, ePath, &quot; = &quot;, cr ) into fld &quot;properties&quot;</example></examples><errmsgs>&quot;xmlerr, can't find element&quot;
+&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></function><function name="XML_ListByAttributeValue" type="function"><syntax>XML_ListByAttributeValue( docID, ePath, cName, aName, delim, depth )</syntax><descr>
+</descr><params><arg name="docID" type="number">XML document ID</arg><arg name="ePath" type="string">path to element </arg><arg name="cName" type="string">child filter (empty for all) </arg><arg name="aName" type="string">attribute name </arg><arg name="delim" type="string">delimiter for output  (can be multi-character)</arg><arg name="depth" type="string">max depth</arg></params><output>Delimited list of attribute values for specified children of parent
+</output><examples>XML_ListByAttributeValue( docID, ePath, cName, aName, delim, depth )<example>put XML_ListByAttributeValue( tDoc, elempath, &quot;student&quot;, &quot;name&quot;, cr ,-1) into tStudents</example></examples><errmsgs>&quot;xmlerr, can't find element&quot;
+&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></function><function name="XML_FindElementByAttributeValue" type="function"><syntax>XML_FindElementByAttributeValue( docID, ePath, cName, aName, aVal, depth )</syntax><descr>
+</descr><params><arg name="docID" type="number">XML document ID</arg><arg name="ePath" type="string">path to element </arg><arg name="cName" type="string">child filter (empty for all) </arg><arg name="aName" type="string">attribute name </arg><arg name="aVal" type="string">attribute value </arg><arg name="depth" type="number">max depth </arg></params><output>full path of element that contains attribute which contains value
+</output><examples>XML_FindElementByAttributeValue( docID, ePath, cName, aName, aVal, depth )<example>put XML_FindElementByAttributeValue(docid, ePath, &quot;student&quot;, &quot;language&quot;, &quot;english&quot;, -1) into tStudentList</example></examples><errmsgs>&quot;xmlerr, bad document id&quot;
+&quot;xmlerr, invalid number of arguments&quot;</errmsgs></function><message name="xmlElementData" type="message"><sentwhen>element data is encountered between tags</sentwhen><params><arg name="pdata" type="string">data found</arg></params><descr></descr><examples>element data is encountered between tags<example>on xmlElementData pAttList
+   put pAttList after fld &quot;doc&quot;
+end xmlElementData</example></examples></message></extDoc>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+  xmlns:v="views.catalog.*"
+  xmlns:m="managers.*"
+	layout="absolute" creationComplete="imagesByCatRPC.send()">
+
+	<mx:Script>
+		<![CDATA[
+		import mx.collections.ArrayCollection;
+		import mx.rpc.events.ResultEvent;
+		import valueObjects.Product;
+		import valueObjects.ShoppingCartItem;
+		import valueObjects.ShoppingCart;
+
+		[Bindable] private var imagesInventory:ArrayCollection;
+		[Bindable] public var cart:ShoppingCart = new ShoppingCart();
+		[Bindable] private var theProduct:Product;
+		[Bindable] private var categories:ArrayCollection;
+
+		private function imgHandler(event:ResultEvent):void {
+			var imgArray:Array = new Array();
+
+			for each (var p:XML in event.result..product){
+				var img:Image = new Image
+				(
+					Number(p.@catID), 
+					String(p.@prodName),
+					Number(p.@unitID), 
+					Number(p.@cost), 
+					Number(p.@listPrice), 
+					String(p.@description), 
+					Boolean(p.@isOrganic=="Yes"), 
+					Boolean(p.@isLowFat=="Yes"), 
+					String(p.@imageName));
+				
+				imgArray.push(prod);
+			}
+			imagesInventory=new ArrayCollection(imgArray);
+		}
+
+
+		]]>
+	</mx:Script>
+
+	<mx:HTTPService id="imagesByCatRPC"
+		url="http://www.widged.com/clients/dknight/pix/flex/categorizedImages.xml"
+		result="imgHandler(event)"
+		resultFormat="e4x"/>
+
+	
+</mx:Application>

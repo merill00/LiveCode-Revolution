@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="100%" height="100%"
+	backgroundColor="black"
+	layout="horizontal"
+ 	viewSourceURL="src/index.html"
+>
+	<mx:Script>
+		<![CDATA[
+			import mx.events.DragEvent;
+			import mx.containers.Box;
+			import mx.managers.DragManager;
+			import mx.core.DragSource;
+			
+			// Embed the various Euro coin images. Images originally 
+			// from Wikipedia (http://en.wikipedia.org/wiki/Euro_coins)
+			[Embed("assets/b1birdeye001.jpg")]
+			[Bindable]
+			public var BirdOne:Class;
+			
+			[Embed("assets/b1birdofprey.jpg")]
+			[Bindable]
+			public var BirdTwo:Class;
+			
+			[Embed("assets/b1penguins004.jpg")]
+			[Bindable]
+			public var BirdThree:Class;
+			
+			[Embed("assets/b3_birds002.jpg")]
+			[Bindable]
+			public var BirdFour:Class;
+			
+			[Bindable] private var totalValue:uint;
+			[Bindable] private var imageSelected:Class;
+
+			private function dragIt(event:MouseEvent, value:uint):void 
+			{
+	            // Get the drag initiator component from the event object.
+	            var dragInitiator:Image = event.currentTarget as Image;
+	            
+	            // Create a DragSource object.
+	            var dragSource:DragSource = new DragSource();
+	
+	            // Add the data to the object.
+	            dragSource.addData(value, 'value');
+	            dragSource.addData(dragInitiator, 'source');
+	
+	            // Create a copy of the coin image to use as a drag proxy.
+	            var dragProxy:Image = new Image();
+				      dragProxy.source = event.currentTarget.source;
+	
+	            // Call the DragManager doDrag() method to start the drag. 
+	            // For information on this method, see 
+	            // the "Initiating the drag" section.
+	            DragManager.doDrag(dragInitiator, dragSource, event, dragProxy);
+	        }
+
+	        // Called if the user drags a drag proxy onto the drop target.
+	        private function dragEnterHandler(event:DragEvent):void 
+	        {
+	            // Get the drop target component from the event object.
+	            var dropTarget:Box=event.currentTarget as Box;
+	
+	            // Accept the drag only if the user is dragging data 
+	            // identified by the 'value' format value.
+	            if (event.dragSource.hasFormat('value')) 
+	            {
+	            	  // Make the border of the Box thicker to 
+	            	  // visually signal to the user that they can 
+	            	  // drop the coin there.
+	            	  dropTarget.setStyle("borderThickness", 5);
+	                
+	                // Accept the drop.
+	                DragManager.acceptDragDrop(dropTarget);
+	            }
+	        }
+	        
+	        // Called if the user drags the drag proxy away from the drop target.
+	        private function dragExitHandler(event:DragEvent):void
+	        {
+	            // Get the drop target component from the event object.
+	            var dropTarget:Box=event.currentTarget as Box;	        	
+	        	
+				      // Set the border of the Box to its default value
+				      // to visually indicate that the user is no longer 
+				      // over the drop target.
+				      revertBoxBorder();				
+	        }	                
+	        
+	        // Called if the target accepts the dragged object and the user 
+	        // releases the mouse button while over the drop target. 
+	        private function dragDropHandler(event:DragEvent):void 
+	        {
+	            // Get the data identified by the color format from the drag source.
+	            var value:uint = event.dragSource.dataForFormat('value') as uint;
+	            var img:Image = event.dragSource.dataForFormat('source') as Image;
+	            imageSelected = img.source as Class;
+	            instructions.visible=false;
+	            instructions.height=0;
+
+				      // Add the value to the total 
+				      totalValue += value;
+				
+				      // Set the border of the Box to its default value
+				      revertBoxBorder();				
+	        }
+	        
+	        // Helper method to revert the Box's border to a 1 pixel outline.
+	        private function revertBoxBorder():void
+	        {
+            	amountDisplay.setStyle("borderThickness", 1);	        	
+	        }
+		]]>
+	</mx:Script>
+	
+	<mx:VBox>
+		<mx:Image 
+			id="oneCent" source="{BirdOne}"
+			width="100" height="80"
+			mouseMove="dragIt(event, 1);" 
+		/>
+		<mx:Image 
+			id="twoCents" source="{BirdTwo}"
+			width="100" height="80"
+			mouseMove="dragIt(event, 2);"
+		/>
+		<mx:Image 
+			id="fiveCents" source="{BirdThree}"
+			width="100" height="80"
+			mouseMove="dragIt(event, 5);"
+		/>
+		<mx:Image 
+			id="tenCents" source="{BirdFour}"
+			width="100" height="80"
+			mouseMove="dragIt(event, 10);"
+		/>		
+	</mx:VBox>
+	
+	<mx:Box 
+		id="amountDisplay"
+		borderStyle="solid" borderColor="#000000" backgroundColor="#FFFFFF"
+		width="440" height="335" 
+		horizontalAlign="center" verticalAlign="middle"
+
+		dragEnter="dragEnterHandler(event);"
+		dragExit="dragExitHandler(event);"
+		dragDrop="dragDropHandler(event);"
+
+	>
+		<mx:Label id="instructions" text="Drag and drop an image in this frame." height="14" fontSize="9" paddingTop="0" paddingBottom="0"/>
+		<mx:Image id="imageView" source="{imageSelected}" width="400" height="300"/>		
+	</mx:Box>
+	
+	
+</mx:Application>

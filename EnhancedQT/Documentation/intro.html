@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<title>Untitled</title>
+</head>
+<body>
+
+<h1>EnhancedQT External</h1>
+
+<h2>Installation</h2>
+
+<h3>Development: Revolution 2.7 and later</h3>
+<p>Place the EnhancedQT.dll/.bundle in the Revolution customization folder:
+Documents/My Revolution [edition]/Externals.</p>
+<p>The external will load the next time you launch Revolution.</p>
+
+<h3>Development: Revolution 2.6</h3>
+<p>To make the EnhancedQT external available in the development environment you can do the following:
+
+<ol>
+	<li>Place the EnhancedQT.bundle or EnhancedQT.dll file in the same directory as the Revolution executable.</li>
+	<li>Create a new stack.  Name it "EnhancedQT" and save it as EnhancedQT.rev in the [Revolution Folder]/plugins/ folder.</li>
+	<li>Set the externals property of the stack to "EnhancedQT.bundle" (OS X) or "EnhancedQT.dll" (Win).</li>
+	<li>Put the following in the stack script:<pre>
+on preOpenStack
+  start using stack (short name of me)
+	
+  pass preOpenStack
+end preOpenStack</pre></li>
+	<li>Select "Plugin Settings" from the Development->Plugins menu in Revolution.</li>
+	<li>Select EnhancedQT.rev from the Plugin drop-down menu.</li>
+	<li>Configure the plugin to resemble the screen shot below.</li>
+	<li>Restart Revolution and type eqtVersion() in the message box.  You should see the version number of the external displayed.</li>
+</ol>
+
+<div align="center"><img src="./images/pluginsettings.jpg" alt="" width="540" height="374"></div>
+
+<h3>Standalones</h3>
+<p>You can place the external wherever you would like relative to the standalone application and then set the externals property of your program stack.  <!-- To learn more about using externals with Revolution you can read article <i>Using Externals in Revolution</i> at <a href="http://mangomultimedia.com/developer/revolution/" target="_blank">http://mangomultimedia.com/developer/revolution/</a>. --> </p>
+
+<h2>Things To Be Aware Of</h2>
+
+<h3>Initialization</h3>
+<p>Before making any calls to the EnhancedQT external on Windows you should call qtInitialize.  Before shutting down your application you should call qtTerminate.  It does no harm to call these handlers on OS X.</p>
+
+<h3>QuickTime Version</h3>
+
+<p>Each handler in the external has a "QT Version" number in the documentation.  This is the version of QuickTime that the handler <i>should</i> work with.  I have not tested all of the handlers against the specified version of QuickTime but the information is taken from the QuickTime API documentation.  You can use qtVersion() to ensure that the computer your program is running on has a compatible version of QuickTime installed.</p>
+
+</body>
+</html>

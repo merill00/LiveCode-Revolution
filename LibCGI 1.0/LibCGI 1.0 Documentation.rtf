@@ -1,0 +1,294 @@
+{\rtf1\mac\ansicpg10000\cocoartf102
+{\fonttbl\f0\fswiss\fcharset77 Helvetica;\f1\fswiss\fcharset77 Helvetica-Bold;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww14920\viewh14400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\qc
+
+\f0\fs48 \cf0 LibCGI documentation
+\fs24 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+\cf0 \
+Last updated 6/1/2004\
+Rodney Tamblyn\
+\
+What follows is some rough documentation for LibCGI to get you started.\
+\
+In the stack script of LibCGI stack, be sure to adjust constants to reflect your operating environment:\
+\
+-------------------------------- CONSTANTS\
+constant kLog                    = "/Library/WebServer/CGI-Executables/MC/logs/log.txt"    -- log file location\
+constant kStackFolder            = "stacks/"                -- where you put your stacks\
+constant kStackFileExtension     = ".rev"                   -- usually .rev or .mc\
+constant kHTMLFolder             = "html/"                  -- html templates\
+constant kErrorMsg               = "verbose"                -- usage: verbose|normal|default\
+constant kDefaultErrorMsg        = "/Library/WebServer/Documents/mcerror.html" -- send when kErrorMsg = default\
+\
+\
+The Global variable gRequestA contains user supplied form or URL parameter data stored as an array. For example, if user clicked on URL:\
+\
+http://127.0.0.1/cgi-bin/MC/form.cgi?stack=ocv&cmd=profile&username=rodney\
+\
+Then gRequestA["cmd"] = profile  and gRequestA["username"] = "rodney"\
+\
+The global gDebug boolean controls whether libCGI cmsg messages are output to the console, this can help you to interactively debug and view your CGIs as they execute, by watching messages appear in the console window.\
+\
+-------------------------------- GLOBAL VARIABLES\
+global gRequestA,gRequest -- contains query data\
+global gDebug     -- boolean. controls whether libCGI_cmsg calls are output to console\
+\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f1\b \cf0 Main handlers
+\f0\b0 \
+\
+The libraryStack handler is called when libCGI is libraried - typically by a CGI script calling it.  This initiates LibCGI and causes it to read in any data passed from the user, eg form or URL param data.\
+\
+on libraryStack\
+  local tError\
+  put true into gDebug\
+  try\
+    priv_libCGI_ReadRequest     --read data in and store in global array - CGI stacks can access this\
+    priv_libCGI_HandleRequest   --is there a stack available to handle the request?\
+  catch tError\
+    priv_libCGI_HandleError tError\
+  end try\
+end libraryStack\
+\
+--========================== PUBLIC FUNCTIONS & HANDLERS ===========================--\
+\
+libCGI_Response sends data back to the remote user.  Call it from your sub-stack scripts when you want to return a result.  You may find it useful to take advantage of Revolutions' "merge" command to construct responses in HTML.\
+\
+-------------------------------- RESPOND TO THE REQUEST\
+\
+on libCGI_Response pBuffer,pContentType\
+  if pContentType is "" then put "text/html" into pContentType\
+  put "Content-Type: "&pContentType & cr\
+  put "Content-Length:" && the length of pBuffer & cr & cr\
+  put pBuffer\
+end libCGI_Response\
+\
+\
+libCGI_Forward  will redirect remote user to a different web page.  Useful in situations where you have pre-constructed web pages to respond to different user situations (eg "New Account Created!" page).\
+\
+-------------------------------- FORWARD TO PAGE\
+\
+on libCGI_Forward pURL\
+  put "Location: "&pURL & cr\
+  exit to top\
+end libCGI_Forward\
+\
+The get and set cookie array functions allow you to view and manipulate cookies in the remote user's web browser.  This can help you to maintain session information, as http protocol is stateless.  (e.g. setting a cookie will help you identify the user when they come back next time or continue a transaction in a subsequent request).  Rodney Notes: I haven't tested or used these functions much as I tend to use libCGI as a network back-end for Revolution stacks rather than web browsers.\
+\
+-------------------------------- GET COOKIE ARRAY\
+\
+-- returns an array of name,value pairs\
+\
+function libCGI_GetCookies\
+ ...\
+end libCGI_GetCookies\
+\
+-------------------------------- SET COOKIES\
+\
+function libCGI_SetCookies\
+...\
+end libCGI_SetCookies\
+\
+\
+Message logging allows you to add a message to the system log.  If you have specified a log location in the constant kLog then it will also add a log there too.  Note that when executing from command line on OSX platform is "Darwin" not "MacOS".\
+\
+----------------------------- LOG A MESSAGE\
+#log message to system log\
+on libCGI_syslog pMsg\
+  if there is a file kLog then\
+    open file kLog for append\
+    write the date &&the time&":"&&pMsg&crlf to file kLog\
+    close file kLog\
+  end if\
+  #additional logging\
+  switch the platform\
+    #mac os console\
+  case "Darwin"\
+    #being run from CGI\
+    if the systemversion > 6.6 then\
+      get shell("logger -is"&&quote&"LibCGI: "&pMsg&quote)\
+    end if\
+     \
+     \
+    break\
+    #add/test sys logging for other platforms here...\
+  end switch\
+end libCGI_syslog\
+\
+#shortcut for calling system logging\
+on msg pMsg\
+  libCGI_syslog pMsg\
+end msg\
+\
+The remaining functions and handlers are intended to be private to LibCGI, however there is nothing to stop you from calling them from your stacks if required.\
+\
+The following handlers allow you to write out messages to the console so you can interactively view your CGI scripts as they execute.\
+libCGI_debug turns on/off console logging.  libCGI_cmsg <msg> generates a message on the console.\
+\
+__________________ SEND MESSAGE to CONSOLE ______________________\
+\
+If you want to view script messages interactively as they the CGI scripts execute, then you can use  libCGI_cmsg  to write messages to the console. \
+\
+To set this up you will have to allow guests to write to /dev/console\
+From the terminal execute:  chmod 622 /dev/console\
+\
+You may find this extremely helpful in debugging complex CGI script operations.\
+\
+\
+#toggle debugging mode.  This controls whether libCGI_cmsg messages are actually outputted.  As you can see from the following script\
+#it's commented out at the moment, turn it on if it's useful to you.\
+on libCGI_debug pStatus\
+  if pStatus then put true into gDebug\
+  else put false into gDebug\
+end  libCGI_debug\
+\
+#generate console message (open your console app to view)\
+on libCGI_cmsg pMsg\
+  #if not gDebug then exit libCGI_cmsg\
+  put "LibCGI "&the time&":" before pMsg\
+  repeat for each line x in pMsg\
+    get shell("echo "&x&">/dev/console")\
+  end repeat\
+end libCGI_cmsg\
+\
+--========================== PRIVATE FUNCTIONS & HANDLERS ==========================--\
+\
+ priv_libCGI_ReadRequest reads requests from users:\
+\
+--read data passed from user, if multiple params, convert to array\
+--store data in locals gRequest and gRequestA\
+-- Format of form data as received from web server, in this ex: property stack, value fileup)\
+/*\
+-----------------------------207876102637953\
+Content-Disposition: form-data; name="stack"\
+\
+fileup\
+-----------------------------207876102637953\
+*/\
+\
+on priv_libCGI_ReadRequest\
+...\
+end priv_libCGI_ReadRequest\
+\
+-------------------------------- HANDLE THE REQUEST\
+\
+Handle request processes data once it has been read in.  Typically this involves librarying the stack requested and allowing it to respond in an appropriate way.  Your form or URL params should specify "cmd" and "stack" variables to indicate which stack to load, and what operation to perform (see below, stack file example).  priv_libCGI_HandleRequest will return errors to remote user if request is inappropriately formatted, or if resources cannot be located (e.g. you ask for a stack that doesn't exist).\
+\
+-- There are two naming conventions:\
+-- 1) a parameter named stack with a stackname as value\
+-- 2) the name of the CGI script that was initially called\
+--\
+-- The stack can also be a substack of libCGI or a stack file in the kStackFolder\
+\
+on priv_libCGI_HandleRequest\
+...\
+end priv_libCGI_HandleRequest\
+\
+\
+\
+-------------------------------- GET THE NAME OF THE ORIGINAL CGI\
+\
+--determine short name of calling cgi script, eg echo.mt becomes echo\
+\
+function priv_libCGI_ScriptName\
+  local tCGI\
+  put $SCRIPT_NAME into tCGI      -- path to CGI executed\
+  set the itemdel to "/"\
+  put last item of tCGI into tCGI -- we just need last item\
+  set the itemdel to "."\
+  return item 1 of tCGI           -- strip extension\
+end priv_libCGI_ScriptName\
+\
+--=============================== ERROR HANDLING ================================--\
+\
+priv_libCGI_HandleError constructs and sends an error message back to the remote user.  The type and level of reporting is determined by the constant kErrorMsg\
+\
+on priv_libCGI_HandleError pError\
+ ...\
+end priv_libCGI_HandleError\
+\
+
+\fs48 Part II Creating CGI script stacks
+\fs24 \
+\
+Create a stack, store it in the sub-directory "stacks".\
+\
+You can either intercept commands by including named handlers in the stack, or process them in the libraryStack handler.\
+\
+E.g\
+\
+global gRequestA\
+\
+on libraryStack\
+  #could add startup routines here...\
+end libraryStack\
+\
+#form requested add file\
+on fileUp_add\
+  fileUp_devResponse\
+end fileUp_add\
+\
+on fileUp_devResponse\
+  local tInfo\
+  repeat for each line tLine in keys(gRequestA)\
+    put "<b>"&tLine&": </b>"&gRequestA[tLine]&"<br>" after tInfo\
+  end repeat\
+  libCGI_Response merge("<html><body><h1>File Up:</h1>[[tInfo ]]</body></html>")\
+end fileUp_devResponse\
+\
+Alternatively, you could script it this way (both forms work and are valid):\
+\
+on libraryStack\
+  local tResult\
+  switch gRequestA["cmd"] \
+case "fileUp_add\
+  repeat for each line tLine in keys(gRequestA)\
+    put "<b>"&tLine&": </b>"&gRequestA[tLine]&"<br>" after tInfo\
+  end repeat\
+  libCGI_Response merge("<html><body><h1>File Up:</h1>[[tInfo ]]</body></html>")\
+break\
+default\
+  libCGI_Response "not understood"\
+end switch\
+end libraryStack\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+}

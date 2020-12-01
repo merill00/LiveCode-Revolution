@@ -1,0 +1,1 @@
+#include <ansi_prefix.mac.h> //<MacHeaders.h>#pragma precompile_target "MCexternalPreComp"#define MACOS#define powerc#define __powerc#define __STDC__

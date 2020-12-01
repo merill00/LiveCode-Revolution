@@ -1,0 +1,43 @@
+2.0.2.10
+* Fixed a bug in libdb_makeSearchString.  Valentina 1.x was returning improper SQL for a "contains" search.
+
+2.0.2.9
+* Fixed a bug in libdb_getCursorRecords that wasn't indexing arrays for Valentina 1.x databases correctly.
+* Fixed a bug in libdb_exportDatabase that wasn't properly converting MySQL decimal fields to float fields in Valentina 1.x databases.
+
+2.0.2.8
+* Fixed a bug that appeared in 2.0.2.3 in libdb_getTableMetaData when using Valentina.
+* Modified a private property of a cursor array.  CursorID is now just ID.
+
+2.0.2.7
+* Turned off table locking for SQLite in libdb_addNextToTable.
+* Fixed a bug so that SQLite 3 tables and field are now properly enclosed with double quotes rather than single quotes.
+
+2.0.2.5
+* libdb_makeSearchString is actually useful now.  An extra parameter was added to allow a search string that will do a beings, ends or contains search. If you used this handler with Valentina in the past you will need to alter your code to use the new parameter.  Of course, I don't see how someone could have used this with Valentina since it really didn't do anything.
+* Some under the hood changes that should improve support for Valentina 2.
+
+2.0.2.3
+* Updated the cursor functions so that they use a cursor array.  A cursor array contains information such as column encodings, cursor id, etc.
+
+2.0.1.20
+* Removed reliance on SQL binding when adding/updating tables.  RevDB had bugs in the PostGreSQL and MySQL drivers.
+
+2.0.1.19
+* libdb_getTableMetaData now uses database specific calls for MySQL, PostgreSQL, SQLite and Valentina to get a column from the table if pTableField is empty.  Other databases default to "id".
+
+2.0.1.18
+* Fixed some instances where table and field names weren't being quoted in automatic SQL generation handlers.
+* Added PostGreSQL specific string escaping.
+
+2.0.1.17
+* libdb_registerDatabase now checks for a connection type of "sqlite3" and automatically converts this to a type of "sqlite" and a version of "3".
+
+2.0.1.16
+* Made lots of modifications to how quoting of table and column names are dealt with.
+
+2.0.1.4
+* Updates made by Mark Weider to make library explicitVars-safe as well as some bug fixes.
+
+2.0.1
+* Updated library to support Valentina 2.x

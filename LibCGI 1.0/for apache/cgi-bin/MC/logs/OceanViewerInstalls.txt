@@ -1,0 +1,10 @@
+12/24/03	12:16 AM	ip=127.0.0.1,eth=54ej97kl98f5,OS=10.3,mem=246,diskID=23423424,loc=1
+12/24/03	12:21 AM	ip=127.0.0.1,eth=54ej97kl98f5,OS=10.3,mem=246,diskID=23423424,loc=1
+12/24/03	12:23 AM	ip=127.0.0.1,eth=54ej97kl98f5,OS=10.3,mem=246,diskID=23423424,loc=1
+12/24/03	12:25 AM	ip=127.0.0.1,eth=54ej97kl98f5,OS=10.3,mem=246,diskID=23423424,loc=1
+12/24/03	12:25 AMRemoteIP= 127.0.0.1	ip=127.0.0.1,eth=54ej97kl98f5,OS=10.3,mem=246,diskID=23423424,loc=1
+12/24/03	12:26 AMRemoteIP=127.0.0.1	ip=127.0.0.1,eth=54ej97kl98f5,OS=10.3,mem=246,diskID=23423424,loc=1
+12/24/03	12:26 AMRemoteIP=	ip=127.0.0.1,eth=54ej97kl98f5,OS=10.3,mem=246,diskID=23423424,loc=1
+12/24/03	12:27 AMRemoteIP=	ip=127.0.0.1,eth=54ej97kl98f5,OS=10.3,mem=246,diskID=23423424,loc=1
+12/24/03	12:28 AMRemoteIP=127.0.0.1	ip=127.0.0.1,eth=54ej97kl98f5,OS=10.3,mem=246,diskID=23423424,loc=1
+12/24/03	12:34 AM	RemoteIP=127.0.0.1	ip=127.0.0.1,eth=54ej97kl98f5,OS=10.3,mem=246,diskID=23423424,loc=1

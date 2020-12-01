@@ -1,0 +1,29 @@
+<DOC>
+<Floppy put="ClickedonFloppyDrive" icon="altFloppy.gif">A:
+	<File put="ClickedonTest.JPG" icon="altDoc.gif">Test.JPG</File>
+</Floppy>
+<HardDisk put="ClickedonHardDiskC" icon="altHD.gif">C:
+	<Folder put="ClickedonWindowsFolder" icon="altFolder.gif">Windows
+		<Folder put="ClickedonFontsFolder" icon="altFolder.gif">Fonts</Folder>
+		<File put="ClickedonAutoexec.batfile" icon="altDoc.gif">Autoexec.bat</File>
+		<Folder put="ClickedonSystemFolder" icon="altFolder.gif">System
+			<File put="Clickedontest.dllfile" icon="altFile.gif">test.dll</File>
+		</Folder>
+	</Folder>
+	<Folder put="ClickedonBinFolder" icon="altFolder.gif">Bin</Folder>
+	<Folder put="ClickedonProgramsFolder" icon="altFolder.gif">Programs</Folder>
+	<File put="ClickedonAutoexec.batfile" icon="altFile.gif">Autoexec.bat</File>
+</HardDisk>
+<HardDisk nolink="ClickedonHardDiskC" icon="altHD.gif">D:
+	<Folder put="ClickedonWindowsFolder" icon="altFolder.gif">Windows
+		<Folder put="ClickedonFontsFolder" icon="altFolder.gif">Fonts</Folder>
+		<File put="ClickedonAutoexec.batfile" icon="altDoc.gif">Autoexec.bat</File>
+		<Folder put="ClickedonSystemFolder" icon="altFolder.gif">System
+			<File put="Clickedontest.dllfile" icon="altFile.gif">test.dll</File>
+		</Folder>
+	</Folder>
+	<Folder put="ClickedonBinFolder" icon="altFolder.gif">Bin</Folder>
+	<Folder put="ClickedonProgramsFolder" icon="altFolder.gif">Programs</Folder>
+	<File put="ClickedonAutoexec.batfile" icon="altFile.gif">Autoexec.bat</File>
+</HardDisk>
+</DOC>

@@ -1,0 +1,1 @@
+if tIndex is 1 thensetOptionLabel "Backgrounds:"put the backgroundNames of this stack into tNamessetOptionListItems tNamesshowOptionsend ifif word 1 of tID is "card" then repeat for each line tBGName in tOptionListplace background tBGName onto tIDend repeatend if

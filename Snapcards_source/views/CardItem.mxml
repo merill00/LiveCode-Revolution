@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+  horizontalScrollPolicy="off"
+  verticalScrollPolicy="off">
+
+  <mx:Script>
+  <![CDATA[
+		import cardObjects.Card;
+
+    [Bindable] public var cardItem:Card;
+    
+    private function showHideTab():void {
+      if (cardTab.y < 100) {
+        cardTab.y=120;
+      } else {
+        cardTab.y=50;
+      }
+    }
+  ]]>
+  </mx:Script>
+
+    <mx:Style>
+      .tab {
+        borderStyle: solid;
+        cornerRadius: 8;
+        backgroundColor: #BCD630;
+        borderColor: #8A9B23;
+        borderThickness: 3;
+      }
+      .tabText {
+        paddingTop: 18;
+        textAlign: center;
+      }
+      .slideShadow {
+        borderStyle: solid;
+        cornerRadius: 8;
+        backgroundColor: #C3C3C3;
+      }
+      .slideBackground {
+        borderStyle: solid;
+        cornerRadius: 8;
+        backgroundColor: #FFF;
+        borderColor: #393939;
+        borderThickness: 3;
+      }
+      .slideImage {
+        borderStyle: solid;
+        backgroundColor: #000;
+        borderColor: #C3C3C3;
+      }
+    </mx:Style>
+
+  <mx:Box x="28" y="18" width="160" height="120" styleName="slideShadow"/>
+
+  <mx:Box x="45" y="50" width="120" height="50" styleName="tab" id="cardTab">
+    <mx:Label text="{cardItem.frenchName}" width="100%" styleName="tabText" id="cardText"/>
+  </mx:Box>
+  
+  <mx:Box x="25" y="15" width="160" height="120" styleName="slideBackground"/>
+
+  <mx:Box x="50" y="35" width="110" height="75" styleName="slideImage"
+    verticalScrollPolicy="off"
+    horizontalScrollPolicy="off">
+    <mx:Image source="{'Snapcards_source/assets/images/'+cardItem.imageFile}" width="110" height="75" horizontalAlign="center" click="showHideTab()"/>
+  </mx:Box>
+  
+</mx:Canvas>

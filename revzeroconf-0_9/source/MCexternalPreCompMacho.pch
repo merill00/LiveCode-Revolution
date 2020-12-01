@@ -1,0 +1,1 @@
+#pragma precompile_target "MCexternalPreComp"#define MACOS#define powerc#define __powerc#define TARGET_API_MAC_CARBON 1#define OTCARBONAPPLICATION 1#define __CF_USE_FRAMEWORK_INCLUDES__#define MACHO 1#include <Carbon/Carbon.h>//#include <MacHeadersMach-O.h>// - required for codewarrior compilation#ifdef __cplusplus#define __STDC__ 1#endif

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<products>
+	<!-- The widgets below are all from Australia -->
+	<?runAction: checkStock?>
+	<widgets>
+		<widget id="1" name="Thingimajig" color="navy">
+			<![CDATA[The <b>NEW</b> Thingimajig!
+Comes in 5 new colors!]]>
+		</widget>
+		<widget id="3" name="Geegaw" color="red">
+			The old Geegaw. Anyone want to buy one?
+		</widget>
+	</widgets>
+</products>

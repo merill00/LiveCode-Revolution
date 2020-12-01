@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:svg="http://www.w3.org/2000/svg" >
+  <head>
+    <style>
+      circle:hover {fill-opacity:0.8;}
+    </style>
+  </head>
+  <body>
+    <svg:svg>
+      <svg:g style="fill-opacity:0.3;">
+        <!-- svg:switch -->
+          <svg:foreignObject x="0" y="0" width="1000" height="1000" 
+                             requiredExtensions="http://www.mozilla.org/SVGExtensions/EmbeddedXHTML">
+            <img src="croc1.jpg" />
+          </svg:foreignObject>
+        <!-- /svg:switch -->
+        <svg:circle cx="6cm" cy="2cm" r="100" style="fill:red; stroke:none; stroke-width:0.01cm" transform="translate(0,50)" />
+        <svg:circle cx="6cm" cy="2cm" r="100" style="fill:blue; stroke:none; stroke-width:0.01cm" transform="translate(70,150)" />
+        <svg:circle cx="6cm" cy="2cm" r="100" style="fill:green; stroke:none; stroke-width:0.01cm" transform="translate(-70,150)"/>
+      </svg:g>
+    </svg:svg> 
+  </body>
+</html>

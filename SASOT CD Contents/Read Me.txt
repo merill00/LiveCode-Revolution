@@ -1,0 +1,9 @@
+This folder contains the primary examples and the code from all the Laboratory exercises in my book, "Revolution: Software at the Speed of Thought, Volume 1". All scripts are stored as Revolution stacks, so you'll need a copy of Revolution to open them.
+
+In the book, I suggest you use a single Laboratory stack and just create new cards and reuse buttons as needed. That was obviously not a practical way to provide the information in this collection. Instead, I have created a separate Revolution stack for each Laboratory exercise in the book. 
+
+Also included in this folder is a listing of known errata in Volume 1 as of this writing. Keep an eye on my Web site at http://www.revolutionpros.com for future additions to the errata and for future releases of individual chapters and subsequent volumes of this book.
+
+And if you want to correspond with me, please send messages to me at revdan@danshafer.com.
+
+Dan

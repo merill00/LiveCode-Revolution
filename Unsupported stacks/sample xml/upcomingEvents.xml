@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE store[
+<!ELEMENT store (events+)>
+<!ELEMENT events (Title,Description,Specialsale,Relational,Notes)>
+<!ATTLIST events Location (Atlanta|Cherryhill|Chicago|Jerseycity|Newyork|Northbrunswick|Parsippany|Springfield|Stamford|Westbury|Whiteplains|Woodbridge) "Parsippany" 
+			   Dates CDATA #REQUIRED 
+			   Time CDATA #REQUIRED>
+
+<!ELEMENT Title (#PCDATA)>
+
+<!ELEMENT Description (#PCDATA)>
+
+<!ENTITY  bkman "Our BookMan mascot will be out
+in the crowd with lots of fun prizes!So come out all
+you book lovers and celebrate the joy of reading.">
+
+<!ENTITY  bksigning "Come out and celebrate with some of your favorite 
+ Authors,bring out the entire family and make it a fun fill day.">
+
+ <!ENTITY  lec "Here is your chance to take on a great oppertunity of
+learning tips on writing and publishing your works by one of our most 
+celebrated authors Michael Keaton.">
+
+
+<!ELEMENT Specialsale (#PCDATA)>
+<!ELEMENT Relational (#PCDATA)>
+<!ELEMENT Notes (#PCDATA)> 
+]>
+
+<store>
+ 
+<events Location="Atlanta"  Dates= "07/06/01 til 07/26/01" Time= "10:30am til 2:30pm">
+<Title> BOOK MAN Mascot </Title>
+<Description>&bkman;</Description>
+<Specialsale>10% of all books</Specialsale>
+<Relational>BookNook home page</Relational>
+<Notes>Hope you have fun</Notes>
+</events>
+
+<events Location= "Cherryhill"  Dates=  "07/12/01 til 07/22/01" Time=  "11:30am til 3:30pm">
+<Title>Book Signing</Title>
+<Description>&bksigning;</Description>
+<Specialsale>10% of all books</Specialsale>
+<Relational>bookNook homepage</Relational>
+<Notes>Please be on time</Notes>
+ </events>
+
+  <events Location="Chicago"  Dates="08/06/01 til 08/26/01" Time="12:30am til 2:30pm">
+<Title>Book Signing</Title>
+<Description>&lec;</Description>
+<Specialsale>10% of all books</Specialsale>
+<Relational>BookNook home page</Relational>
+<Notes>Hope you have fun</Notes>
+</events>
+
+
+</store>

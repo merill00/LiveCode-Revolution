@@ -1,0 +1,1 @@
+<html><body><form method='POST' enctype='multipart/form-data' action='http://127.0.0.1/cgi-bin/MC/form.cgi'><INPUT type="hidden" name="stack" value="address"><INPUT type="hidden" name="cmd" value="displayAll"><input type=submit value="Display Address book"></form></body></html>

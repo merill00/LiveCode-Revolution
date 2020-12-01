@@ -1,0 +1,5 @@
+#!/usr/local/bin/Revolution#example illustrating database connectivity.  Requires revolution database .so libraries#note setting driver path not necessary if lib in same dir as Revolution.#putting numbers (commented out at present) may help debugging#Prints database values from addressbook db.on startup
+put "<html><body>Here's the records from the addressbook database:<p>" into buffertryrevdb_setdriverpath "/usr/local/lib/"#put "0"put revdb_connect("mysql","localhost","address2","root", "mypass") into connid#put "00"if connid is not a number then
+ put "Error"&& connid after buffer else #put "1"  put revdb_querylist(,"<p>", connid, "select * from address") after buffer    #put "2"  get revdb_disconnect(connid) #put "3" end if catch err   put "An error occurred connecting to the database:"&&err after buffer   end try   put "</body/></html>" after buffer   # write minimal set of HTTP headers to stdout   #read from stdin until empty
+ # put it after buffer      put "Content-Type: text/html" & cr
+  put "Content-Length:" && the length of buffer & cr & cr        put buffer       end startup       

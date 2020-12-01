@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog>
+  <category name="sports" catID="1">
+    <card name="badminton" imageFile="badminton.jpg" frenchName="badminton" englishName="badminton" cardID="1" category="sports" catID="1"/>
+    <card name="equitation" imageFile="equitation.gif" frenchName="equitation" englishName="equitation" cardID="2" category="sports" catID="1"/>
+    <card name="football" imageFile="football.gif" frenchName="football" englishName="football" cardID="3" category="sports" catID="1"/>
+    <card name="jogging" imageFile="jogging.gif" frenchName="jogging" englishName="jogging" cardID="4" category="sports" catID="1"/>
+    <card name="natation" imageFile="natation.gif" frenchName="natation" englishName="natation" cardID="5" category="sports" catID="1"/>
+    <card name="rugby" imageFile="rugby.gif" frenchName="rugby" englishName="rugby" cardID="6" category="sports" catID="1"/>
+    <card name="sumo" imageFile="sumo.gif" frenchName="sumo" englishName="sumo" cardID="7" category="sports" catID="1"/>
+    <card name="tennis" imageFile="tennis.gif" frenchName="tennis" englishName="tennis" cardID="8" category="sports" catID="1"/>
+  </category>
+</catalog>

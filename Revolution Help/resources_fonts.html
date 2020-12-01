@@ -1,0 +1,319 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>HyperActive Software - Resources - Reference Sheet - Building Standalones</title> 
+	<meta name="description" content="Custom Macintosh and Windows software solutions in Hypercard, Supercard, Metacard, and Runtime Revolution.">
+	<meta name="keywords" content="software programming, custom programming, macintosh programming, hypercard, supercard, metacard, runtime revolution, applescript, hypertext, hypermedia">
+		<link href="resources_fonts_files/global.css" rel="stylesheet" type="text/css">
+</head><body>
+<div class="container">
+	<div class="header">
+		<div class="headertitle">
+			HyperActive Software
+		</div>
+		<div class="headercontact">
+			<a href="mailto:info@hyperactivesw.com">Contact Us</a>
+		</div>
+		<br clear="all">
+		<p>
+			<a href="http://www.hyperactivesw.com/index.html">Home</a> <a href="http://www.hyperactivesw.com/whats_new.html">What's New</a> <a href="http://www.hyperactivesw.com/who_we_are.html">Who We Are</a> <a href="http://www.hyperactivesw.com/what_we_do.html">What We Do</a> <a href="http://www.hyperactivesw.com/solutions.html">Solutions</a> <a href="http://www.hyperactivesw.com/Resources.html">Resources</a>
+		</p>
+<!-- end #header -->
+	</div>
+	<div class="subsubMainContent">
+		<p class="white">
+			<strong>We make software for humans.</strong> Custom Macintosh and Windows solutions in HyperCard, MetaCard, and Runtime Revolution
+		</p>
+		<h2 class="resourcesTitle"><a href="http://www.hyperactivesw.com/Resources.html">Resources...</a></h2> 
+		<div class="subOneCol">
+			<h2><strong>Reference Sheet: Cross-platform Fonts</strong></h2> 
+			<br>
+			<cite> Jacqueline Landman Gay
+				<br>
+					HyperActive Software
+				<br>
+					Presented at RevConWest, June 2005
+				<br>
+	</cite> 
+	<p><i>Much
+of the following information was gathered from the Runtime Revolution
+mailing list, and is offered as a reference for cross-platform font
+issues.</i></p>
+<p><b><i>The font issue</i></b></p>
+<p>None of the major operating systems that Revolution supports handle
+fonts in exactly the same way. Even though there are a few fonts that
+some systems have in common, the font metrics vary even between fonts
+of the same name. They will look and print differently on different
+platforms. Arial on Windows is not the same as Arial on Macintosh.</p>
+
+<p>Windows by default displays fonts at 96 dots per inch resolution,
+and Macintosh displays them at 72 dots per inch. However, these default
+resolutions can (and usually do) change if the user has set their
+monitor to display at a different resolution. You cannot predict what
+the font metics will be on any given machine at any given time.</p>
+
+<p>There is no easy way to resolve these conflicts that will enable
+your stacks to display identically on all platforms. The best solution
+is the simplest: allow the default system font to display in field
+text, or if you prefer more consistency, use a font common to all
+platforms. In all cases, leave some extra space in the field to allow
+for different word widths and line wrapping.</p>
+
+<p>To set a field to always use the system default, set its textfont property to a font name that does not exist, such as “0”:</p>
+
+<blockquote>
+	<tt>set the textfont of fld 1 to 0</tt>
+</blockquote>
+
+<p><b><i>Fonts common to all platforms</i></b></p>
+
+<p>There aren’t many. Only Courier is supported across Linux, MacOS,
+Mac OS X, and Windows. Because it is a monospaced font, Courier isn’t
+very useful much of the time.</p>
+
+<p>Below is a partial comparison table of some fonts shared across
+various operating systems. Users may install their own fonts at any
+time; this table lists only those fonts that are shipped with the
+operating system. If a font is not listed here, it is not relevant to
+cross-platform use. This table is not all-inclusive.</p>
+<p></p>
+<table align="center" border="1" cellpadding="5" cellspacing="0" width="100%">
+	<tbody><tr align="center" bgcolor="#ccccff">
+		<th><b></b></th> <th>Mac OS</th> <th>Mac OS X</th> <th>Windows</th> <th>Linux</th>
+	</tr>
+	<tr>
+		<td>Courier</td> <td align="center">X</td> <td align="center">X</td> <td align="center">X</td> <td align="center">X</td>
+	</tr>
+	<tr>
+		<td>Helvetica</td> <td align="center">X</td> <td align="center">X</td> <td></td> <td align="center">X</td>
+	</tr>
+	<tr>
+		<td>Lucida</td> <td></td> <td align="center">X</td> <td></td> <td align="center">X</td>
+	</tr>
+	<tr>
+		<td>LucidaTypewriter</td> <td></td> <td></td> <td></td> <td align="center">X</td>
+	</tr>
+	<tr>
+		<td>Times</td> <td align="center">X</td> <td align="center">X</td> <td></td> <td align="center">X</td>
+	</tr>
+	<tr>
+		<td>Arial</td> <td></td> <td align="center">X</td> <td align="center">X</td> <td></td>
+	</tr>
+	<tr>
+		<td>Arial Black</td> <td></td> <td align="center">X</td> <td align="center">X</td> <td></td>
+	</tr>
+	<tr>
+		<td>Times New Roman</td> <td align="center">X</td> <td align="center">X</td> <td align="center">X</td> <td></td>
+	</tr>
+	<tr>
+		<td>Verdana</td> <td align="center">(often*)</td> <td align="center">X</td> <td align="center">X</td> <td></td>
+	</tr>
+	<tr>
+		<td>Comic Sans</td> <td align="center">(often*)</td> <td align="center">X</td> <td align="center">X</td> <td></td>
+	</tr>
+	<tr>
+		<td>Century Gothic</td> <td></td> <td align="center">X</td> <td align="center">X</td> <td></td>
+	</tr>
+	<tr>
+		<td>Copperplate Gothic</td> <td></td> <td align="center">X</td> <td align="center">X</td> <td></td>
+	</tr>
+	<tr>
+		<td>Impact</td> <td></td> <td align="center">X</td> <td align="center">X</td> <td></td>
+	</tr>
+	<tr>
+		<td>Lucida Handwriting</td> <td></td> <td align="center">X</td> <td align="center">X</td> <td></td>
+	</tr>
+	<tr>
+		<td>Tahoma</td> <td></td> <td align="center">X</td> <td align="center">X</td> <td></td>
+	</tr>
+	<tr>
+		<td>Times New Roman</td> <td align="center">(often*)</td> <td align="center">X</td> <td align="center">X</td> <td></td>
+	</tr>
+	<tr>
+		<td>Trebuchet</td> <td></td> <td align="center">X</td> <td align="center">X</td> <td></td>
+	</tr>
+	<tr>
+		<td>Verdana</td> <td align="center">(often*)</td> <td align="center">X</td> <td align="center">X</td> <td></td>
+	</tr>
+</tbody></table>
+
+<small><p>* Not native to the OS but often auto-installed by web browsers or other software</p></small>
+<p><b><i>User Recommendations</i></b></p>
+<p>According to the mailing list, the most-recommended font for
+Mac/Windows deployment is Arial. Tahoma is also popular. For stacks
+that must display on Linux/Unix platforms as well, you will probably
+have to change the field text dynamically to a different font, or
+maintain separate versions of your stack.</p>
+
+<p><b><i>Font metric comparisons</i></b></p>
+
+<p>If you are determined to try for the closest appearance in
+cross-platform stacks, you can set the textfont and textsize of fields
+or stacks dynamically with scripts depending on the platform the stack
+is running on. Note that Windows fonts are not scalable, where Mac OS
+and Mac OS X fonts are. If you set a font size on Windows that does not
+exist natively, it will look bad. Macintosh fonts look good at any
+size, so it may be preferable to set your field text to a size
+supported by the Windows font, or else dynamically change the field
+fonts by script when the card opens. (Revolution profiles can do this.)</p>
+
+<p>Dar Scott posted the following helpful comparison table to the
+mailing list, This chart shows the formattedHeight and formattedWidth
+of the word "Washington" in different fonts and sizes on two platforms.</p>
+
+<center>
+<h4>Mac OS X</h4>
+</center>
+<p></p>
+<table align="center" border="1" cellpadding="5" cellspacing="0" width="100%">
+	<tbody><tr bgcolor="#ccccff">
+		<th>textSize</th> <th>textHeight</th> <th>Arial</th> <th>Helvetica</th> <th>Courier</th> <th>Courier New</th>
+	</tr>
+	<tr>
+		<td>8</td> <td>10</td> <td>10x40</td> <td>9x40</td> <td>9x50</td> <td>10x50</td>
+	</tr>
+	<tr>
+		<td>9</td> <td>12</td> <td>12x48</td> <td>12x48</td> <td>12x50</td> <td>12x50</td>
+	</tr>
+	<tr>
+		<td>10</td> <td>13</td> <td>13x55</td> <td>13x54</td> <td>13x60</td> <td>13x60</td>
+	</tr>
+	<tr>
+		<td>11</td> <td>14</td> <td>14x57</td> <td>13x57</td> <td>13x70</td> <td>14x70</td>
+	</tr>
+	<tr>
+		<td>12</td> <td>16</td> <td>16x65</td> <td>14x65</td> <td>14x70</td> <td>16x70</td>
+	</tr>
+	<tr>
+		<td>13</td> <td>17</td> <td>17x68</td> <td>16x68</td> <td>16x80</td> <td>17x80</td>
+	</tr>
+	<tr>
+		<td>14</td> <td>18</td> <td>18x75</td> <td>17x75</td> <td>17x80</td> <td>18x80</td>
+	</tr>
+	<tr>
+		<td>15</td> <td>20</td> <td>20x77</td> <td>18x77</td> <td>18x90</td> <td>20x90</td>
+	</tr>
+	<tr>
+		<td>16</td> <td>21</td> <td>21x85</td> <td>20x85</td> <td>20x100</td> <td>21x100</td>
+	</tr>
+	<tr>
+		<td>17</td> <td>22</td> <td>22x88</td> <td>21x88</td> <td>21x100</td> <td>22x100</td>
+	</tr>
+	<tr>
+		<td>18</td> <td>24</td> <td>24x95</td> <td>22x95</td> <td>22x110</td> <td>24x110</td>
+	</tr>
+	<tr>
+		<td>19</td> <td>25</td> <td>25x103</td> <td>24x103</td> <td>24x110</td> <td>25x110</td>
+	</tr>
+	<tr>
+		<td>20</td> <td>26</td> <td>26x105</td> <td>25x105</td> <td>25x120</td> <td>26x120</td>
+	</tr>
+</tbody></table>
+
+<p></p>
+<center>
+<h4>Windows XP</h4>
+</center>
+<p></p>
+<table align="center" border="1" cellpadding="5" cellspacing="0" width="100%">
+	<tbody><tr bgcolor="#ccccff">
+		<th>textSize</th> <th>textHeight</th> <th>Arial</th> <th>Helvetica</th> <th>Courier</th> <th>Courier New</th>
+	</tr>
+	<tr>
+		<td>   8</td> <td>10</td> <td>9x39</td> <td>----</td> <td>13x80</td> <td>8x50</td>
+	</tr>
+	<tr>
+		<td>   9</td> <td>12</td> <td>10x40</td> <td>-----</td> <td>13x80</td> <td>8x50</td>
+	</tr>
+	<tr>
+		<td>  10</td> <td>13</td> <td>10x49</td> <td>-----</td> <td>13x80</td> <td>10x50</td>
+	</tr>
+	<tr>
+		<td>  11</td> <td>14</td> <td>12x55</td> <td>-----</td> <td>13x80</td> <td>10x60</td>
+	</tr>
+	<tr>
+		<td>  12</td> <td>16</td> <td>14x66</td> <td>-----</td> <td>13x80</td> <td>14x70</td>
+	</tr>
+	<tr>
+		<td>  13</td> <td>17</td> <td>14x66</td> <td>-----</td> <td>13x80</td> <td>14x70</td>
+	</tr>
+	<tr>
+		<td>  14</td> <td>18</td> <td>16x69</td> <td>-----</td> <td>16x90</td> <td>14x80</td>
+	</tr>
+	<tr>
+		<td>  15</td> <td>20</td> <td>17x78</td> <td>-----</td> <td>16x90</td> <td>16x80</td>
+	</tr>
+	<tr>
+		<td>  16</td> <td>21</td> <td>18x87</td> <td>-----</td> <td>16x90</td> <td>17x100</td>
+	</tr>
+	<tr>
+		<td>  17</td> <td>22</td> <td>18x87</td> <td>-----</td> <td>20x120</td> <td>18x100</td>
+	</tr>
+	<tr>
+		<td>  18</td> <td>24</td> <td>21x95</td> <td>-----</td> <td>20x120</td> <td>20x110</td>
+	</tr>
+	<tr>
+		<td>  19</td> <td>25</td> <td>24x102</td> <td>------</td> <td>20x120</td> <td>21x130</td>
+	</tr>
+	<tr>
+		<td>  20</td> <td>26</td> <td>24x111</td> <td>------</td> <td>20x120</td> <td>22x130</td>
+	</tr>
+</tbody></table>
+
+<p></p>
+
+So for Arial:
+
+<table cellspacing="10">
+	<tbody><tr>
+		<td><u>OSX</u></td> <td><u>Windows XP</u></td>
+	</tr>
+	<tr>
+		<td>8</td> <td>9</td>
+	</tr>
+	<tr>
+		<td>10</td> <td>11   (except for height)</td>
+	</tr>
+	<tr>
+		<td>12</td> <td>14   (except for width)</td>
+	</tr>
+</tbody></table>
+As you can see, even the fonts sizes that match superficially may not
+match exactly in all respects. You can come close, but it will not be
+identical.
+<p><b><i>Shipping fonts with your standalones</i></b></p>
+<p>Some companies ship fonts with their applications so that they will
+more closely match across platforms. Bitstream makes a font called
+“Vera” that is specifically designed to display the same font metrics
+on both Windows and Macintosh. However, installing fonts into a user’s
+system is not always practical, and some users may not like it. </p>
+<p><b><i>A last resort — images</i></b></p>
+<p>An image of a block of text is always an option for static text such
+as labels. However, some people have resorted to using images of text
+characters, which are assigned to fields dynamically by script using
+the imagesource property. This requires careful preparation and
+meticulous scripting and unless an absolute match is strictly required,
+probably isn’t worth the trouble. Text editing such fields becomes
+almost impossible and scripts will no longer be able to use most of
+Revolution’s built-in text chunking.</p>
+<p><b><i>In conclusion</i></b></p>
+<p>Our recommendation is: in most cases, pretty close is good enough.</p>
+<p>&nbsp;
+</p>
+</div>
+<br clear="all">
+</div>
+<div class="footer">
+	<p>
+		<a href="http://www.hyperactivesw.com/index.html">Home</a> <a href="http://www.hyperactivesw.com/whats_new.html">What's New</a> <a href="http://www.hyperactivesw.com/who_we_are.html">Who We Are</a> <a href="http://www.hyperactivesw.com/what_we_do.html">What We Do</a> <a href="http://www.hyperactivesw.com/solutions.html">Solutions</a> <a href="http://www.hyperactivesw.com/Resources.html">Resources</a> <a href="http://www.hyperactivesw.com/site_map.html">Site Map</a> <a href="mailto:info@hyperactivesw.com">Contact Us</a>
+	</p>
+	<p>
+		© 1996-2009 HyperActive Software. All Rights Reserved.
+	</p>
+<!-- end #footer -->
+</div>
+<!-- end #container -->
+</div>
+</body></html>

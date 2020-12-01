@@ -1,0 +1,330 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+
+<title>Hooray For Functions -- The Value of Returning a Value</title>
+<meta name="GENERATOR" content="Freeway Pro 3.5.12">
+</head><body topmargin="8" leftmargin="8" bgcolor="#ffffff">
+
+<table border="0" cellpadding="0" cellspacing="0" width="99%">
+	<tbody><tr valign="top">
+		<td bgcolor="#990000">
+		<p><font color="#ffffff" face="Arial,Helvetica,sans-serif" size="-2"><br></font><font color="#ffffff" face="Arial,Helvetica,sans-serif" size="+2">&nbsp;Hooray For Functions -- The Value of Returning a Value</font></p></td>
+		<td height="51"></td>
+	</tr>
+	<tr valign="top">
+		<td bgcolor="#000000">
+		<p><b><font color="#cccccc" face="Arial,Helvetica,sans-serif" size="-2"><br></font></b><b><font color="#cccccc" face="Arial,Helvetica,sans-serif" size="-1">&nbsp;&nbsp;Version 1.0     February 12, 2005</font></b></p></td>
+		<td height="30"></td>
+	</tr>
+	<tr valign="top">
+		<td>
+		<p><font color="#990000" size="+2"><br>Introduction</font>
+		</p><p><b><font color="#990000">Note</font></b>: this article was written based on Transcript, the language used in <a href="http://www.runrev.com/">Revolution</a>,
+but is equally applicable in other languages. Users of other xTalk
+environments should feel right at home with the examples. For an
+introduction to functions in Transcript, there is an <a href="http://www.hyperactivesw.com/functions.html">introductory article</a> by Jacqueline Landman Gay. 
+		</p><p>There
+are two ways to segment code in Revolution, or (generally) in any
+programming language: handlers (subroutines) and functions. The
+practical difference between them is small: functions return a value,
+handlers don't. Even that distinction isn't firm -- a handler can use
+the <b><font color="#990000">return</font></b> command, and the calling routine can then use <b><font color="#990000">the result</font></b> to retrieve the value. The philosophical differences between handlers and functions, however, are much greater.
+		</p><hr width="692">
+		<p><font color="#990000" size="+2">Side Effects</font>
+		</p><p>In general, <b><font color="#990000">a handler does something</font></b>, while <b><font color="#990000">a function evaluates something and returns a result.</font></b> In functional parlance, <b><font color="#990000">a handler has side effects</font></b>
+-- it does something outside of itself. If it didn't, there would be no
+purpose in calling it. In contrast, a function's purpose is to perform
+a calculation and return the result. The result of a function is its
+purpose. </p><p>A function can do something outside itself -- have side
+effects -- just as easily as a handler can. This is generally a bad
+idea. A function written to have side effects loses many of its
+advantages over handlers, and in fact might as well be a handler. </p><hr width="692">
+		<p><font color="#990000" size="+2">Advantages</font>
+		</p><p>Because of these differences between functions and handlers, functions offer several dramatic advantages over handlers:
+		</p><p></p><ul><li>greater abstraction </li><li>greater stability </li><li>greater reusability </li><li>greater extensibility </li><li>greater testability </li><li>greater flexibility </li><li>greater clarity </li><li>greater documentability </li></ul>
+		<hr width="692">
+		<p><font color="#990000" size="+2">Example</font>
+		</p><p>As
+an example, let's consider the case where you need to set the location
+of an object relative to another object. We'll first look at how to
+perform the task with a handler, and then with a function. </p><hr width="692">
+		<p><font color="#990000" size="+2">Handler</font><font color="#990000" face="Courier New,Courier" size="+2"></font>
+		</p><p>A
+typical handler designed to perform this task might take references to
+the two objects and the offsets, and then perform the necessary
+calculations and set the location of the target object: </p><blockquote><p><font face="Courier New,Courier" size="-1">on setRelativeLoc pObjSource,pObjTarget,xOffset,yOffset<br>&nbsp;&nbsp;put the location of pObjSource into tLoc<br>&nbsp;&nbsp;add xOffset to item 1 of tLoc<br>&nbsp;&nbsp;add yOffset to item 2 of tLoc<br>&nbsp;&nbsp;set the location of pObjTarget to tLoc<br>end setRelativeLoc</font></p></blockquote>
+		<p>Or, more succinctly:<font face="Courier New,Courier"></font>
+		</p><blockquote><p><font face="Courier New,Courier" size="-1">on setRelativeLoc pObjSource,pObjTarget,xOffset,yOffset<br>&nbsp;&nbsp;get the location of pObjSource<br>&nbsp;&nbsp;set the location of pObjTarget to (xOffset + item 1 of it),(yOffset + item 2 of it)<br>end setRelativeLoc</font></p></blockquote>
+		<p>A handler like this can be called in a single line, like so:<font face="Courier New,Courier"></font>
+		</p><blockquote><p><font face="Courier New,Courier" size="-1">setRelativeLoc (the long id of button "source"),(the long id of button "target"),20,30</font></p></blockquote>
+		<p>This will set the location of button "target" to be 20 pixels to the right and 30 pixels below button "source."
+		</p><hr width="692">
+		<p><font color="#990000" size="+2">Bad Function</font>
+		</p><p>Now
+consider how to perform this same task using a function. First,
+determine what is to be done. The handler is performing two actions:
+first, it is adding the offsets to the location of the first object;
+second, it is setting the location of the target object. Setting the
+location of the target object isn't suitable to a function -- it's an
+action, not an evaluation. So the task that can be converted to a
+function is the offset addition. The function might look like this: </p><blockquote><p><font face="Courier New,Courier" size="-1">function addOffsets pLoc,x,y<br>&nbsp;&nbsp;add x to item 1 of pLoc<br>&nbsp;&nbsp;add y to item 2 of pLoc<br>&nbsp;&nbsp;return pLoc<br>end addOffsets</font></p></blockquote>
+		<p><b><font color="#990000">This function is completely specific to the task at hand, which is bad. </font></b>This function has few, if any, advantages over the handler version above. 
+		</p><hr width="692">
+		<p><font color="#990000" size="+2">Good Function</font>
+		</p><p>We
+want a more general function: code that can do the same job, but which
+can also do any job like it. So instead, we'll write the function like
+this:<font face="Courier New,Courier"></font>
+		</p><blockquote><p><font face="Courier New,Courier" size="-1">function addLists p1,p2<br>&nbsp;&nbsp;repeat with i = 1 to the number of items in p1<br>&nbsp;&nbsp;&nbsp;&nbsp;add item i of p2 to item i of p1<br>&nbsp;&nbsp;end repeat<br>&nbsp;&nbsp;return p1<br>end addLists</font></p></blockquote>
+		<p><b><font color="#990000">This function is better than the bad function because it doesn't just solve the problem at hand, but any problem like it.</font></b>
+It can take two lists as arguments, and no matter how many items are in
+the lists it will return the correct value. Revolution has a faster way
+to get the same task done:<font face="Courier New,Courier"></font>
+		</p><blockquote><p><font face="Courier New,Courier" size="-1">function addLists p1,p2<br>&nbsp;&nbsp;put item 1 to (the number of items of p1) of p2 into p2<br>&nbsp;&nbsp;split p1 using comma<br>&nbsp;&nbsp;split p2 using comma<br>&nbsp;&nbsp;add p2 to p1<br>&nbsp;&nbsp;combine p1 using comma<br>&nbsp;&nbsp;return p1<br>end addLists</font></p></blockquote>
+		<p>It's a few more lines of code, but its performance should scale better than the first solution.
+		</p><p>The call to the function is a little different than the call to the handler. It's still one line:<font face="Courier New,Courier"></font>
+		</p><blockquote><p><font face="Courier New,Courier" size="-1">set the location of button "target" to addLists(the location of button "source",(20,30))</font></p></blockquote>
+		<p>Because
+the function simply performs a calculation and returns a result, the
+line calling the function actually does the work of setting the
+button's location. The line calling the handler, on the other hand,
+does nothing but call the handler, since the handler does the work. </p><hr width="692">
+		<p><font color="#990000" size="+2">Relative Merits</font>
+		</p><p>Now consider the merits of the handler vs. the function. We'll take each point in turn.
+		</p><hr width="692">
+		<p><font color="#990000" size="+2">Abstraction</font><br>Which routine hides more complexity and is less specific?
+		</p><p>Loosely, abstraction means two things: 
+		</p><p></p><ul><li>hiding complexity</li><li>lack of specificity. </li></ul>
+		<p>For
+simple tasks such as we are discussing, there is very little complexity
+to hide. However, it's important to note that the handler includes both
+what is being done and how it is done. The function does not include
+what is being done, only how. That means that what you need to know is
+maintained in the calling procedure, an important distinction. For
+small tasks, the advantage lies in keeping the logic grouped in the
+calling procedure. <b><font color="#990000">For large tasks with many
+steps, grouping functionality in the called procedure can hide
+complexity, suggesting the use of a handler.</font></b>
+		</p><p><b><font color="#990000">On the basis of lack of specificity, the function clearly offers more abstraction than the handler.</font></b>
+The handler is designed for the exact task being performed. The
+function simply takes two lists, performs math on them, and returns the
+resulting list. </p><hr width="692">
+		<p><font color="#990000" size="+2">Stability</font><br>Which routine is less likely to need modification in the future?
+		</p><p>A
+well-defined function is like a screwdriver: it will likely never need
+to be changed, because its purpose never changes. Of course if the
+screwdriver is a flathead and you need a Phillips head you'll need
+another screwdriver. But both tools will be well-defined and
+unchanging. </p><p>In the example given, <b><font color="#990000">the addLists function will only change if a bug is found in it, or if a more efficient way to perform the task is found</font></b>. A handler, by comparison, might change whenever what it is supposed to do changes.
+		</p><hr width="692">
+		<p><font color="#990000" size="+2">Reusability</font><br>Which routine will come in handy in the future?
+		</p><p>Reusability, stability, and abstraction (in the "lack of specificity" sense) go hand in hand; the function wins big here. <b><font color="#990000">Unless
+there is another object that needs its location set, the handler is
+useless. The function can be reused any time you need to perform the
+same list operation.</font></b> 
+		</p><p>For example, consider the
+case where, rather than the location, the rectangle of an object needs
+to be set relative to another object's rectangle. The existing handler
+would need to be completely rewritten (adding significant complexity)
+to accomplish this. The alternative is to write a new handler
+specifically for this task -- a handler that is again suited only to
+the exact task at hand. By comparison, the function doesn't need to be
+modified at all. This call will do the trick: </p><blockquote><p><font face="Courier New,Courier" size="-1">set the rect of button "target" to addLists((the rect of button "source"),(30,30,60,40))</font></p></blockquote>
+		<p>The
+task doesn't need to involve resizing objects at all. It might be any
+task that requires adding one list of values to another. <b><font color="#990000">Because the function has no side effects (setting the location of an object), it can be used anywhere.</font></b>
+		</p><hr width="692">
+		<p><font color="#990000" size="+2">Extensibility</font><br>Which routine will serve as a useful building block?
+		</p><p>Consider
+how to handle the similar task of setting the location of an object
+relative to another, but limiting the location of the target object to
+multiples of 10. With the handler, one way to handle that would be to
+pass in another argument like this:<font face="Courier New,Courier"></font>
+		</p><blockquote><p><font face="Courier New,Courier" size="-1">on setRelativeLoc pObjSource,pObjTarget,xOffset,yOffset,pRoundValue<br>&nbsp;&nbsp;put the location of pObjSource into tLoc<br>&nbsp;&nbsp;add xOffset to item 1 of tLoc<br>&nbsp;&nbsp;add yOffset to item 2 of tLoc<br>&nbsp;&nbsp;if pRoundValue is not empty then<br>&nbsp;&nbsp;&nbsp;&nbsp;put pRoundValue * (item 1 of tLoc div pRoundValue) into item 1 of tLoc<br>&nbsp;&nbsp;&nbsp;&nbsp;put pRoundValue * (item 2 of tLoc div pRoundValue) into item 2 of tLoc<br>&nbsp;&nbsp;end if<br>&nbsp;&nbsp;set the location of pObjTarget to tLoc<br>end setRelativeLoc</font></p></blockquote>
+		<p>Note
+how the handler has gotten significantly more complex because of one
+simple change. This is a situation that will only get worse. What if
+the rounding values are different for x and y? What if there are limits
+on the appropriate values for the location? <b><font color="#990000">With a handler, the complexity of the code grows out of proportion with the complexity of the problem to be solved.</font></b>
+		</p><p>Previous
+calls to the modified handler will still work since pRoundValue will be
+empty, but this requires planning on the part of the developer to
+ensure that previous calls to the handler continue to work. Setting the
+location of an object to multiples of 10 would look like this: </p><blockquote><p><font face="Courier New,Courier" size="-1">setRelativeLoc (the long id of button "source"),(the long id of button "target"),20,30,10</font></p></blockquote>
+		<p>Note
+how calling the handler has grown more complex. Without additional
+documentation, who knows what the "10" means, or for that matter the 20
+or the 30. </p><p>By contrast, implementing this change in the function is straightforward. In fact, the addLists function doesn't change at all. <b><font color="#990000">Because
+the function simply takes a set of values and returns a result,
+behavior can be modified either before or after the call to the
+function without modifying the function in any way.</font></b> Rounding the result is a different task, so an additional function meets the need:<font face="Courier New,Courier"></font>
+		</p><blockquote><p><font face="Courier New,Courier" size="-1">function roundList pList,pRoundValue<br>&nbsp;&nbsp;put empty into tReturn<br>&nbsp;&nbsp;repeat for each item i in pList<br>&nbsp;&nbsp;&nbsp;&nbsp;put pRoundValue * (i div pRoundValue) &amp; comma after tReturn<br>&nbsp;&nbsp;end repeat<br>&nbsp;&nbsp;return char 1 to -2 of tReturn<br>end roundList</font></p></blockquote>
+		<p>Note
+how this function, like the original addLists function, is simple,
+stable, testable, reusable, etc. Using the new function to perform the
+task would look like this:<font face="Courier New,Courier"></font>
+		</p><blockquote><p><font face="Courier New,Courier" size="-1">set the location of button "target" to roundList(addLists(the location of button "source",(20,30)),10)</font></p></blockquote>
+		<p>The
+most complex thing about the function calls is that the second argument
+to the roundList function is hidden at the end, after the bulky call to
+addLists. </p><hr width="692">
+		<p><font color="#990000" size="+2">Testability</font><br>Which routine can more easily support automated testing? 
+		</p><p><b><font color="#990000">Automated testing for the handler is hard.</font></b>
+The only way to test the handler is to call it and observe the results
+in the environment. This can be done in Revolution, but not without the
+necessary objects to support the command's requirements. Practically,
+this means that a test routine would have to create the objects to
+support the test, and then remove them. This is risky in an automated
+setup. </p><p><b><font color="#990000">Automated testing for the function is easy.</font></b>
+Simply write a routine to supply it with a range of values and check
+the results. There is no need to actually work with objects -- the
+function is more generic than that, and yet it does the same core task
+as the handler. This test can easily be incorporated into a set of unit
+tests to validate significant portions of a project's code. </p><p>The stability of a function plays a role here as well. A
+stable routine can have an automated test. A changing routine does not
+support automated testing as easily because the automated test has to
+be updated each time the requirements change for the handler it tests. </p><hr width="692">
+		<p><font color="#990000" size="+2">Flexibility</font><br>Which routine can be used in more circumstances? 
+		</p><p>This is an area where the handler comes up dramatically short. <b><font color="#990000">The handler actually does the work</font></b> of setting the object's location. <b><font color="#990000">Therefore, it is difficult to use the handler in any other situation, or modify what it does</font></b>. 
+		</p><p>The function simply takes two lists and works on them. Therefore, <b><font color="#990000">the function can be used any time the list-processing task it performs is needed</font></b>. 
+		</p><p><b><font color="#990000">Part of designing good functions is looking for the underlying problem.</font></b>
+To do this, you subdivide the result you want as much as possible. In
+this case you start with the question, "I have two objects and I want
+to set the location of one of them to a position relative to the
+other." After consideration you subdivide that problem into two parts: </p><p></p><ul><li>Given the location of an object, find a position that is offset a certain amount from it. </li><li>Set the location of another object to that position.</li></ul>
+		<p>If
+you find the underlying problem, you've probably found a task that
+you'll be performing again and again. As you gain experience in
+creating functions it will become easier to find the underlying
+problems. Of course, sometimes there is no underlying structure to the
+task at hand. In that case you'll end up creating functions you're
+never likely to need again. This happens less often than you might
+think. </p><hr width="692">
+		<p><font color="#990000" size="+2">A Brief Intermission: A Handler in Function's Clothing</font>
+		</p><p>In
+several of these sections, the superiority of functions results from
+the fact that they simply return a value, as opposed to actually doing
+the work of setting the object's location. This begs the question, why
+not do the same with the handler? In Transcript a handler can return a
+value, and the code that called the handler can use "the result" to
+access the returned value. But this is unnecessary, as functions
+already behave this way. There is (usually) no reason to make a handler
+pretend to be a function. </p><hr width="692">
+		<p><font color="#990000" size="+2">Clarity</font><br>How easy is the code to understand? 
+		</p><p>There are two aspects of clarity to consider:
+		</p><p></p><ul><li>How clear is the code itself?</li><li>How clear is a call to the code?</li></ul>
+		<p><b><font color="#990000">Code Clarity<br></font></b>Looking at the code in the examples above, it appears to be a tie. The functions are crystal clear in their purpose. <b><font color="#990000">Well-named functions are virtually self-documenting.</font></b>
+A well-named handler will also be clear, and because of its specificity
+to the task can take a very specific and descriptive name. </p><p>The situation changes as more functionality is added beyond the simple examples given above. <b><font color="#990000">Well-designed functions tend to retain their one task/one function simplicity</font></b>.
+A rule of thumb I use is that if I can't document the purpose of a
+function in a one-line comment, I look for further sub-tasks to break
+it down into. <b><font color="#990000">New functionality generally means additional functions, not modifications to existing functions.</font></b>
+		</p><p>But as was seen in the section above on reusability, <b><font color="#990000">a handler tends to grow as its purpose expands.</font></b>
+Note how easy it is for the purpose of the handler to become obscured
+by complexity. In the example above, when the rounding functionality is
+added, suddenly the handler is no longer the simple creature it once
+was. <b><font color="#990000">As a handler grows, code clarity suffers.</font></b>
+		</p><p>It should be noted that function names and organization of functions into related groups are especially important. <b><font color="#990000">Functions require more careful naming and organization because they tend to result in more separate code chunks.</font></b>
+		</p><p><b><font color="#990000">Calling Clarity<br></font></b>Because of the inherent simplicity of a function's purpose, calling them is not often complex. But most importantly, <b><font color="#990000">functions encourage the maintenance of the actual task to be performed in the calling code</font></b>. In the example given, calling the handler looks like this:<font face="Courier New,Courier"></font>
+		</p><blockquote><p><font face="Courier New,Courier" size="-1">setRelativeLoc (the long id of button "source"),(the long id of button "target"),20,30</font></p></blockquote>
+		<p>while using the function looks like this:<font face="Courier New,Courier"></font>
+		</p><blockquote><p><font face="Courier New,Courier" size="-1">set the location of button "target" to addLists(the location of button "source",(20,30))</font></p></blockquote>
+		<p>This is especially helpful because of object references. Note that the handler requires the use of the long id. <b><font color="#990000">With the function, the object reference is in the calling code, avoiding the issue of incorrect object references.</font></b>
+		</p><p>The
+clarity of the call to the handler depends on the clarity of the name
+given to the handler. Of course, this is true for both handlers and
+functions. But because the handler actually does the work, this issue
+is more severe. If the setRelativeLoc handler were called "x34kjsw" the
+above call would mean nothing to the reader. If the function were named
+"y09234" it would still be clear that the location of button "target"
+was being set, it just wouldn't be clear to what. In short, as has been
+demonstrated repeatedly, the handler comes up short because the it
+actually does the work, obscuring what will be done. The function
+simply takes values and returns a result, leaving the actual work to
+the calling code. </p><hr width="692">
+		<p><font color="#990000" size="+2">Documentability<br></font>How easy is the code to document?
+		</p><p>The
+function is more likely to perform a single task that is easily
+documented. The handler is more likely to perform many variations on a
+task, or even many tasks, making the work of documenting it that much
+harder. Obviously it's possible to write large complex functions with
+multiple purposes, just as it's possible to write small,
+easily-documented handlers. The natural tendency, however, is the
+opposite. You should take it as a warning sign if you find that your
+function has side effects, or needs to return more than a single
+value/list. </p><p>The counter-argument is that there are likely to be more
+functions, complicating the task of documenting the relationships
+between them. Clear function names limit this issue. Organizing
+functions into libraries of related code can help as well. </p><hr width="692">
+		<p><font color="#990000" size="+2">So When is a Handler Appropriate?</font>
+		</p><p>Based
+on the above arguments, you might think that all handlers should be
+replaced by functions. There are languages where this is the case;
+Transcript, by definition, isn't one of them. For starters, the engine
+delivers messages, so you must write handlers to receive those
+messages. </p><p>on mouseUp isn't going away! 
+		</p><p>There are other cases as well where a handler is appropriate:
+		</p><p><b><font color="#990000">When the same action needs to be performed many times</font></b>,
+a handler may be appropriate. For example, if the text attributes of a
+number of fields all need to be changed, it would clearly be beneficial
+to have a handler that took a list of objects and a list of text
+settings (textFont, textSize, etc.) and set those properties for each
+of the objects. In cases such as this, it's good to follow the same
+principles as when creating a function: strive for as generic a routine
+as possible, as simple a routine as possible. In this particular
+example, consider whether grouping the objects and setting the
+attributes of the group is an appropriate solution. </p><p><b><font color="#990000">When there are large blocks of related functionality that can be logically segmented</font></b>
+(and are obviously not functions!), a handler is suitable. For example,
+if you are creating a spy-tracking application for James Bond, there
+might be a handler called updateEnemyAgentLocations. But consider: if
+you find yourself creating a handler called
+checkForEnemyAgentsInEngland handler, you should consider creating a
+function called enemyAgentsInCountryList instead. </p><p><b><font color="#990000">Any time a built-in handler might need to be called from somewhere else. </font></b>For
+example, suppose you have a button that resets several interface
+elements to their original values. You could simply put the code into
+the mouseUp handler, but you're likely to need to reset the interface
+from numerous locations. You'll have a corresponding menu item at
+least. So create a handler called resetInterface in the card or stack
+script, and call that from the button. </p><p><b><font color="#990000">Any time you have a switch statement. </font></b>Switch
+statements have a tendency to grow out of control, until they are
+hundreds of lines long, with each case being a handler of its own. From
+the very beginning it's better to break out each case as its own
+handler, unless it's clear that the case will never grown to more than
+a line or two. </p><p><b><font color="#990000">Other times. </font></b>Handlers have their place, and coding in Transcript without them would be a pain. Don't shun them entirely.
+		</p><hr width="692">
+		<p><font color="#990000" size="+2">Summary</font>
+		</p><p>The
+case is clear. Functions offer greater abstraction and stability, which
+leads to greater reusability. Because functions simply take values and
+return results, they offer greater extensibility, testability, and
+flexibility. Finally, functions provide greater clarity and greater
+documentability. </p><p>In the words of your mother, "Use functions, they're good for you!"
+		</p><hr width="692">
+		<p><font color="#990000" size="+2">Postscript -- Examples</font>
+		</p><p><b><font color="#990000">Retrieving Data<br></font></b>When
+you are retrieving data to display -- querying a database for a user's
+search results, searching a text file for the appropriate passage from
+a book, or retrieving a web page -- write a function that takes the
+query as an argument and returns the data it gathers . Then write code
+that uses the function to get the data to display. </p><p><b><font color="#990000">Formatting Data<br></font></b>When
+you need to format data a certain way -- bold the first words, change
+the case, or correct misspellings -- write a function that takes the
+source data and returns the formatted result. Then write code that uses
+the function to format the data. </p><p><b><font color="#990000">Quoting Text<br></font></b>This
+classic example is used by many Transcript coders. I think I picked it
+up from Ken Ray. Instead of writing quote &amp; "text" &amp; quote,
+write a function "q" that takes a string as its argument and returns
+the string with quotes around it. </p><p><b><font color="#990000">List Processing<br></font></b>Many
+functional languages have strong list-processing commands built-in.
+Adding similar functions to Transcript is a fairly easy way to add
+significant functional capabilities.</p></td>
+		<td height="5087"></td>
+	</tr>
+	<tr>
+		<td width="1534"><img src="functions_files/_clear.gif" alt="" border="0" height="1" width="692"></td>
+		<td height="1" width="2"><img src="functions_files/_clear.gif" alt="" border="0" height="1" width="2"></td>
+	</tr>
+</tbody></table>
+</body></html>

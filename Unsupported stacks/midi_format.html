@@ -1,0 +1,616 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<!--last modified on Sun, Jun 9, 2002 12:13 AM-->
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta name=Title content=untitled>
+<meta name=Keywords content="">
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 10">
+<meta name=Originator content="Microsoft Word 10">
+<link rel=File-List href="midi_format_files/filelist.xml">
+<title>untitled</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Kevin Miller</o:Author>
+  <o:Template>Normal</o:Template>
+  <o:LastAuthor>Kevin Miller</o:LastAuthor>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>0</o:TotalTime>
+  <o:Created>2003-05-12T15:56:00Z</o:Created>
+  <o:LastSaved>2003-05-12T15:56:00Z</o:LastSaved>
+  <o:Pages>2</o:Pages>
+  <o:Words>212</o:Words>
+  <o:Characters>1213</o:Characters>
+  <o:Company>Runtime Revolution Ltd</o:Company>
+  <o:Lines>10</o:Lines>
+  <o:Paragraphs>2</o:Paragraphs>
+  <o:CharactersWithSpaces>1489</o:CharactersWithSpaces>
+  <o:Version>10.2418</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin-right:0cm;
+	mso-margin-top-alt:auto;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:Times;}
+p
+	{margin-right:0cm;
+	mso-margin-top-alt:auto;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:Times;}
+@page Section1
+	{size:612.0pt 792.0pt;
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;
+	mso-header-margin:36.0pt;
+	mso-footer-margin:36.0pt;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="1027"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body bgcolor=white lang=EN-US style='tab-interval:36.0pt'>
+
+<div class=Section1>
+
+<p>This table shows the structure of a MIDI file of the type constructed by the
+&quot;MIDI Builder&quot; stack for Runtime Revolution. The first track contains
+information about the file as a whole, as well as meter, key sig., tempo, etc.
+Subsequent tracks contain the GM voice (instrument) and the MIDI event data
+(note on/off).</p>
+
+<p>-Kurt Kaufman</p>
+
+<table border=1 cellpadding=0 width="101%" style='width:101.86%;mso-cellspacing:
+ 1.5pt;mso-padding-alt:0cm 0cm 0cm 0cm'>
+ <tr style='height:15.15pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:15.15pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'><span
+  style='font-size:13.5pt'><b>HEX BYTES</b></span></p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:15.15pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'><span
+  style='font-size:13.5pt'><b>NAME/PURPOSE</b></span></p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:15.15pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'><span
+  style='font-size:13.5pt'><b>Constant or Variable</b></span></p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>&nbsp;</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>&nbsp;</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>&nbsp;</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>4d 54 68 64</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>MThd ID</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>00 00 00 06</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>len of MThd chunk</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>00 01</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>format 1</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>00 0x</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>number of tracks</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>v (tracks 2 or
+  greater must contain note data, i.e. cannot be empty)</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>04 00</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>1024 PPQN</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>4d 54 72 6b</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>MTrk ID-track 1</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>00 00 00 1a</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>track 1 length
+  (26 decimal)</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>00</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>empty</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>ff 58 04 xx xx xx
+  xx</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>meter</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>v</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>00</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>empty</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>ff 59 02 00 00</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>key sig.</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>00</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>empty</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>ff 51 03 xx xx xx</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>tempo</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>v</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>a0</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>polyphonic status</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>00</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>empty</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>ff 2f 00</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>eof-track 1</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>&nbsp;</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>&nbsp;</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>&nbsp;</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>4d 54 72 6b</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>MTrk ID-track 2</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>00 00 xx xx</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>track 2 length</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>v</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>00</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>empty</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+ <tr style='height:25.65pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:25.65pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c0 xx</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:25.65pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>program selection
+  GM voice range 0-127</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:25.65pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>v<span
+  style="mso-spacerun: yes">&nbsp; </span>(note use of c0 for track 2)</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>00</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>empty</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>( )</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>note data</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>v</p>
+  </td>
+ </tr>
+ <tr style='height:25.65pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:25.65pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>90 45 00 88 00 80
+  45 00 00</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:25.65pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>9 bytes silent
+  note on/off to avoid end cutoff</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:25.65pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c<span
+  style="mso-spacerun: yes">&nbsp; </span>(note use of 90 and 80 for track 2)</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>ff 2f 00</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>eof track 2</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>4d 54 72 6b</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>MTrk ID-track 3</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>00 00 xx xx</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>track 3 length</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>v</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>00</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>empty</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c1 xx</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>program selection
+  GM voice range 0-127</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>v<span
+  style="mso-spacerun: yes">&nbsp; </span>(note use of c1 for track 3)</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>00</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>empty</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>( )</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>note data</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>v</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>91 45 00 88 00 81
+  45 00 00</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>9 bytes silent
+  note on/off to avoid end cutoff</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c<span
+  style="mso-spacerun: yes">&nbsp; </span>(note use of 91 and 81 for track 3)</p>
+  </td>
+ </tr>
+ <tr style='height:12.8pt'>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>ff 2f 00</p>
+  </td>
+  <td width="32%" style='width:32.56%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>eof track 3</p>
+  </td>
+  <td width="33%" style='width:33.54%;padding:.75pt .75pt .75pt .75pt;
+  height:12.8pt'>
+  <p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'>c</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal style='margin:0cm;margin-bottom:.0001pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+</div>
+
+</body>
+
+</html>

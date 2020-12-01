@@ -1,0 +1,1 @@
+local tConfirmif tConfirm is empty thenanswer warning "Are you sure you want to delete the selected controls, including any cards/groups?" with "Cancel" or "Delete"if it is cancel then exit to topput "GoAhead" into tConfirmend ifif word 1 of tID is not "stack" then delete tID

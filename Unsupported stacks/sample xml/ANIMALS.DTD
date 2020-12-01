@@ -1,0 +1,12 @@
+<!ELEMENT endangered_species (animal*)>
+
+<!ELEMENT animal (name+, threat, weight?)>
+
+<!ELEMENT name (#PCDATA)>
+
+<!ELEMENT threat (#PCDATA)>
+
+<!ELEMENT weight (#PCDATA)>
+
+<!ATTLIST name language (english|latin) #REQUIRED>
+

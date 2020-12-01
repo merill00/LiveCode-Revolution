@@ -1,0 +1,378 @@
+
+    The Clock Face
+
+------------------------------------------------------------------------
+Recently on the Revolution mailing list, there was a discussion on
+coding Transcript. Someone complained that, "a simple CLOCK FACE with a
+SECOND HAND ticking by....takes 100  lines of CODE to ACHIEVE....and
+DAYS of work...." Several people took up the challenge, and the result
+was some beautiful Transcript.
+
+------------------------------------------------------------------------
+
+
+      1. Geoff Canyon -- 22 lines of code in 20 minutes
+
+I spent about twenty minutes to create an example. It used polygon
+graphics to draw the hands, and set the points of them to change the
+time. Here is the code. Including everything but white lines, it's 22
+lines of code. It took about twenty minutes to code.
+
+|on openCard
+ setTime
+end openCard
+
+on setTime
+ put the loc of group "clock" into tOrig
+ put min(the width of group "clock",the height of group "clock") div 2 into tLength
+ put word 1 of the long time into tTime
+ set the itemDelimiter to ":"
+ set the points of grc "hour" to getRect(tOrig,(tLength div 2),hoursToRadians(item 1 of tTime))
+ set the points of grc "minute" to getRect(tOrig,(tLength * .7),minutesToRadians(item 2 of tTime))
+ set the points of grc "second" to getRect(tOrig,(tLength * .8),minutesToRadians(item 3 of tTime))
+ send "setTime" to me in 55 ticks
+end setTime
+
+function minutesToRadians pTime
+ return (12 * ((pTime + 45) mod 60) * pi / 360)
+end minutesToRadians
+
+function hoursToRadians pTime
+ return minutesToRadians(5*pTime)
+end hoursToRadians
+
+function getRect pOrigin,pLength,pAngle
+ return pOrigin,round((item 1 of pOrigin) + cos(pAngle) * pLength),round((item 2 of pOrigin) + sin(pAngle) * pLength)
+end getRect|
+
+
+------------------------------------------------------------------------
+
+
+      2. Malte Brill -- 17 lines of code in 3 minutes
+
+Malte Brill, meanwhile, had also posted an example to the Use Revolution
+list. I missed his example before posting my own. Malte's example
+features a very clever use of oval graphics for the clock hands. He sets
+their arcAngle to 0, which turns an oval into a single line from the
+center of the graphic to the edge. He then sets their startAngle to the
+angle he needs for the time.
+
+Using oval graphics this way has two advantages. First, the startAngle
+is specified in degrees, making the math simpler when converting from
+hours, minutes, and seconds. My example, using polygon graphics, relied
+on the trigonometric functions sin and cos, which take radians in their
+arguments. It's a small thing, but it complicates the solution. Second,
+again because I used polygon graphics, I had to be concerned with the
+length of the graphics each time I set them. Malte's oval graphics
+(circles, actually) have the length (radius) set in the design process.
+All he has to do is set the angle, and the length is automatic.
+
+Here is Malte's orginal code. It's 17 lines, and he says it took all of
+three minutes. That sounds reasonable, as most of the time I spent
+coding my example was spent trying to remember (and get right) the
+conversion to/from radians, which Malte doesn't have to worry about.
+
+|on mouseUp
+ if the flag of me is empty then set the flag of me to false
+ set the flag of me to not the flag of me
+ if the flag of me then startClock
+end mouseUp
+
+on startclock
+ put the long time into myTime
+ put myTime into fld 1
+ set the itemdel to ":"
+ put char 1 to 2 of item 3 of myTime into daSecs
+ set the startAngle of grc "seconds" to 90-dasecs*6
+ put item 2 of myTime into daMinutes
+ set the startangle of grc minutes to 90-daminutes*6
+ put item 1 of myTime into daHours
+ set the startAngle of grc "hours" to 90-dahours*30-daminutes*30/60
+ if the flag of me then send startClock to me in 500 milliseconds
+end startclock|
+
+
+------------------------------------------------------------------------
+
+
+      3. Better Second Hand Timing -- 18 lines
+
+There is a problem with both Malte's and my original solutions. Both use
+send...in to repeatedly trigger the code and set the time. I used a
+delay of 55 ticks, Monte used 500 milliseconds.
+
+No matter what the value (apart from very small values that would be
+wasteful of the CPU) this results in the second hand being jumpy. The
+reason is simple. Consider Malte's code. It sends the message in 500
+milliseconds, or half a second. Suppose the code gets executed at
+12:01:15.99. It will set the second hand to 15 seconds. Send...In is not
+guaranteed to execute on time. If something else is going on it gets
+delayed. Suppose the code executes again roughly 510 milliseconds later,
+at 12:01:16.5. At that point the second hand will be set to 16 seconds,
+but it may have been at 15 seconds for as much as 1.5 seconds. The code
+gets executed again 500 milliseconds later, at 12:01:17, and the second
+hand moves to 17 seconds, having only been at 16 seconds for about half
+a second.
+
+I switched to Monte's method of using oval graphics, which is obviously
+better suited to this problem than the polygon graphics I used.
+
+To solve the issue of the jumpy second hand, I added code to make the
+send...in routine exit if it wasn't time to move the second hand, and
+call itself more frequently until the time came.
+
+I retained my method of dealing with the AM/PM at the end of the long
+time. The long time returns a value in the form "6:05:40 PM." The PM (or
+AM) part is unnecessary for this task. Both Monte and I set the
+itemDelimiter to a ":" to get the components of the time. Monte gets rid
+of the AM/PM by getting char 1 to 2 of item 3 of the long time. I
+started off by getting word 1 of the long time, which automatically gets
+only the characters up to but not including the first space.
+
+In addition, since the values for the angle of the hour, minute, and
+second hand are only used once, I changed this:
+
+| put item 2 of myTime into daMinutes
+ set the startangle of grc minutes to 90-daminutes*6|
+
+into this:
+
+| set the startangle of grc "minute" to 90 - (6 * item 2 of sTime) - (item 3 of sTime) / 10|
+
+It's a longer line of code, but it reduces two lines to one and
+eliminates a variable, so it's a net win.
+
+Here's the whole routine. Note how whenever it successfully updates the
+clockface, it calls itself in 50 ticks, which is less than a second.
+When that call hits, it's likely the seconds haven't changed. The
+previous value for the seconds is stored in a script local and compared.
+If it's the same, the routine exits and calls itself in just 5 ticks.
+This repeats until the seconds tick over and the clock face is updated.
+This works to stop the jumpy second hand, but a much better solution is
+possible.
+
+|on openCard
+ setTime
+end openCard
+
+local sTime
+on setTime
+ put word 1 of the long time into tTime
+ if tTime is sTime then
+ send "setTime" to me in 5 ticks
+ exit setTime
+ end if
+ put tTime into sTime
+ put sTime && the long seconds into fld "time"
+ set the itemDelimiter to ":"
+ set the startangle of grc "hour" to 90 - (30 * item 1 of sTime) - (item 2 of sTime) / 2
+ set the startangle of grc "minute" to 90 - (6 * item 2 of sTime) - (item 3 of sTime) / 10
+ set the startangle of grc "second" to 90 - (6 * item 3 of sTime)
+ send "setTime" to me in 50 ticks
+end setTime
+
+|
+
+------------------------------------------------------------------------
+
+
+      4. Dennis Brown -- Send...In <the right amount of time> -- 12 lines
+
+Dennis brown removed my kludgey repeated send, and replaced it by
+calculating how long it would be to the next time the second hand needs
+to be moved. This is a great modification. My code assumes (incorrectly)
+that we don't know when the routine actually needs to run until it is
+that time. Dennis calculates when it will be time, and uses that as the
+argument to the send command.
+
+|on openCard
+  setTime
+end openCard
+
+on setTime
+  set the itemDelimiter to ":"
+  get word 1 of the long time --8:13:15
+  put it & char 2 to 5 of (the long seconds mod 1) into fld "Time"
+  set the startangle of grc "hour" to 90 - (30 * item 1 of it) - (item 2 of it) / 2
+  set the startangle of grc "minute" to 90 - (6 * item 2 of it) - (item 3 of it) / 10
+  set the startangle of grc "second" to 90 - (6 * item 3 of it)
+  send "setTime" to me in 60-(the long seconds mod 1)*60 ticks
+end setTime|
+
+
+------------------------------------------------------------------------
+
+
+      5.  Sending in Fractions of a Second -- 12 lines
+
+I had come to the same realization as Dennis about calculating when the
+routine needs to run. My initial replacement was inferior to his. I used
+two lines to avoid getting the long seconds twice:
+
+|put the long seconds into t
+send "setTime" to me in (1 - trunc(t) + t)|
+
+Where Dennis used only one, taking advantage of the fact that the mod
+command can be used to return the fractional portion of a number:
+
+|send "setTime" to me in 60-(the long seconds mod 1)*60 ticks
+
+|
+
+Dennis's one-line implementation is much better, but I saw there was a
+minor improvement possible. Dennis goes to the trouble of converting to
+ticks, which is the default unit for the send...in command. But seconds
+are also perfectly acceptible, as are fractions of a second, which is
+what we're after here. So I replaced his line with this:
+
+|send "setTime" to me in (1 - (the long seconds mod 1)) seconds
+|
+
+Now the routine looks like this. It's still 12 lines. It generally calls
+itself within a thousandth of a second of the correct time, so the
+second hand looks great. Dar Scott and I both thought that there might
+be a need for a fudge factor on the send...in command, but it turns out
+not to be the case. It works like a charm.
+
+|on openCard
+  setTime
+end openCard
+
+on setTime
+  put word 1 of the long time into T
+  put T && the long seconds into fld "time"
+  set the itemDelimiter to ":"
+  set the startangle of grc "hour" to 90 - (30 * item 1 of T) - (item 2 of T) / 2
+  set the startangle of grc "minute" to 90 - (6 * item 2 of T) - (item 3 of T) / 10
+  set the startangle of grc "second" to 90 - (6 * item 3 of T)
+  send "setTime" to me in (1 - (the long seconds mod 1)) seconds
+end setTime|
+
+
+------------------------------------------------------------------------
+
+
+      6. Avoiding Needless Work -- 14 lines
+
+At this point Dennis Brown suggested that we might be at the end of the
+process; that the routine was down to its essence. I disagreed,
+suggesting that the routine still might need code to only move the hour
+and minute hands when they need it, instead of setting their angle every
+second. Dennis tested, and this turned out to be the case. Needlessly
+setting the startAngle of the hour and minute hands is wasteful of CPU
+time. So he wrote code to only move them when necessary.
+
+|on openCard
+  setTime
+end openCard
+
+on setTime
+  set the itemDelimiter to ":"
+  put word 1 of the long time into T --8:13:15
+  put T & char 2 to 5 of (the long seconds mod 1) into fld "Time"
+  get 360+90-(30 * item 1 of T) - trunc((item 2 of T) / 2)
+  if (the angle of grc "Hour") <> it then set the angle of grc "Hour" to it
+  get 360+90-(6 * item 2 of T) - trunc((item 3 of T) / 10)
+  if (the angle of grc "Minute") <> it then set the angle of grc "Minute" to it
+  set the angle of grc "Second" to 360+90-(6 * item 3 of T)
+  send "setTime" to me in 1-(the long seconds mod 1) seconds
+end setTime|
+
+
+------------------------------------------------------------------------
+
+
+      7. Faster Still -- The Runner-Up -- 22 lines
+
+I wrote in the same sort of checks, but used two script local variables
+to store the values for comparison later to see if they had changed.
+This is the result. It's not as simple as Dennis's example, but using
+script locals is faster than comparing to the oval graphic's startAngle.
+ The overall difference is slight, though.
+
+I also changed out the itemDelimiter code. All previous examples had
+first set the itemDelimiter to ":" and then referenced item 1, item 2,
+and item 3 of the time. Instead, I use the split command to turn the
+time into an array, based on the ":" character. The end result is the
+same, but it's always good to avoid setting the itemDelimiter in case
+you need it later, and the array syntax is perhaps a bit cleaner than
+the item syntax.
+
+If speed is critical, this is likely the example to go with.
+
+|on openCard
+  setTime
+end openCard
+
+local sHourAngle -- the angle for the hour hand
+local sMinuteAngle -- the angle for the minute hand
+
+on setTime
+  put word 1 of the long time into T
+  put T && the long seconds into fld "time"
+  split T using ":"
+  get 90 - (30 * T[1]) - trunc(T[2] / 2)
+  if it is not sHourAngle then
+    put it into sHourAngle
+    set the startangle of grc "hour" to sHourAngle
+  end if
+  get 90 - (6 * T[2]) - trunc(T[3] / 10)
+  if it is not sMinuteAngle then
+    put it into sMinuteAngle
+    set the startangle of grc "minute" to sMinuteAngle
+  end if
+  set the startangle of grc "second" to 90 - (6 * T[3])
+  send "setTime" to me in (1 - (the long seconds mod 1)) seconds
+end setTime|
+
+
+------------------------------------------------------------------------
+
+
+      8. The Winner -- 14 lines
+
+Unless speed is a critical concern, there is little need to add eight
+lines to use script locals over simply checking the angle of the oval
+graphic. As I wrote this, I noticed a bug in the orginal solution:
+setting the angle to a value outside the range 0-359 won't return that
+same value when the angle is retrieved. Therefore it's important when
+comparing the calculated value to the angle of the graphic to include
+"mod 360" in the calculation. Otherwise the location of the minute and
+hour hands will be set every second for some portion of the hour/day.
+This code includes the necessary mod command.
+
+In addition, someone (don't be shy, step forward and claim credit)
+pointed out that trunc(T[2] / 2) can be replaced by T[2] div 2, which is
+both cleaner and faster.
+
+Finally, I replaced 360 + 90 with 450.
+
+This is about as beautiful as this code is likely to become. Every
+statement has a clear purpose. The code runs very quickly and
+efficiently. There are no needless lines of code to confuse the issue.
+About the only thing this code needs is some comments to explain the
+overall process and the math.
+
+|on openCard
+  setTime
+end openCard
+
+on setTime
+  put word 1 of the long time into T --8:13:15
+  put T & char 2 to 5 of (the long seconds mod 1) into fld "Time"
+  split T using ":"
+  get (450 - (30 * T[1]) - (T[2] div 2)) mod 360
+  if (the angle of grc "Hour") <> it then set the angle of grc "Hour" to it
+  get (450 - (6 * T[2]) - (T[3] div 10)) mod 360
+  if (the angle of grc "Minute") <> it then set the angle of grc "Minute" to it
+  set the angle of grc "Second" to 450 - (6 * T[3])
+  send "setTime" to me in 1 - (the long seconds mod 1) seconds
+end setTime|
+
+If you have any improvements to offer, contact gcanyon@inspiredlogic.com
+<mailto:gcanyon@inspiredlogic.com>
+------------------------------------------------------------------------
+This article is one of the Beautiful Transcript <index.html> series. If
+you have any suggestions or comments feel free to email
+gcanyon@inspiredlogic.com <mailto:gcanyon@inspiredlogic.com>

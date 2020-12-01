@@ -1,0 +1,2 @@
+<?xml version="1.0"?>
+<endangered_species><animal><name language="english">Tiger</name><name language="latin">Panthera tigris</name><threat>poachers</threat><weight>500</weight></animal><animal><name language="english">Kitty</name><threat>My Dog!</threat></animal><animal><name language="english">dog</name><threat>cat</threat></animal></endangered_species>

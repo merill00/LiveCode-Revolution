@@ -1,0 +1,254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>HyperActive Software - Resources - How To Test Your Stacks</title> 
+	<meta name="description" content="Custom Macintosh and Windows software solutions in Hypercard, Supercard, Metacard, and Runtime Revolution.">
+	<meta name="keywords" content="software programming, custom programming, macintosh programming, hypercard, supercard, metacard, runtime revolution, applescript, hypertext, hypermedia">
+		<link href="resources_testing_files/global.css" rel="stylesheet" type="text/css">
+</head><body>
+<div class="container">
+	<div class="header">
+		<div class="headertitle">
+			HyperActive Software
+		</div>
+		<div class="headercontact">
+			<a href="mailto:info@hyperactivesw.com">Contact Us</a>
+		</div>
+		<br clear="all">
+		<p>
+			<a href="http://www.hyperactivesw.com/index.html">Home</a> <a href="http://www.hyperactivesw.com/whats_new.html">What's New</a> <a href="http://www.hyperactivesw.com/who_we_are.html">Who We Are</a> <a href="http://www.hyperactivesw.com/what_we_do.html">What We Do</a> <a href="http://www.hyperactivesw.com/solutions.html">Solutions</a> <a href="http://www.hyperactivesw.com/Resources.html">Resources</a>
+		</p>
+<!-- end #header -->
+	</div>
+	<div class="subsubMainContent">
+		<p class="white">
+			<strong>We make software for humans.</strong> Custom Macintosh and Windows solutions in HyperCard, MetaCard, and Runtime Revolution
+		</p>
+		<h2 class="resourcesTitle"><a href="http://www.hyperactivesw.com/Resources.html">Resources...</a></h2> 
+		<div class="subOneCol">
+			<h2><strong>How To Test Your Stacks</strong></h2> <h3>(or) Gee, It Doesn't Do That On My Machine</h3> <cite>by Jacqueline Landman Gay
+				<br>
+					HyperActive Software</cite> 
+			<p>
+There is one single thing that defines a top-quality HyperCard stack:
+everything works. This may sound simplistic, but it's the bottom line.
+It doesn't matter how slick your user interface is, or how tricky the
+scripts are, or how sophisticated the material you are presenting; if
+everything in the stack doesn't work exactly right, your work will be
+ignored -- or worse, scorned -- by others. </p>
+			<p> There's no secret to creating a great stack that
+people will use and enjoy. Test the stack and everything in it, again
+and again. Run everything though its paces several times and in
+different orders. Click every button, read and scroll every field, run
+every script. Show every dialog -- and when you do, try every possible
+response button. Restart HyperCard with different amounts of memory
+assigned in the Finder and run your stack again. Then get all your
+friends to do the same thing too. </p>
+			<p>
+				That's it. Everything else I'm about to tell you is just commentary.
+			</p>
+			<p>
+Most stack errors and mistakes can be prevented by using a few simple
+testing techniques. Unfortunately, too many authors don't want to take
+the time to test their work adequately. While the fun may be in
+designing and scripting a stack, remember that everyone else's opinion
+of it will be based on its performance. Users have high expectations of
+software these days, and they won't take time to figure out
+work-arounds to glitches. They'll just toss your stack in the trash
+instead. Worse yet, they may avoid your work in the future based on one
+bad experience. </p>
+			<p> Try the following tips before releasing your stack.
+You may be surprised what you find. These techniques should ensure that
+your stack is as bug-free as it can be. </p>
+			<ol>
+				<li>
+					<p>
+						<b>Pretend you just met your stack</b>
+in a crowded library and you don't know anything about it. Start
+clicking on (or typing into) everything. This doesn't just mean using
+the obvious buttons; it means, for example, clicking on locked fields
+that have scripts, and using all dialog boxes. Repeatedly bring up
+every dialog box until you have tried all possible responses to it, and
+don't forget "cancel". Too many scripts don't account for a user
+wanting to bail out. Don't forget any buttons that are hidden on the
+card right now but that might be visible and used later; activate and
+use those buttons too. Every button should do exactly as it is labeled
+(so choose your button names carefully.) Every script should interact
+cleanly with everything else in your stack, without causing any errors.
+</p>
+					<p> Click outside any buttons or fields, right on the
+card itself, to be sure that nothing unexpected happens. If you've
+created any menus, systematically choose every single menu item, one at
+a time, to be sure it behaves right. </p>
+				</li>
+				<li>
+					<p>
+						<b>Set up some fake data</b>
+with known content and test with that. Say you have a stack that opens
+a text file of numbers and totals them. Set up a text file and get a
+total with your hand calculator. Then run your stack on the file and
+see if you get the same results. Or suppose you have a script that
+counts the number of times a text string occurs in another stack. Set
+up the other stack with a known number of repetitions of some text and
+then see if your script returns the right number. Too often scripters
+will suppose that if the script doesn't error when it runs, it must be
+okay. All that means is that you haven't any syntax errors; it doesn't
+say anything about the accuracy of the results when the script is done.
+Do tests on several different sets of known data. One set isn't enough;
+you need to account for all types of variation. In the first example
+above, you might create a text file containing all numbers except for
+one line of text. What happens when you run your script on that? </p>
+				</li>
+				<li>
+					<p>
+						Once you've tried everything, and I mean everything, <b>go back and try it all over again</b>
+in a different order, preferably the wrong order. This will be
+incredibly educational. Don't fool yourself into thinking that your
+users will click all the buttons in the correct order, or even in any
+logical order (although your stack must present everything in an
+orderly way.) For example, what happens if a user decides to push a
+"calculate" button before they enter any data into some number fields?
+Does the script give an explanation of what to do and then exit
+gracefully? Or does it error out half finished and leave the stack in
+an unpredictable state? What happens if users enter letters and other
+symbols that aren't numbers, or type in numbers in the wrong range
+(always test-enter numerical data as negative numbers at least once.)
+What happens to your other scripts when one script fails? Do you get a
+cascading failure when each succeeding handler looks for information
+that now doesn't exist, or exists in the wrong format? </p>
+					<p> Try your hardest to enter incorrect information
+into every field, enter data in the wrong format, and click every
+button out of logical order. While it is fine if this doesn't produce
+any usable results, it should definitely not produce any script error
+dialogs either. If it does, you haven't done enough error-checking in
+your scripts. Don't think to yourself, "my stack is aimed at Mensa
+members with IQ's over 165 and they would never do that sort of thing,
+so I don't have to check for it." Trust me, they will. And you do. </p>
+					<p> Whenever you repair a script, no matter how small
+the change, start the testing process over again. There's no way around
+it; you have to be sure not only that the change in your script works
+correctly, but that it works correctly with everything else. You can
+use some judgment here. If you alter a script that displays information
+in a field, you probably only have to test that one script to be sure
+the display is correct. But if any other part of your stack uses the
+data in that field later, then you need to re-test every other script
+that uses that field information. This may sound tedious, but it is the
+only way to avoid one of the main causes of errors -- the interaction
+of different elements of your stack. </p>
+				</li><li>
+					<p>
+						<b>Get three other people to run your stack.</b>
+This is hugely important. Never, ever release a stack that no one else
+has used. If you don't know three other people, at least get one. If
+you know more than three, go for as many as you can rope into it. No
+two people will use your stack the same way. Certainly no one will use
+it exactly the way you think they will. What they do with your stack
+will tell you worlds about your work. </p>
+					<p> Choose people for testing who are as close as
+possible to the kinds of people who will be downloading and using your
+stack. If your stack is for children, use children to test it. If your
+stack is for anthropology professors, find some of those. If you don't
+know any anthropology professors then you can use your mother if you
+have to, but don't expect her to find all the anthropology mistakes.
+She will, however, probably still find a lot of generic errors having
+to do with stack design. </p>
+					<p>
+						<b>Don't tell your testers what to do.</b>
+This is a strict rule. Let them read any documentation or Read Me files
+you will upload with your stack, but that's all. This is easier said
+than done, but remember that no one who downloads your stack will have
+you around to give them verbal directions, and your tester shouldn't
+get any either. So limit yourself to watching, bite your tongue, and
+take a lot of notes. See what actions they choose to do first, where
+they get stuck, and how they look around in the stack for help if they
+need it (you did put some help info in there, right?) This will tell
+you where your stack design isn't clear. Don't offer any advice unless
+the other person asks outright, and in that case give as little
+information as possible to get them back on track. </p>
+					<p> When they're done, you can ask them questions from
+your notes if you need to. Ask what they thought was good about the
+stack and what was not so good. Pay attention to what they say and
+change your stack if necessary. Try not to decide that they "didn't
+know what they were doing" and don't dismiss their comments as
+irrelevant. If your testers can't figure out your stack, probably no
+one else can either. </p>
+				</li>
+			<li>
+				<p>
+					<b>Run your stack on other people's Macs</b>,
+the more the better. Is your card size too big to show up fully on a 9"
+screen? Did you put buttons, graphics, or other important items in the
+space that is under the menu bar on these smaller screens? How about
+speed? Is it acceptable on other Macs? This is more important on
+animations; what looks great on your SE will fly by so fast on a Quadra
+that it is unrecognizable. What about the timing of your sound effects
+on various Macs? Card transitions? What happens when your color stack
+is run on a black and white Mac? You'll learn a lot. </p>
+			</li>
+		<li>
+			<p>
+				There's one last way guaranteed to find every possible obscure bug, hiccup, and glitch in your stack: <b>demo the stack to someone else</b>.
+No matter how much testing you've done or how many people have gone
+over your work, if there's one obscure thing that can go wrong, it will
+gleefully manifest itself when you are trying to show your work to an
+important person -- like a potential client, your latest love interest,
+or your anthropology professor. Those tiny little bugs that have been
+lurking under the paint layer just drooling for a chance to embarrass
+you will burst suddenly on screen, grinning and winking at each other.
+If you really, really want to find minute and obscure bugs, try showing
+off your stack with as much pride as possible to someone important. </p>
+		</li>
+	<li>
+		<p>
+			<b>Avoid the "it's my baby" syndrome.</b>
+It is tempting, after spending a lot of time with a stack, to want to
+leave it just as it is, simply because it's your baby. Be ruthless.
+Even babies are better for a little discipline. If something isn't
+appropriate for your stack's purpose, take it out, no matter how cute
+it is or how much time you spent writing it. If your testers complain
+that fourteen repetitions of Alvin the Chipmunk singing "Swanee" are a
+bit excessive, take Alvin to the trash no matter how cute you think he
+may be. Remain constantly flexible. You don't have to change everything
+your testers say (after all, they really might NOT know what they're
+doing), but you should sure listen closely when they say it. </p>
+	</li>
+</ol>
+<p> If you follow these testing guidelines, you can produce stacks that
+are consistently bug-free and reliable. The longer you test, the more
+people you test with, and the more repeatedly you test, the better your
+stacks get. Even the simplest stack can become pure Hyper-art when it
+runs smoothly, behaves intuitively, and functions without errors. <br>
+	<br>
+</p>
+<hr> Jacqueline Landman Gay is the owner of HyperActive Software, a
+hypermedia programming company in Minneapolis, MN. HyperActive Software
+produces quality commercial HyperCard, SuperCard, MetaCard, and
+Revolution applications for corporate, educational, and private
+markets. HyperActive Software can be reached on the web at
+"http://www.hyperactivesw.com", by email at <a href="mailto:info@hyperactivesw.com">info@hyperactivesw.com</a>, by mail at 5226 W. Nokomis Pkwy, Minneapolis, MN 55417, or by phone at (612) 724-1596. 
+<p>
+<cite>This document is copyright © 1994 by HyperActive Software. All
+rights are reserved. It may be distributed to online services but may
+not be altered. This copyright notice and the above accreditation must
+accompany the article at all times.</cite>
+</p>
+<p>
+&nbsp;
+</p>
+</div>
+<br clear="all">
+</div>
+<div class="footer">
+	<p>
+		<a href="http://www.hyperactivesw.com/index.html">Home</a> <a href="http://www.hyperactivesw.com/whats_new.html">What's New</a> <a href="http://www.hyperactivesw.com/who_we_are.html">Who We Are</a> <a href="http://www.hyperactivesw.com/what_we_do.html">What We Do</a> <a href="http://www.hyperactivesw.com/solutions.html">Solutions</a> <a href="http://www.hyperactivesw.com/Resources.html">Resources</a> <a href="http://www.hyperactivesw.com/site_map.html">Site Map</a> <a href="mailto:info@hyperactivesw.com">Contact Us</a>
+	</p>
+	<p>
+		© 1996-2009 HyperActive Software. All Rights Reserved.
+	</p>
+<!-- end #footer -->
+</div>
+<!-- end #container -->
+</div>
+</body></html>

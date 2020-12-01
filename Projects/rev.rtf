@@ -1,0 +1,345 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf250
+{\fonttbl\f0\fnil\fcharset0 LucidaGrande;}
+{\colortbl;\red255\green255\blue255;\red127\green127\blue0;\red0\green0\blue127;\red127\green0\blue127;
+\red0\green127\blue0;\red0\green127\blue127;}
+\margl1440\margr1440\vieww13860\viewh15780\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\b\fs24 \cf0 on
+\b0  updateWeatherDisplay\
+  
+\b \cf2 put
+\b0 \cf0  \cf3 ""\cf0  \cf4 into\cf0  tString\
+  
+\b if
+\b0  \cf4 the\cf0  uCelsius \cf4 of\cf0  \cf4 me\cf0  
+\b then
+\b0  
+\b \cf2 put
+\b0 \cf0  \cf3 "&u=c"\cf0  \cf4 into\cf0  tString\
+  resetWeatherDisplay\
+  
+\b \cf2 put
+\b0 \cf0  \cf4 url\cf0  (\cf3 "http://xml.weather.yahoo.com/forecastrss?p="\cf0  & \cf4 fld\cf0  _zip & tString) \cf4 into\cf0  tData\
+  
+\b if
+\b0  \cf3 "city not found"\cf0  \cf4 is\cf0  \cf4 in\cf0  tData 
+\b then\
+
+\b0     
+\b \cf2 put
+\b0 \cf0  \cf3 "?"\cf0  \cf4 into\cf0  \cf4 fld\cf0  _temperature\
+    
+\b exit
+\b0  updateWeatherDisplay\
+  
+\b end
+\b0  
+\b if\
+
+\b0   
+\b \cf5 # 
+\b0 \cf3 http://xml.weather.yahoo.com/forecastrss?p=18049
+\b \cf5 \
+
+\b0 \cf0   
+\b \cf5 # IMAGE\
+
+\b0 \cf0   
+\b \cf2 set
+\b0 \cf0  \cf6 itemDel\cf0  \cf4 to\cf0  \cf4 quote\
+\cf0   
+\b \cf2 put
+\b0 \cf0  \cf4 item\cf0  \cf3 2\cf0  \cf4 of\cf0  \cf4 line\cf0  \cf4 lineOffset\cf0 (\cf3 "img src"\cf0 ,tData) \cf4 of\cf0  tData \cf4 into\cf0  tImg\
+  
+\b \cf2 put
+\b0 \cf0  \cf4 url\cf0  tImg \cf4 into\cf0  \cf4 img\cf0  _icon\
+  
+\b \cf5 #\
+
+\b0 \cf0   
+\b \cf5 # CURRENT CONDITION & TEMPERATURE\
+
+\b0 \cf0   
+\b \cf2 set
+\b0 \cf0  \cf6 itemDel\cf0  \cf4 to\cf0  \cf3 ","\
+\cf0   
+\b \cf2 put
+\b0 \cf0  \cf4 line\cf0  \cf4 lineOffset\cf0 (\cf3 "current"\cf0 ,tData)+\cf3 1\cf0  \cf4 of\cf0  tData \cf4 into\cf0  temp\
+  
+\b if
+\b0  \cf4 char\cf0  \cf3 1\cf0  \cf4 of\cf0  temp = \cf3 " "\cf0  
+\b then
+\b0  
+\b \cf2 delete
+\b0 \cf0  \cf4 char\cf0  \cf3 1\cf0  \cf4 of\cf0  temp\
+  
+\b \cf2 put
+\b0 \cf0  \cf4 item\cf0  \cf3 1\cf0  \cf4 of\cf0  temp \cf4 into\cf0  \cf4 fld\cf0  _condition\
+  
+\b \cf2 put
+\b0 \cf0  \cf4 item\cf0  \cf3 2\cf0  \cf4 of\cf0  temp \cf4 into\cf0  temp\
+  
+\b \cf2 set
+\b0 \cf0  \cf6 itemDel\cf0  \cf4 to\cf0  \cf3 "<"\
+\cf0   
+\b \cf2 put
+\b0 \cf0  \cf4 item\cf0  \cf3 1\cf0  \cf4 of\cf0  temp \cf4 into\cf0  temp\
+  
+\b if
+\b0  \cf3 "Mac"\cf0  \cf4 is\cf0  \cf4 in\cf0  \cf4 platform\cf0 () 
+\b then\
+
+\b0     
+\b \cf2 put
+\b0 \cf0  \cf4 numToChar\cf0 (\cf3 161\cf0 ) \cf4 into\cf0  degChar\
+  
+\b else
+\b0  
+\b \cf2 put
+\b0 \cf0  \cf4 numToChar\cf0 (\cf3 176\cf0 ) \cf4 into\cf0  degChar\
+  
+\b \cf2 put
+\b0 \cf0  degChar \cf4 after\cf0  \cf4 word\cf0  \cf3 1\cf0  \cf4 of\cf0  temp\
+  
+\b \cf2 replace
+\b0 \cf0  \cf3 " "\cf0  \cf4 with\cf0  \cf3 ""\cf0  \cf4 in\cf0  temp\
+  
+\b \cf2 put
+\b0 \cf0  temp \cf4 into\cf0  \cf4 fld\cf0  _temperature\
+  
+\b \cf5 #\
+
+\b0 \cf0   
+\b \cf5 # WIND\
+
+\b0 \cf0   
+\b \cf2 put
+\b0 \cf0  \cf3 "mph"\cf0  \cf4 into\cf0  tUnits\
+  
+\b if
+\b0  \cf4 the\cf0  uCelsius \cf4 of\cf0  \cf4 me\cf0  
+\b then
+\b0  
+\b \cf2 put
+\b0 \cf0  \cf3 "kph"\cf0  \cf4 into\cf0  tUnits\
+  
+\b \cf2 set
+\b0 \cf0  \cf6 itemDel\cf0  \cf4 to\cf0  \cf4 quote\
+\cf0   
+\b \cf2 put
+\b0 \cf0  \cf4 line\cf0  \cf4 lineOffset\cf0 (\cf3 "wind"\cf0 ,tData) \cf4 of\cf0  tData \cf4 into\cf0  temp\
+  
+\b \cf2 put
+\b0 \cf0  \cf3 "Wind:"\cf0  && windAngle(\cf4 item\cf0  \cf3 4\cf0  \cf4 of\cf0  temp) && \cf3 "  Speed:"\cf0  && \cf4 item\cf0  \cf3 6\cf0  \cf4 of\cf0  temp & tUnits \cf4 into\cf0  \cf4 fld\cf0  _wind\
+  
+\b \cf5 #\
+
+\b0 \cf0   
+\b \cf5 # LOCATION\
+
+\b0 \cf0   
+\b \cf2 put
+\b0 \cf0  \cf4 line\cf0  \cf4 lineOffset\cf0 (\cf3 "location city"\cf0 ,tData) \cf4 of\cf0  tData \cf4 into\cf0  temp\
+  
+\b \cf2 set
+\b0 \cf0  \cf6 itemDel\cf0  \cf4 to\cf0  \cf4 quote\
+\cf0   
+\b \cf2 put
+\b0 \cf0  \cf4 item\cf0  \cf3 2\cf0  \cf4 of\cf0  temp \cf4 into\cf0  tCity\
+  
+\b \cf2 put
+\b0 \cf0  \cf4 item\cf0  \cf3 6\cf0  \cf4 of\cf0  temp \cf4 into\cf0  tCountry\
+  
+\b \cf2 put
+\b0 \cf0  tCity & \cf3 ","\cf0  && tCountry \cf4 into\cf0  \cf4 fld\cf0  _location\
+  
+\b \cf5 #\
+
+\b0 \cf0   
+\b \cf2 send
+\b0 \cf0  \cf3 "updateWeatherDisplay"\cf0  \cf4 to\cf0  \cf4 me\cf0  \cf4 in\cf0  \cf3 30\cf0  \cf4 seconds\
+
+\b \cf0 end
+\b0  updateWeatherDisplay\
+
+\fs26 \
+
+\b\fs24 on
+\b0  resetWeatherDisplay\
+  
+\b \cf2 put
+\b0 \cf0  \cf3 ""\cf0  \cf4 into\cf0  \cf4 fld\cf0  _temperature\
+  
+\b \cf2 put
+\b0 \cf0  \cf3 ""\cf0  \cf4 into\cf0  \cf4 img\cf0  _icon\
+  
+\b \cf2 put
+\b0 \cf0  \cf3 ""\cf0  \cf4 into\cf0  \cf4 fld\cf0  _condition\
+  
+\b \cf2 put
+\b0 \cf0  \cf3 ""\cf0  \cf4 into\cf0  \cf4 fld\cf0  _wind\
+
+\b end
+\b0  resetWeatherDisplay\
+
+\fs26 \
+
+\b\fs24 function
+\b0  windAngle \cf4 A\
+\cf0   
+\b switch\
+
+\b0   
+\b case
+\b0  (\cf4 A\cf0  >= \cf3 322\cf0  \cf4 or\cf0  \cf4 A\cf0  < \cf3 23\cf0 )\
+    
+\b \cf2 put
+\b0 \cf0  \cf3 "North"\cf0  \cf4 into\cf0  V\
+    
+\b \cf2 break\
+
+\b0 \cf0   
+\b case
+\b0  \cf4 A\cf0  < \cf3 68\
+\cf0     
+\b \cf2 put
+\b0 \cf0  \cf3 "NorthEast"\cf0  \cf4 into\cf0  V\
+    
+\b \cf2 break\
+
+\b0 \cf0   
+\b case
+\b0  \cf4 A\cf0  < \cf3 113\
+\cf0     
+\b \cf2 put
+\b0 \cf0  \cf3 "East"\cf0  \cf4 into\cf0  V\
+    
+\b \cf2 break\
+
+\b0 \cf0   
+\b case
+\b0  \cf4 A\cf0  < \cf3 158\
+\cf0     
+\b \cf2 put
+\b0 \cf0  \cf3 "SouthEast"\cf0  \cf4 into\cf0  V\
+    
+\b \cf2 break\
+
+\b0 \cf0   
+\b case
+\b0  \cf4 A\cf0  < \cf3 203\
+\cf0     
+\b \cf2 put
+\b0 \cf0  \cf3 "South"\cf0  \cf4 into\cf0  V\
+    
+\b \cf2 break\
+
+\b0 \cf0   
+\b case
+\b0  \cf4 A\cf0  < \cf3 248\
+\cf0     
+\b \cf2 put
+\b0 \cf0  \cf3 "SouthWest"\cf0  \cf4 into\cf0  V\
+    
+\b \cf2 break\
+
+\b0 \cf0   
+\b case
+\b0  \cf4 A\cf0  < \cf3 293\
+\cf0     
+\b \cf2 put
+\b0 \cf0  \cf3 "West"\cf0  \cf4 into\cf0  V\
+    
+\b \cf2 break\
+
+\b0 \cf0   
+\b case
+\b0  \cf4 A\cf0  < \cf3 322\
+\cf0     
+\b \cf2 put
+\b0 \cf0  \cf3 "NorthWest"\cf0  \cf4 into\cf0  V\
+  
+\b end
+\b0  
+\b switch\
+
+\b0   
+\b \cf2 return
+\b0 \cf0  V\
+
+\b end
+\b0  windAngle\
+
+\fs26 \
+\
+
+\b\fs24 on
+\b0  preOpenStack\
+  
+\b \cf2 set
+\b0 \cf0  \cf6 loc\cf0  \cf4 of\cf0  \cf4 this\cf0  \cf4 stack\cf0  \cf4 to\cf0  \cf4 the\cf0  \cf4 screenLoc\
+\cf0   resetWeatherDisplay\
+  
+\b \cf2 put
+\b0 \cf0  \cf3 ""\cf0  \cf4 into\cf0  \cf4 fld\cf0  _zip\
+  
+\b \cf2 put
+\b0 \cf0  \cf3 "enter zip/location ID"\cf0  \cf4 into\cf0  \cf4 fld\cf0  _location\
+
+\b end
+\b0  preOpenStack\
+
+\fs26 \
+\
+
+\b\fs24 \cf2 local
+\b0 \cf0  allowDrag\
+
+\b on
+\b0  mouseDown\
+  
+\b \cf2 put
+\b0 \cf0  \cf4 mouseLoc\cf0 () \cf4 into\cf0  allowDrag\
+
+\b end
+\b0  mouseDown\
+
+\fs26 \
+
+\b\fs24 on
+\b0  mouseMove X,Y\
+  
+\b if
+\b0  allowDrag = \cf3 ""\cf0  
+\b then
+\b0  
+\b exit
+\b0  mouseMove\
+  
+\b \cf2 set
+\b0 \cf0  \cf6 topLeft\cf0  \cf4 of\cf0  \cf4 this\cf0  \cf4 stack\cf0  \cf4 to\cf0  \cf4 globalLoc\cf0 (X - \cf4 item\cf0  \cf3 1\cf0  \cf4 of\cf0  allowDrag & \cf3 ","\cf0  & Y - \cf4 item\cf0  \cf3 2\cf0  \cf4 of\cf0  allowDrag)\
+
+\b end
+\b0  mouseMove\
+
+\fs26 \
+
+\b\fs24 on
+\b0  mouseUp\
+  
+\b \cf2 put
+\b0 \cf0  \cf3 ""\cf0  \cf4 into\cf0  allowDrag\
+
+\b end
+\b0  mouseUp\
+
+\fs26 \
+
+\b\fs24 on
+\b0  mouseRelease\
+  mouseUp\
+
+\b end
+\b0  mouseRelease\
+}

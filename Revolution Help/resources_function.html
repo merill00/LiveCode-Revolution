@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>HyperActive Software - Resources - Revolution Functions</title> 
+	<meta name="description" content="Custom Macintosh and Windows software solutions in Hypercard, Supercard, Metacard, and Runtime Revolution.">
+	<meta name="keywords" content="software programming, custom programming, macintosh programming, hypercard, supercard, metacard, runtime revolution, applescript, hypertext, hypermedia">
+		<link href="resources_function_files/global.css" rel="stylesheet" type="text/css">
+</head><body>
+<div class="container">
+	<div class="header">
+		<div class="headertitle">
+			HyperActive Software
+		</div>
+		<div class="headercontact">
+			<a href="mailto:info@hyperactivesw.com">Contact Us</a>
+		</div>
+		<br clear="all">
+		<p>
+			<a href="http://www.hyperactivesw.com/index.html">Home</a> <a href="http://www.hyperactivesw.com/whats_new.html">What's New</a> <a href="http://www.hyperactivesw.com/who_we_are.html">Who We Are</a> <a href="http://www.hyperactivesw.com/what_we_do.html">What We Do</a> <a href="http://www.hyperactivesw.com/solutions.html">Solutions</a> <a href="http://www.hyperactivesw.com/Resources.html">Resources</a>
+		</p>
+<!-- end #header -->
+	</div>
+	<div class="subsubMainContent">
+		<p class="white">
+			<strong>We make software for humans.</strong> Custom Macintosh and Windows solutions in HyperCard, MetaCard, and Runtime Revolution
+		</p>
+		<h2 class="resourcesTitle"><a href="http://www.hyperactivesw.com/Resources.html">Resources...</a></h2> 
+		<div class="subOneCol">
+			<h2><strong>Revolution Functions</strong></h2> 
+			<p>
+				<cite>by Jacqueline Landman Gay
+					<br>
+						HyperActive Software</cite>
+			</p>
+			<h3>Using functions in Revolution</h3>
+Revolution's programming language is intuitive and easy to learn. It is
+very much like spoken English in some ways, and many commands can be
+written exactly as you would say them in natural language syntax.
+However, it is also a full and expansive programming language in its
+own right, and as such, it supports all the contructs that are found in
+any programming language. This includes two basic types of programming
+routines: command handlers and function handlers. Function handlers are
+usually referred to simply as "functions". <p> Many Revolution newcomers are not sure what the differences
+are between function handlers and command handlers. This document
+explains how functions work, and what the basic difference is between a
+handler that acts as a function and one that acts as a command. </p>
+			For a more advanced discussion on how useful functions can be, see Geoff Canyon's excellent article at <a href="http://www.inspiredlogic.com/articles/functions.html">http://www.inspiredlogic.com/articles/functions.html</a>. <h3>What is a function?</h3> A function is a handler that does some work and returns the results to the handler that asked for it. 
+			<p>
+				Functions are distinguished syntactically in two ways; a function is called using either the keyword <code>the</code>
+or it is called using parentheses. You are probably using functions all
+the time in Revolution and may not even know it. Revolution has
+hundreds of built-in functions; for example, <code>the date</code> is a function (using the keyword <code>the</code>,) which can also be written <code>date()</code> using the parentheses form. When you use <code>the date</code> or <code>date()</code>,
+Revolution does an evaluation and sends back today's current date. This
+process happens invisibly inside the Revolution engine, which contacts
+the OS, gets the system date, and returns it to your script. Then your
+script can use the date information to do some work. </p>
+			<p>
+				Some functions need to know a bit of information before they can work; for example, the Revolution function <code>the number</code> (also written <code>number()</code>.)
+You need to pass a parameter to the function — some extra information —
+that tells it what you want to count, whether it is buttons, or cards,
+or graphics, or anything else. If we want to know the number of cards,
+we pass "cards" to the function this way: </p><blockquote>
+<pre>the number of cards</pre> 
+			</blockquote>
+			which can also be written: 
+		<blockquote>
+<pre>number(cards)</pre> 
+		</blockquote> Revolution then goes through
+the stack and adds all the cards to get a total, which is sent back to
+your script. Your script receives that value and needs to store it into
+a variable so that it can use it later: <blockquote>
+<pre>put number(cards) into theNumCds</pre> 
+	</blockquote>
+	In this case, "theNumCds" contains a number, which is equal to the number of cards in the stack. <h3>Writing your own functions</h3>
+If Revolution does not have a built-in function to do something you
+want, you can write your own function to do it instead. If your script
+uses a function you write yourself, the calling handler cannot use <code>the</code> when using it; the handler must use the parentheses form. Thus, a custom function called <code>myFunction</code> cannot be called with <code>the myFunction</code> — you must use <code>myFunction()</code> instead. 
+<p>
+<i>A note about the message path:</i> The message path for functions is
+identical to the message path for command handlers. You should place
+your function at the level where any handler that calls it can use it.
+For example, if your custom function is used only by a single button,
+then an appropriate place for that function would be in the button
+script. If many buttons use the function, then it could go in the card
+script, a group script, or the stack script. </p><p>
+Suppose we want to add two numbers together and get a total. (This is a
+very simple task, but it makes a good example.) We can write a function
+called "addNumbers" like this: </p><blockquote>
+<pre>function addNumbers num1,num2
+  put num1 + num2 into theTotal
+  return theTotal
+end addNumbers</pre> 
+</blockquote>
+The parameters <code>num1</code> and <code>num2</code>
+are like baskets that hold whatever values the original handler sends.
+In this case, they will each contain a number. The special word <code>return</code> tells Revolution to send the variable <code>theTotal</code> back to the handler that asked for the information. Note that whenever Revolution sees the <code>return</code> keyword, the function will exit immediately afterward. This means that <code>return</code> is usually — but not always — the last line in the function's script. 
+
+<p>
+So, this function takes two numbers that are passed to it in the
+parameters, adds them together, and sends back a total. Now we can
+write a handler that uses the function: </p><blockquote>
+<pre>on myHandler
+  put field "firstNum" into theFirstNumber -- say the field contains 16
+  put field "secondNum" into theSecondNumber -- say this one is 4
+  put addNumbers(theFirstNumber,theSecondNumber) into field "sumTotal"
+end myHandler</pre> 
+</blockquote>
+This handler will send 16 and 4 to our custom function <code>addNumbers</code>. The <code>addNumbers</code> function will catch these two numbers in its parameters <code>num1</code> and <code>num2</code>, add them together, and send back 20. The handler <code>myHandler</code> will receive that 20 and put it into the field "sumTotal". The field now displays 20. 
+
+<p>
+When you use a function in a handler, you must provide a place for its
+results to go — a variable usually, or sometimes a field. For example,
+this will not work: </p><blockquote>
+<pre>addNumbers(theFirstNumber,theSecondNumber)</pre> 
+</blockquote>
+because there is no place for the returned information to be stored. A
+handler that uses a function must provide a place to put the
+information that the function sends back. This is true of built-in
+Revolution functions too. For example, this will not work: <blockquote>
+<pre>the date</pre> 
+</blockquote>
+
+because there is no place to put the date that is returned. You must provide a place: 
+<blockquote>
+<pre>put the date into myDate</pre> 
+</blockquote>
+or: 
+<blockquote>
+<pre>put the date into field "today"</pre> 
+</blockquote>
+A handler that uses a custom function must follow the same rule. It
+must provide a place for the returned information to be stored: <blockquote>
+<pre>put addNumbers(theFirstNumber,theSecondNumber) into myTotal</pre> 
+</blockquote>
+<br>
+<hr align="center" size="1" width="50%">
+<p>
+Here is another example. This one removes all vowels from a word and returns only the consonants: 
+</p><blockquote>
+<pre>on myHandler
+  put getConsonants("chimpanzee") into field 1
+end myHandler
+
+
+function getConsonants theWord
+  put "aeiou" into theVowels
+  repeat for each char i in theWord
+    if i is not in theVowels then put i after theChars
+  end repeat
+  return theChars
+end getConsonants</pre> 
+</blockquote>
+In this example, the word "chimpanzee" is sent to the function <code>getConsonants</code>, where it is placed automatically into the parameter <code>theWord</code>. The function checks each character in the word and if it is not a vowel, it puts the character after a list called <code>theChars</code>.
+When it is finished checking each character, it returns the list of
+characters, which automatically gets sent back to the calling handler <code>myHandler</code>. The characters sent back in this example would be "chmpnz", so that is what field 1 will display. 
+
+<p>
+Functions can be as short or as long as you want, and sometimes can be
+very complicated. But the basics are always the same: a handler asks a
+function to do some work and often sends some parameters to the
+function to tell it what to work with. The function does the work and
+returns the finished calculation to the original handler. The handler
+can use the finished calculation any way it wants, just as if it were
+any other variable.
+</p>
+<h3>What's the difference between a function and a command handler?</h3>
+Not very much, when you get right down to it. They are both just a list
+of commands that accomplish something. The primary difference is that
+there is a built-in way for a handler to use the results of a function.
+<p>
+However, command handlers can also return results, in exactly the same
+way as functions do. The difference is in how the calling handler
+receives the result. When using a function, the result is sent back
+automatically and all the calling handler has to do is provide a
+storage place for it. When using a command handler, the calling handler
+must instead ask for the result specifically. We could change the <code>addNumbers()</code> function into a command handler by simply replacing the keyword <code>function</code> with the keyword <code>on</code>: 
+</p><blockquote>
+<pre>on addNumbers num1,num2
+  put num1 + num2 into theTotal
+  return theTotal
+end addNumbers</pre> 
+</blockquote>
+Now that it is a command handler, the total that has been calculated is
+not sent back to the calling handler automatically. Instead, the
+calculation is placed in the system-wide storage area <code>the result</code>. The calling handler can retrieve the information at will by asking for <code>the result</code>: 
+<blockquote>
+<pre>on myHandler
+  put 16 into theFirstNumber
+  put 4 into theSecondNumber
+  addNumbers theFirstNumber,theSecondNumber
+  get the result -- this asks for the total
+  put it into field "sumTotal"
+end myHandler</pre> 
+</blockquote>
+Most of the time it is easier to just write the calculation as a
+function and allow Revolution to send the result back automatically.
+However, the above is valid and in some situations may be preferable,
+though this author cannot think of any good examples of when this would
+be required. <p>
+Note that <code>the result</code> changes its value frequently
+and without warning, since a good many Revolution commands use it to
+store temporary data — for example, the "ask" and "answer" dialogs use <code>the result</code> to store the name of the button the user clicks. If you will be retrieving <code>the result</code>
+from a command handler, it is a good idea to do so as soon after
+issuing the command as possible. If you allow too many lines of script
+to go by before retrieving <code>the result</code>, you may find that another command has changed its contents and <code>the result</code> no longer contains what you think it does.
+</p>
+<p>
+&nbsp;
+</p>
+</div>
+<br clear="all">
+</div>
+<div class="footer">
+	<p>
+		<a href="http://www.hyperactivesw.com/index.html">Home</a> <a href="http://www.hyperactivesw.com/whats_new.html">What's New</a> <a href="http://www.hyperactivesw.com/who_we_are.html">Who We Are</a> <a href="http://www.hyperactivesw.com/what_we_do.html">What We Do</a> <a href="http://www.hyperactivesw.com/solutions.html">Solutions</a> <a href="http://www.hyperactivesw.com/Resources.html">Resources</a> <a href="http://www.hyperactivesw.com/site_map.html">Site Map</a> <a href="mailto:info@hyperactivesw.com">Contact Us</a>
+	</p>
+	<p>
+		© 1996-2009 HyperActive Software. All Rights Reserved.
+	</p>
+<!-- end #footer -->
+</div>
+<!-- end #container -->
+</div>
+</body></html>

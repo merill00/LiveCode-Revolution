@@ -1,0 +1,265 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>HyperActive Software - Resources - Reference Sheet - Building Standalones</title> 
+	<meta name="description" content="Custom Macintosh and Windows software solutions in Hypercard, Supercard, Metacard, and Runtime Revolution.">
+	<meta name="keywords" content="software programming, custom programming, macintosh programming, hypercard, supercard, metacard, runtime revolution, applescript, hypertext, hypermedia">
+		<link href="HyperActive_files/global.css" rel="stylesheet" type="text/css">
+</head><body>
+<div class="container">
+	<div class="header">
+		<div class="headertitle">
+			HyperActive Software
+		</div>
+		<div class="headercontact">
+			<a href="mailto:info@hyperactivesw.com">Contact Us</a>
+		</div>
+		<br clear="all">
+		<p>
+			<a href="http://www.hyperactivesw.com/index.html">Home</a> <a href="http://www.hyperactivesw.com/whats_new.html">What's New</a> <a href="http://www.hyperactivesw.com/who_we_are.html">Who We Are</a> <a href="http://www.hyperactivesw.com/what_we_do.html">What We Do</a> <a href="http://www.hyperactivesw.com/solutions.html">Solutions</a> <a href="http://www.hyperactivesw.com/Resources.html">Resources</a>
+		</p>
+<!-- end #header -->
+	</div>
+	<div class="subsubMainContent">
+		<p class="white">
+			<strong>We make software for humans.</strong> Custom Macintosh and Windows solutions in HyperCard, MetaCard, and Runtime Revolution
+		</p>
+		<h2 class="resourcesTitle"><a href="http://www.hyperactivesw.com/Resources.html">Resources...</a></h2> 
+		<div class="subOneCol">
+			<h2><strong>Reference Sheet: Building Standalones</strong></h2> 
+			<br>
+			<cite> Jacqueline Landman Gay
+				<br>
+					HyperActive Software
+				<br>
+					Presented at RevConWest, June 2005
+				<br>
+	</cite> 
+	<p>
+		<i>In
+addition to understanding the Standalone Builder, the following
+reference information may be useful when preparing to distribute your
+application.</i>
+	</p>
+	<h2>Icons</h2> 
+	<p> Revolution's standalone
+builder automatically copies any Revolution icons assigned to buttons
+into the standalone. However, only those icons actually assigned to
+buttons at the time the standalone is built are recorded. You must add
+others yourself. The best way is to transfer them as images into your
+stack before building. </p><h3>Standalone icons - Creating icons for the desktop</h3> A tutorial with some sample files on creating icons for both Macs and PCs is at: 
+<p>
+	<a href="http://www.altuit.com/webs/altuit2/RunRev/Tutorials.htm">http://www.altuit.com/webs/altuit2/RunRev/Tutorials.htm</a> 
+</p><p>
+	<i>Windows desktop icon types</i> 
+</p><p> These must be created using the Windows ".ico" file type. Icons
+for each of these variations must be made and placed into a Windows
+icon file. The easiest way to do this is to use an icon editor. </p><p>
+	These variations compose a standard Windows icon set. Revolution's standalone builder requires that all are present: 
+</p><blockquote>
+	16 Color (4-bit) 16x16
+	<br>
+		16 color (4-bit) 32x32
+	<br>
+		16 color (4-bit) 48x48
+	<br>
+		256 color (8-bit) 16x16
+	<br>
+		256 color (8-bit) 32x32
+	<br>
+		256 color (8-bit) 48x48
+	<br>
+		Windows XP (32-bit) 16x16
+	<br>
+		Windows XP (32-bit) 32x32
+	<br>
+		Windows XP (32-bit) 48x48
+	<br>
+</blockquote>
+<i>Windows icon editors:</i> 
+<p>
+There are many editors available for creating Windows icon files. Some
+popular recommendations from participants on the Revolution mailing
+list: </p><p>
+Axialis Icon Workshop <a href="http://www.axialis.com/">http://www.axialis.com/</a>
+<br>
+	Frontbase Image to Icon <a href="http://www.make-icon.com/">http://www.make-icon.com/</a>
+<br>
+Microangelo <a href="http://www.microangelo.us/">http://www.microangelo.us/</a>
+<br>
+IconCool Editor <a href="http://www.iconcool.com/">http://www.iconcool.com</a>/ 
+</p><p>
+<i>Macintosh OS X icon types</i> 
+</p><p>
+Macintosh OS X icons must be created in a special OS X icon file. The
+easiest way to do this is to use an icon editor. OS X includes a
+rudimentary icon editor if you install the Developer Tools that come
+with the OS. </p><p>
+These variations compose the standard Macintosh icon set (are all 32 bit with a 1-bit mask) 
+</p><blockquote>
+16x16
+<br>
+	32x32
+<br>
+	48x48
+<br>
+	128x128
+</blockquote>
+You don't have to make all of them. If some are missing, the OS will
+scale another one to fit if it needs a missing size. If you are only
+going to make one, make the 128-pixel size. Making all the sizes gives
+you better control over their appearance, however.
+<br>
+<i>Macintosh OS X icon editors</i> 
+<blockquote>
+Iconographer <a href="http://www.mscape.com/products/iconographer.html">http://www.mscape.com/products/iconographer.html</a>
+<br>
+	Icon Composer (included in OS X Developer Tools)
+</blockquote>
+<br>
+<i>Macintosh OS 9 icon types</i> 
+<p>OS 9 icons must be created in a resource editor, which is almost
+always ResEdit. Icons and other resources are usually edited after the
+standalone is built; however, you only need to do this once. Once it
+has been created, you can extract the resource fork as a separate file
+on disk. Revolution's standalone builder allows you to to include this
+resource file in each subsequent build. </p><p>
+You will need icons for resources: ic14, ic18, icns, ics4, and ics8.
+ResEdit allows you to edit all of these in the same editing window.
+Create one (usually the ic18 full-color resource) and you can drag it
+to the other sizes to auto-duplicate it at different color depths. Put
+your standalone icon into resource 128 of ic18. Put your stack icon
+into resource 129. </p><p>
+There is more information in the "Deployment" section at Ken Ray's tips site here: 
+</p><p>
+<a href="http://www.sonsothunder.com/index2.htm?http://www.sonsothunder.com/devres/revolution/revolution.htm">http://www.sonsothunder.com/index2.htm?http://www.sonsothunder.com/devres/revolution/revolution.htm</a>
+<br>
+<i>Linux icon types</i> 
+</p><p>
+KDE and GNOME both use either of these icon sizes: 
+</p><blockquote>
+32x32
+<br>
+	45x45
+</blockquote>
+To create icons in Linux, you don't need any special software. Most
+icons in KDE and GNOME use the .PNG file type which can be created by
+most graphics editors. Icons for standalones are applied after the
+standalone is built and integrating them is part of the OS interface
+(users can do this too and change your icon at will.) <p>
+Because any graphics program can create icons, there are not a lot of specialized tools. These two showed up in a search:
+</p>
+<blockquote>
+Kiconedit - icons for KDE (X11) <a href="http://www.tucows.com/preview/32052">http://www.tucows.com/preview/32052</a>
+<br>
+	BabyGimp (X11) <a href="http://www.tucows.com/preview/175051">http://www.tucows.com/preview/175051</a>
+</blockquote>
+<h2>File Associations: double-clicking stacks to open in your standalone</h2> 
+<br>
+<i>Windows</i> 
+<p>
+You will need to set registry entries. You can do this via scripts, or
+if you use an installer program, you can let it do the file
+associations for you. Using an installer program is easiest. If you
+want to do it by script, Ken Ray's tip site has an explanation in the
+File/Folder Manipulation section here: </p><p>
+<a href="http://www.sonsothunder.com/index2.htm?http://www.sonsothunder.com/devres/revolution/revolution.htm">http://www.sonsothunder.com/index2.htm?http://www.sonsothunder.com/devres/revolution/revolution.htm</a> 
+</p><p>
+<i>Macintosh OS 9</i> 
+</p><p>
+Macs associate files by assigning a creator code and a type code. The
+creator code is unique to your application. The type code may be either
+unique to your application, or shared by other applications (for
+example, many applications can open text files, so the TEXT file type
+is common across many applications.) </p><p>
+The Revolution standalone builder allows you to set the file type and
+creator codes that your standalone will use. For personal use, you may
+use any series of 4 letters you like, provided they are not in use by
+other applications on your drive. If you plan to distribute the
+standalone to others, you will need a unique creator code. You can look
+up and register creator codes at Apple Computer's registry: </p><p>
+<a href="http://developer.apple.com/dev/cftype/faq.html">http://developer.apple.com/dev/cftype/faq.html</a> 
+</p><p>
+<i>Macintosh OS X</i> 
+</p><p>
+Macintosh OS X uses two ways of associating applications and their
+files; both creator and type codes as well as file name extensions. For
+files that are not application bundles, OS X looks for a type code
+first. If the file does not have a type code, then it looks at the file
+extension to determine what applications can open it. All Mac OS X
+applications are contained in “bundles”, which are really folders that
+the OS treats as a single file. Inside the bundle is a plist document.
+The plist is an XML document that describes many things about the
+application, including what files it can open and what creator and type
+codes it uses.
+</p>
+<h2>Building standalones on one platform for deployment on another</h2> 
+<p>Revolution can build standalones for any platform while running on
+any other platform, with one exception; you can't build a standalone
+for Mac OS 9 while running on a Windows or a Unix machine. Because Mac
+OS 9 standalones require a resource fork, you must be running MacOS or
+Mac OS X to build for that platform. You can, however, build for OS X
+from any other machine.
+</p>
+<h2>Standalone Builder Easter egg</h2> 
+<p>There is an easter egg in the standalone builder. If you create a
+components/save/userscripts directory and put your own library stacks
+in there, you can choose them in the Standalone Builder script
+libraries list and they will be put in use with the rest of the
+Revolution libraries.
+</p>
+<h2>Distribution packages and installers</h2> 
+<p>There are several commercial and shareware installer packages that
+allow you to distribute your standalone and all its associated files in
+a single package. These allow your users to install your software by
+clicking a button. These installers typically allow you to determine
+where on the hard drive your files will be placed, and they will set up
+file associations and other OS requirements for you.
+</p>
+<p>
+Some typical installer packages: 
+</p><p>
+Installer VICE is a commercial package that makes installers for Mac OS 9, Mac OS X, and Windows 
+</p><p>
+<a href="http://www.mindvision.com/products.asp">http://www.mindvision.com/products.asp</a> 
+</p><p>
+<i>Windows Installers</i> 
+</p><blockquote>
+WiseInstall <a href="http://www.wise.com/products.asp">http://www.wise.com/products.asp</a>
+<br>
+	ClickTeam <a href="http://clickteam.com/eng/installcreator.php">http://clickteam.com/English/install_creator.htm</a> (free with ad)
+</blockquote>
+<i>MacOS installers</i> 
+<blockquote>
+StuffIt Installermaker <a href="http://www.stuffit.com/mac/installermaker/">http://www.stuffit.com/mac/installermaker/</a>
+</blockquote>
+<i>Mac OS X installers</i> 
+<blockquote>
+DropDMG <a href="http://c-command.com/dropdmg/">http://c-command.com/dropdmg/</a>
+<br>
+	StuffIt Installermaker <a href="http://www.stuffit.com/mac/installermaker/">http://www.stuffit.com/mac/installermaker/</a>
+</blockquote>
+<i>Linux</i> 
+<blockquote>
+Often distributed as .gz or .tgz files
+</blockquote>
+<p>
+&nbsp;
+</p>
+</div>
+<br clear="all">
+</div>
+<div class="footer">
+	<p>
+		<a href="http://www.hyperactivesw.com/index.html">Home</a> <a href="http://www.hyperactivesw.com/whats_new.html">What's New</a> <a href="http://www.hyperactivesw.com/who_we_are.html">Who We Are</a> <a href="http://www.hyperactivesw.com/what_we_do.html">What We Do</a> <a href="http://www.hyperactivesw.com/solutions.html">Solutions</a> <a href="http://www.hyperactivesw.com/Resources.html">Resources</a> <a href="http://www.hyperactivesw.com/site_map.html">Site Map</a> <a href="mailto:info@hyperactivesw.com">Contact Us</a>
+	</p>
+	<p>
+		© 1996-2009 HyperActive Software. All Rights Reserved.
+	</p>
+<!-- end #footer -->
+</div>
+<!-- end #container -->
+</div>
+</body></html>

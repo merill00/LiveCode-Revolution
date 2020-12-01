@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>HyperActive Software - Resources - Polling the Mouse in MetaCard and Revolution</title> 
+	<meta name="description" content="Custom Macintosh and Windows software solutions in Hypercard, Supercard, Metacard, and Runtime Revolution.">
+	<meta name="keywords" content="software programming, custom programming, macintosh programming, hypercard, supercard, metacard, runtime revolution, applescript, hypertext, hypermedia">
+		<link href="resources_polling_files/global.css" rel="stylesheet" type="text/css">
+</head><body>
+<div class="container">
+	<div class="header">
+		<div class="headertitle">
+			HyperActive Software
+		</div>
+		<div class="headercontact">
+			<a href="mailto:info@hyperactivesw.com">Contact Us</a>
+		</div>
+		<br clear="all">
+		<p>
+			<a href="http://www.hyperactivesw.com/index.html">Home</a> <a href="http://www.hyperactivesw.com/whats_new.html">What's New</a> <a href="http://www.hyperactivesw.com/who_we_are.html">Who We Are</a> <a href="http://www.hyperactivesw.com/what_we_do.html">What We Do</a> <a href="http://www.hyperactivesw.com/solutions.html">Solutions</a> <a href="http://www.hyperactivesw.com/Resources.html">Resources</a>
+		</p>
+<!-- end #header -->
+	</div>
+	<div class="subsubMainContent">
+		<p class="white">
+			<strong>We make software for humans.</strong> Custom Macintosh and Windows solutions in HyperCard, MetaCard, and Runtime Revolution
+		</p>
+		<h2 class="resourcesTitle"><a href="http://www.hyperactivesw.com/Resources.html">Resources...</a></h2> 
+		<div class="subOneCol">
+			<h2><strong>Polling the Mouse in MetaCard and Revolution</strong></h2> 
+			<p class="first">
+				<strong>(or) How to wreck perfectly good software</strong>
+			</p>
+			<p>
+				<cite>by Jacqueline Landman Gay
+					<br>
+						HyperActive Software</cite> 
+			</p>
+			<h3>A mouse() on a hamster wheel</h3>
+A common scripting technique in any x-talk language is polling the
+mouse in order to get information about its state so that a script can
+perform an action. In HyperCard or SuperCard, for example, it is
+customary when simulating a dragging operation to use a repeat loop to
+get <code>the mouseLoc</code> in order to repeatedly set an object to
+the mouse location, or to check in a loop for a mouse condition to
+determine when to leave the loop. Here is a common example: <blockquote>
+<pre>repeat until the mouse is up
+  set the loc of btn "dragBtn" to the mouseLoc
+end repeat</pre> 
+			</blockquote>
+			<p class="first">
+In MetaCard and Revolution, this kind of mouse polling is emphatically
+discouraged. Scott Raney of MetaCard Corporation has this to say about
+the above repeat construct: </p>
+			<blockquote>
+				<i> This loop uses 100% of the CPU time,
+regardless of the speed of the processor, bringing the system to its
+knees, causing poor feedback for your app, and making your system
+unresponsive to any other processes running on it. You see, on a fast
+system, 99.99% of the time through that loop you're setting the loc to
+exactly the same coordinate! <p> I think the biggest problem here is that OSs have evolved way
+beyond the point where even developers (or at least most of our
+customers) understand how they work. There's nothing wrong at all with
+things like "the mouse" on single-user single-tasking OSs like MacOS,
+but that's just not the world we live in anymore... </p>
+			<p> I'm certainly sympathetic to the "easier way" and
+"programming for the rest of us" arguments, but none of us can afford
+to be classed as developers of system-hostile applications...
+Developing in a high level language will become a stigma that we'll
+never live down... </p>
+		</i>
+	</blockquote>
+	<p> Some of the processes that can
+slow down or stop when a script uses this kind of processor-intensive
+repeat loop are: file and printer sharing, HTTP/FTP servers, network
+management tools, and on UNIX systems (including Mac OS X), people
+telnetting in from other systems. Another problem on Mac OS X is the
+spinning rainbow cursor that may appear while the loop is in progress
+if the operation takes too long — the system puts that up whenever it
+thinks an application is unresponsive. That means if a user drags an
+object around the card for a while, or keeps the mouse button depressed
+for too long while the script is in a loop, the system may think your
+application has gone dead. </p><p>
+		The problem is not limited to just checking <code>the mouseloc</code>
+or the mouse's up or down state. Checking any of the following mouse
+events within a loop can cause a bottleneck and should be avoided: </p>
+<ul>
+	<li>
+		the mouse -- i.e., "up" or "down" 
+	</li>
+	<li>
+		the mouseClick 
+	</li>
+	<li>
+		the mouseH 
+	</li>
+	<li>
+		the mouseV 
+	</li>
+	<li>
+		the mouseLoc 
+	</li>
+</ul>
+<h3>So what do I do?</h3> 
+<p class="first">
+You may be wondering at this point, "If I shouldn't be using a repeat loop to determine the state of the mouse, what <i>do</i> I use?"
+</p>
+<p>
+The answer lies in the <code>mouseMove</code> system message, sent by the MetaCard/Revolution engine whenever the user moves the mouse. The <code>mouseMove</code>
+message carries two parameters with it: the horizontal and vertical
+coordinates of the current mouse position. By writing a handler that
+traps this system message, you can create an OS-friendly script that
+will not bottleneck the CPU and which will run far more efficiently
+than any repeat loop.
+</p>
+<p>
+There is an additional advantage to using the <code>mouseMove</code>
+approach: it allows your stack to continue sending events and reporting
+other user actions simultaneously. Unlike a repeat loop, which locks
+out everything else until the handler ends, trapping a system message
+takes an insignificant amount of time and allows other system messages
+and all your stack's features to continue operating at the same time.
+You may not always want to use the other messages that are being sent,
+but they are there if you need them.
+</p>
+<h3>How it works</h3> 
+<p class="first">In the above example, all we want to do is move a
+button to the same location as the current mouse position, for as long
+as the mouse button is depressed. If the mouse is "up", the script
+should do nothing. A short handler in the button script could take care
+of it: </p>
+<blockquote>
+<pre>on mouseMove x,y
+  if the mouse is down then set the loc of me to x,y
+end mouseMove</pre> 
+</blockquote>
+<p class="first">
+Very easy. At the same time that <code>mouseMove</code>
+is catching the position of the mouse and handling the drag, you can
+also have other handlers running normally to catch various system
+messages or handle other events. You can think of <code>mouseMove</code> as a sort of customized, single-purpose <code>idle</code> message. (Note though that <code>idle</code> has its own set of processor-hogging problems, and should be avoided at all costs too.)
+</p>
+<p>
+But wait. The <code>mouseMove</code> handler is still polling the
+mouse, checking for its down state repeatedly. So while we have
+improved the script's efficiency, it is still using more resources than
+necessary. We can fix that by adding a variable that stores the state
+of the mouse, so that the engine won't have to check it each time. We
+can set a flag on <code>mouseDown</code>, and turn it off on <code>mouseRelease</code> and <code>mouseUp</code>.
+While we're at it, we'll also add a line to the script that passes the
+ID of the object we are dragging so that more than one button can
+respond to the <code>mouseMove</code> message.
+</p>
+<p>
+These handlers would go in the card or stack script: 
+</p>
+<blockquote>
+<pre>on mouseDown
+  global gDragging,gDragObj,gDeltaX,gDeltaY -- (you could use local script variables instead)
+  if the name of the target contains "button" then
+    put true into gDragging
+    put the long id of the target into gDragObj
+    -- the following adjusts for the mouse position on the object;
+    -- it isn't part of what we're explaining here but it enhances the drag:
+    put item 1 of the loc of gDragObj - the mouseH into gDeltaX
+    put item 2 of the loc of gDragObj - the mouseV into gDeltaY
+  end if
+end mouseDown
+
+on mouseRelease
+  global gDragging
+  put false into gDragging
+end mouseRelease
+
+on mouseUp
+  global gDragging
+  put false into gDragging
+end mouseUp
+
+on mouseMove x,y
+  global gDragging,gDragObj,gDeltaX,gDeltaY
+  if gDragging = true then
+    add gDeltaX to x
+    add gDeltaY to y
+    set the loc of gDragObj to x,y
+  end if
+end mouseMove</pre> 
+</blockquote>
+<p class="first">
+Most HyperCard and SuperCard scripters are familiar with <code>mouseDown</code> and <code>mouseUp</code>, but <code>mouseRelease</code> may be new. The <code>mouseRelease</code>
+message is sent to an object when the mouse button goes up but the
+mouse is no longer within the borders of the object that received the
+original <code>mouseDown</code> message. This covers the case where
+the user may move the mouse faster than the button can keep up. Even if
+the mouse is released somewhere outside the button, this script will
+still set the global <code>gDragging</code> to false.
+</p>
+<p>
+Now you've got a fast, efficient, CPU-friendly set of handlers that
+won't bog down the OS or hog system resources. Applications running in
+the background will still get their fair share of CPU cycles with no
+performance hit. Your stack will respond much faster and will allow
+other user actions and scripts to be handled simultaneously. There's no
+down side, there's lots to gain, and your stack will run like a pro.
+</p>
+<p>
+&nbsp;
+</p>
+</div>
+<br clear="all">
+</div>
+<div class="footer">
+	<p>
+		<a href="http://www.hyperactivesw.com/index.html">Home</a> <a href="http://www.hyperactivesw.com/whats_new.html">What's New</a> <a href="http://www.hyperactivesw.com/who_we_are.html">Who We Are</a> <a href="http://www.hyperactivesw.com/what_we_do.html">What We Do</a> <a href="http://www.hyperactivesw.com/solutions.html">Solutions</a> <a href="http://www.hyperactivesw.com/Resources.html">Resources</a> <a href="http://www.hyperactivesw.com/site_map.html">Site Map</a> <a href="mailto:info@hyperactivesw.com">Contact Us</a>
+	</p>
+	<p>
+		© 1996-2009 HyperActive Software. All Rights Reserved.
+	</p>
+<!-- end #footer -->
+</div>
+<!-- end #container -->
+</div>
+</body></html>

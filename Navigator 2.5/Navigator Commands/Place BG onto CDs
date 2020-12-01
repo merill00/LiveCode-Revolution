@@ -1,0 +1,1 @@
+local tBGNameif tBGName is empty thenask "Which Background?"if the result is not empty then exit to topput it into tBGNameend ifif word 1 of tID is "card" then place background tBGName onto tID

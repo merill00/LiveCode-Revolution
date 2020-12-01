@@ -1,0 +1,17 @@
+
+h1        { color: #333; font-size: 20pt; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif }
+h2            { color: #22478b; font-size: 18px; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; property-name: property-value  }
+h3        { color: #22478b; font-size: 16px; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif }
+h4         { color: #333; font-size: 14px; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; font-weight: bold }
+h6         { color: #333; font-size: 11px; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; font-weight: normal }
+h5 { color: #333; font-size: 8px; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif }
+.body    { font-size: 12px; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif }
+.footer { font-size: 10px; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif }
+a { color: #22478b }
+.custquote    { color: #444; font-style: italic; font-size: 12px; font-family: "Trebuchet MS" }
+.custquote1   { color: #444 }
+input { font-size: 12px }
+td  { font-size: 12px; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif }
+p { font-size: 12px; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif }
+.script { font-family: Courier, "Courier New", Monaco, monospace }
+.snews { border: solid 2px #22478b; }

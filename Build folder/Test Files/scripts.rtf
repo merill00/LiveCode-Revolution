@@ -1,0 +1,1496 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf250
+{\fonttbl\f0\froman\fcharset0 Times-Roman;\f1\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sa280\ql\qnatural
+
+\f0\b\fs36 \cf0 A Different Way to Hilite Text\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 Here's a way to hilite text in a slightly differeny way than usually, without a mouse click. Just copy the handler into a script of a field of your Revolution stack and give it a try.\
+\
+\
+\pard\pardeftab720\sa120\ql\qnatural
+\cf0 \
+\pard\pardeftab720\ql\qnatural
+\cf0 \
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on mouseMove\
+\'a0\'a0put word 2 of the mouseLine into myLineNr\
+\'a0\'a0if myLineNr is not empty and the backColor of line myLineNr of me \\\
+\'a0\'a0\'a0\'a0\'a0\'a0is not yellow then\
+\'a0\'a0\'a0\'a0set the backColor of line 1 to -1 of me to white\
+\'a0\'a0\'a0\'a0set the backColor of line myLineNr of me to yellow\
+\'a0\'a0end if\
+end mouseMove
+\f0 \
+\
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 Activate Application\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 This script uses Visual Basic to bring an application to front. It does so by saving a VB script to the hard disk and running this scipt. Afterwards, the VB script is deleted. This is a windows-only script. For Mac, use AppleScript.\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on VBS_AppActivate pTitleOrID\
+\'a0\'a0put format("set WshShell = WScript.CreateObject(\\"WScript.Shell\\")") into tVBS\
+\'a0\'a0if isNumber(pTitleOrID) then\
+\'a0\'a0\'a0\'a0put tVBS & cr & "WshShell.AppActivate" && pTitleOrID into tVBS\
+\'a0\'a0else\
+\'a0\'a0\'a0\'a0put tVBS & cr & "WshShell.AppActivate" && quote & pTitleOrID & \\\
+\'a0\'a0\'a0\'a0\'a0\'a0quote into tVBS\
+\'a0\'a0end if\
+\'a0\'a0put "C:\\vbs_temp.vbs" into tVBSPath\
+\'a0\'a0put tVBS into url ("file:" & tVBSPath)\
+\'a0\'a0set the hideConsoleWindows to true\
+\'a0\'a0get shell("cscript.exe //nologo" && tVBSPath)\
+\'a0\'a0put it into tResult\
+\'a0\'a0if there is a file tVBSPath then\
+\'a0\'a0\'a0\'a0send "delete file" && quote & tVBSPath & quote to me in 1 second\
+\'a0\'a0end if\
+\'a0\'a0if tResult <> "" then return "Error: " & tResult\
+end VBS_AppActivate
+\f0 \
+\
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 ddColor Status Bar\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 Another discussion with Ken Norris, this time about drawing a status bar exactly within a particular rect.\
+\
+Click the rectangle right below.\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on showStatusBar\
+\'a0\'a0set the cursor to "Watch"\
+\'a0\'a0put the rect of cd btn "StatusBar" into theRect\
+\'a0\'a0add 1 to item 1 of theRect \
+\'a0\'a0add 1 to item 2 of theRect \
+\'a0\'a0subtract 1 from item 3 of theRect\
+\'a0\'a0subtract 1 from item 4 of theRect \
+\'a0\'a0repeat with h=(item 1 of theRect) to (item 3 of theRect)\
+\'a0\'a0\'a0\'a0put h into item 3 of theRect\
+\'a0\'a0\'a0\'a0wait 1 -- Replace this with your incremented action.\
+\'a0\'a0\'a0\'a0addColor "colorRect","cd",theRect,"0,39321,65535",1\
+\'a0\'a0end repeat\
+\'a0\'a0wait 1 second\
+\'a0\'a0-- addColor "colorCard" -- color rect gone\
+\'a0\'a0-- following lines for Sample Scripts stack only\
+\'a0\'a0lock screen\
+\'a0\'a0drawBG\
+\'a0\'a0drawCD\
+\'a0\'a0unlock screen\
+end showStatusBar
+\f0 \
+\
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 Admin Rights\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 This AppleSript snippet is an example of how to make Mac OS X's built-in password dialog appear. Although this works in e.g. the script editor of AppleScript, this may not work in HyperCard. If you do get this to work in HyperCard, please let me know.\
+\
+The second script is just a non-working example of what an AppleScript would look like, which ueses known user name and password to execute shell commands without asking for the password again.\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on foo()\
+\'a0\'a0do shell script "uptime" with administrator privileges\
+end foo\
+\
+on foo2()\
+\'a0\'a0do shell script "command" user name "me" password "mypassword" with \'ac\
+\'a0\'a0administrator privileges\
+end foo2
+\f0 \
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 Answer & Ask UserTalk\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 A few more user examples: answer, ask, and answer with two buttons.\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 --language_UserTalk;\
+on answerUTalk () \{\
+\'a0\'a0dialog.alert("Heads up, please!");\
+\};\
+\
+--language_UserTalk;\
+on askUTalk () \{\
+\'a0\'a0askVar="";\
+\'a0\'a0bool=false;\
+\'a0\'a0bool=dialog.ask("Heads up, please!",@askVar);\
+\'a0\'a0return askVar;\
+\};\
+\
+--language_UserTalk;\
+on answerUTalkChoose () \{\
+\'a0\'a0return (dialog.twoway("Heads up, please!","Cancel","Okay"));\
+\}\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\f0\b\fs36 \cf0 nswer and Ask with AS (nice)\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 Here's a solution for using AppleScript dialogs inside HyperCard and\
+retrieving the results of the user's action.\
+\
+There are three sets of scripts. The first one is an AppleScript Ask\
+dialog. The second one is an AppleScript Answer dialog with two buttons.\
+The third is an AppleScript Answer dialog with three buttons.\
+\
+To use these, place the AppleScript handlers in a stack-in-use, or in a\
+card, background or stack script of the current stack. Use the HyperTalk\
+scripts in buttons to call them.\
+\
+You'll notice that in the 3-button Answer dialog, I had AppleScript\
+return "button returned of result". This delivers just the button name,\
+without quotes or braces.\
+\
+\
+Supporting Function:\
+\
+The string returned from AppleScript when you ask for "text of result"\
+looks like...\
+\
+\'a0\'a0\{"Text","ButtonName"\}\
+\
+so to make that usable, you can use this function:\
+\
+function getASresult theText\
+\'a0\'a0delete char 1 of\'ac\
+\'a0\'a0theText -- "\{"\
+\'a0\'a0return value of\'ac\
+\'a0\'a0word 1 of theText\
+end getASresult\
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 Answer AS\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 Compare this script with the Answer HT script.\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 set theString to background field 1 as string\
+set theResult to (display dialog theString buttons \{"OK", "Cancel!"\} \'ac\
+default button "Cancel!" with icon caution)\
+return the result\
+\
+on answerAS\
+\'a0\'a0put line 1 to 4 of script of me into theScript\
+\'a0\'a0do theScript as appleScript\
+\'a0\'a0put the result into theResult\
+\'a0\'a0if "OK" is in theResult then\
+\'a0\'a0\'a0\'a0play boing c e g e c5\
+\'a0\'a0else if "Cancel" is in theResult then\
+\'a0\'a0\'a0\'a0beep\
+\'a0\'a0end if\
+end answerAS
+\f0 \
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 Answer HT\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 Compare this script with the Answer AS script.\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on answerHT\
+\'a0\'a0answer bg field 1\
+end answerHT\
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\f0\b\fs36 \cf0 Answer Program AS Version\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 The AppleScript version of \'abanswer program "Prompt"\'bb.\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on run()\
+\'a0set remoteApp to ""\
+\'a0try\
+\'a0\'a0\'a0set remoteApp to (choose application) as text\
+\'a0on error\
+\'a0end try\
+\'a0\'a0return remoteApp\
+end run
+\f0 \
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 Answer with QK in HT\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 Just an answer example, using QuicKeys.\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on answerQK\
+\'a0\'a0do "message" && quote & "Hello World" &\'ac\
+\'a0\'a0quote && "Cancel" as "QuicKeys"\
+end answerQK\
+\pard\pardeftab720\ql\qnatural
+
+\f0 \cf0 \
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 AnswerFile AS\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 Choose a file using a nice file dialog and navigation services (if available).\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on answerFile(thePrompt,theType)\
+\'a0set theFile to ""\
+\'a0try\
+\'a0\'a0set theFile to (choose file of type theType with prompt thePrompt) as text\
+\'a0on error errMsg number errNr\
+\'a0\'a0if errNr is not -128 then\
+\'a0\'a0\'a0set theFile to "Error: " & errMsg & " (" & errNr & ")."\
+\'a0\'a0end if\
+\'a0end try\
+\'a0return theFile\
+end answerFile\
+\
+on run()\
+\'a0\'a0return (answerFile("Select a file...","TEXT"))\
+end run\
+\pard\pardeftab720\ql\qnatural
+
+\f0 \cf0 \
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 Application installed or not?\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 This script tests whether an application is present on your hard disk. \
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on test(theCreator)\
+\'a0tell application "Finder"\
+\'a0\'a0if exists application file id theCreator then\
+\'a0\'a0\'a0set iePath to application file id theCreator\
+\'a0\'a0\'a0display dialog (("The application was located at: " & return & iePath & "") as string) buttons \{"Okay"\} default button "Okay" with icon 1\
+\'a0\'a0\'a0return true\
+\'a0\'a0else\
+\'a0\'a0\'a0display dialog "Couldn't find the application!" buttons \{"Okay"\} default button "Okay" with icon 1\
+\'a0\'a0\'a0return false\
+\'a0\'a0end if\
+\'a0end tell\
+end test\
+\
+on checkHyperCard()\
+\'a0get test("WILD")\
+end checkHyperCard\
+\
+on checkSomething()\
+\'a0get test("ABCD")\
+end checkSomething
+\f0 \
+\
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 pplication Running or Not\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 This little script shows how to check whether an application is currently running, using AppleScript.\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on run()\
+\'a0\'a0tell application "Finder"\
+\'a0\'a0\'a0\'a0set appIsRunning to process "HyperCard" exists\
+\'a0\'a0\'a0\'a0return appIsRunning\
+\'a0\'a0end tell\
+end run
+\f0 \
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 Applications & Extensions\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 Get list of applications and their file extensions.\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 system_profiler SPApplicationsDataType\
+\pard\pardeftab720\ql\qnatural
+
+\f0 \cf0 \
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 ArrowKeys\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 From Steve Drazga 12/87\
+This version was copied from the Developer Stack 1.1\
+\
+To prevent the user from using a specific arrowkey replace "left" in the first script with whatever key you want to disable. Click on an arrowkey to try this.\
+\
+To disable all the arrowkeys use the second script.\
+\
+To do something special when an arrowkey is selected, use the third script.\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 \
+on arrowKey direction\
+\'a0\'a0if direction is not "left" then pass arrowKey\
+end arrowkey\
+\
+\
+on arrowKey direction\
+end arrowkey\
+\
+\
+on arrowkey direction\
+\'a0\'a0if direction is up then\
+\'a0\'a0\'a0\'a0--special instructions for up arrowkey go here.\
+\'a0\'a0\'a0\'a0--there can be more than one.\
+\'a0\'a0else\
+\'a0\'a0\'a0\'a0pass arrowkey -- remember if you don't pass the arrowkey, they won't do anything!\
+\'a0\'a0end if\
+end arrowkey
+\f0 \
+\
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 ART HyperText Trick\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 This version was copied from the Developer Stack 1.1\
+\
+DOUBLE CLICK on any word in this field for an example\
+\
+This trick lets the user double click on a word to activate a hypertext link.\
+The 'on mousewithin' script goes into the target field.\
+Look at the script of the 'syntax' fields on the XCMD or XFCN card for a\
+varation of this method.\
+\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on mousewithin\
+\'a0\'a0--\
+\'a0\'a0--hypertext technique by Steve Drazga, ART Incorporated\
+\'a0\'a0--if you use this in your scripts please include these 2 lines.\
+\'a0\'a0--\
+\'a0\'a0if "Comment" is in the target then\
+\'a0\'a0\'a0\'a0if the locktext of the target is true then\
+\'a0\'a0\'a0\'a0\'a0\'a0set locktext of target to false --unlock the field if it is locked\
+\'a0\'a0\'a0\'a0end if\
+\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0if selection is not empty then --something was selected\
+\'a0\'a0\'a0\'a0\'a0\'a0put selection into SelectedWord\
+\'a0\'a0\'a0\'a0\'a0\'a0if space is in SelectedWord then --the user selected more than 1 word\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0click at loc of target --so we will clear the selection\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0exit mousewithin --and exit to wait for another selection\
+\'a0\'a0\'a0\'a0\'a0\'a0end if\
+\'a0\'a0\'a0\'a0\'a0\'a0--\
+\'a0\'a0\'a0\'a0\'a0\'a0--this is the section where you do something with the selection\
+\'a0\'a0\'a0\'a0\'a0\'a0--You can bring up a pop up note or you can go to another card.\
+\'a0\'a0\'a0\'a0\'a0\'a0--\
+\'a0\'a0\'a0\'a0\'a0\'a0put the selection\
+\'a0\'a0\'a0\'a0end if\
+\'a0\'a0end if\
+end mousewithin\
+\
+\
+-- handlers below for demo purposes only\
+\
+on openCard\
+\'a0\'a0put "This version was copied from the Developer Stack 1.1" & \'ac\
+\'a0\'a0return & return & \'ac\
+\'a0\'a0"DOUBLE CLICK on any word in this field for an example" & \'ac\
+\'a0\'a0return & return & \'ac\
+\'a0\'a0"This trick lets the user double click on a word to" && \'ac\
+\'a0\'a0"activate a hypertext link." & return & \'ac\
+\'a0\'a0"The 'on mousewithin' script goes into the target field." & return & \'ac\
+\'a0\'a0"Look at the script of the 'syntax' fields on the" && \'ac\
+\'a0\'a0"XCMD or XFCN card for a" & return & \'ac\
+\'a0\'a0"varation of this method." into fld "Comment"\
+end openCard\
+\
+on closeCard\
+\'a0\'a0if the icon of bg btn id 38 is "12920" then\
+\'a0\'a0\'a0\'a0repeat with x = 1 to number of flds\
+\'a0\'a0\'a0\'a0\'a0\'a0set the lockText of fld x to true\
+\'a0\'a0\'a0\'a0end repeat\
+\'a0\'a0end if\
+end closeCard\
+\pard\pardeftab720\ql\qnatural
+
+\f0 \cf0 \
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 Ask & Answer Dlog patches for Rev.\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 Every time when I update Revolution, I apply these patches. \
+\
+Before an answer or ask dialog window appear on screen, the suspendStack message is issued. You can use this message to quickly change the menu bar, disabling all items for instance. After dismissing the answer and ask dialogs, no message is issued, thus you don't get a resumeStack message either. This is a very inconvenient bug in Revolution which is easily solved by this patch.\
+\
+In the message box, type\
+\
+\'a0\'a0go stack "Ask dialog"\
+\
+and replace the mouseUp handler of the OK and Cancel buttons by the respective scripts as proposed here (see scripts). Save the Ask dialog stack and close it. Then type\
+\
+\'a0\'a0go stack "Answer dialog"\
+\
+in the mesage box. Replace the mouseUp handler in the card script by the one proposed here. From now on, you can handle the resumeStack message after closing the Ask or Answer dialog. You can add messages as you like, within the try control structure. [MS]\
+\
+Addendum January 2008:\
+In Rev 2.9 and later, you will find a closeAccept handler in card 1 of stack "Ask Dialog". Put the patch, starting with "-- my patch" at the end of the closeAccept handler. The mouseUp handlers are still patched in the same way as before.\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 -- Script of button OK of stack "Ask Dialog"\
+on mouseUp\
+\'a0\'a0-- RunRev's part\
+\'a0\'a0switch the fieldmode of this card\
+\'a0\'a0case "plain"\
+\'a0\'a0case "question"\
+\'a0\'a0case "error"\
+\'a0\'a0case "information"\
+\'a0\'a0case "warning"\
+\'a0\'a0\'a0\'a0get field 2\
+\'a0\'a0\'a0\'a0break\
+\'a0\'a0case "clear"\
+\'a0\'a0\'a0\'a0get field 3\
+\'a0\'a0\'a0\'a0break\
+\'a0\'a0case "password"\
+\'a0\'a0\'a0\'a0get mcencrypt(field 3)\
+\'a0\'a0\'a0\'a0break\
+\'a0\'a0end switch\
+\'a0\'a0set the dialogData to it\
+\'a0\'a0lock messages\
+\'a0\'a0close this stack\
+\'a0\'a0revCleanUpAskDialog--won't get closeStack\
+\'a0\'a0unlock messages\
+\'a0\'a0\'a0-- my patch\
+\'a0\'a0put the defaultStack into myOldDfltStack\
+\'a0\'a0set the defaultStack to the topStack\
+\'a0\'a0try\
+\'a0\'a0\'a0\'a0send "resumeStack" to this cd\
+\'a0\'a0end try\
+\'a0\'a0set the defaultStack to myOldDfltStack \
+end mouseUp\
+\
+-- Script of button Cancel of stack "Ask Dialog"\
+on mouseUp\
+\'a0\'a0-- RunRev's part\
+\'a0\'a0lock messages\
+\'a0\'a0close this stack\
+\'a0\'a0revCleanUpAskDialog--won't get closeStack\
+\'a0\'a0unlock messages\
+\'a0\'a0-- my patch\
+\'a0\'a0\'a0\'a0put the defaultStack into myOldDfltStack\
+\'a0\'a0set the defaultStack to the topStack\
+\'a0\'a0try\
+\'a0\'a0\'a0\'a0send "resumeStack" to this cd\
+\'a0\'a0end try\
+\'a0\'a0set the defaultStack to myOldDfltStack\
+end mouseUp\
+\
+-- MouseUp handler of card script of cd 1 of stack Answer Dialog\
+on mouseUp\
+\'a0\'a0-- RunRev's part\
+\'a0\'a0if the name of the target contains "button" then\
+\'a0\'a0\'a0\'a0lock messages--prevents user stack getting refocusing messages\
+\'a0\'a0\'a0\'a0close this stack\
+\'a0\'a0\'a0\'a0revCleanUpAnswerDialog--won't get closeStack\
+\'a0\'a0\'a0\'a0unlock messages\
+\'a0\'a0\'a0\'a0set the dialogData to the short name of the target\
+\'a0\'a0\'a0\'a0-- my patch\
+\'a0\'a0\'a0\'a0put the defaultStack into myOldDfltStack\
+\'a0\'a0\'a0\'a0set the defaultStack to the topStack\
+\'a0\'a0\'a0\'a0try\
+\'a0\'a0\'a0\'a0\'a0\'a0send "resumeStack" to this cd\
+\'a0\'a0\'a0\'a0end try\
+\'a0\'a0\'a0\'a0set the defaultStack to myOldDfltStack\
+\'a0\'a0end if\
+end mouseUp\
+\pard\pardeftab720\ql\qnatural
+
+\f0 \cf0 \
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 BackWards Linewise and Textwise\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 Hi all,\
+\
+How are things going? I wrote a little script to reverse text, i.e. to put it backwards. Here is the script:\
+\
+function backwardsText theText,lineBool\
+\'a0\'a0put empty into newText\
+\'a0\'a0if lineBool is true then\
+\'a0\'a0\'a0\'a0repeat with l=1 to number of lines of theText\
+\'a0\'a0\'a0\'a0\'a0\'a0put backwardsText(line l of theText,false) & return after newText\
+\'a0\'a0\'a0\'a0end repeat\
+\'a0\'a0\'a0\'a0put newText into theText\
+\'a0\'a0else\
+\'a0\'a0\'a0\'a0repeat with x=1 to number of chars of theText\
+\'a0\'a0\'a0\'a0\'a0\'a0put char x of theText into c\
+\'a0\'a0\'a0\'a0\'a0\'a0delete char x of theText\
+\'a0\'a0\'a0\'a0\'a0\'a0put c before theText\
+\'a0\'a0\'a0\'a0end repeat\
+\'a0\'a0end if\
+\'a0\'a0return theText\
+end backwardsText\
+\
+You could use this function to reverse a text line by line, or entirely at once.\
+\
+put backwardsText(<text>,boolean)\
+\
+where <text> is any container containing text. The boolean is false for textwise reversion and true for linewise reversion.\
+\
+Best regards,\
+\
+Mark\
+\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on dobackwardsLinewise\
+\'a0\'a0put backwardsLinewise(bg fld 1,true) into rslt\
+\'a0\'a0return rslt\
+end dobackwardsLinewise\
+\
+function backwardsLinewise theText,lineBool\
+\'a0\'a0put empty into newText\
+\'a0\'a0if lineBool is true then\
+\'a0\'a0\'a0\'a0repeat with l=1 to number of lines of theText\
+\'a0\'a0\'a0\'a0\'a0\'a0put backwardsLinewise(line l of theText,false) & return after newText\
+\'a0\'a0\'a0\'a0end repeat\
+\'a0\'a0\'a0\'a0put newText into theText\
+\'a0\'a0else\
+\'a0\'a0\'a0\'a0repeat with x=1 to number of chars of theText\
+\'a0\'a0\'a0\'a0\'a0\'a0put char x of theText into c\
+\'a0\'a0\'a0\'a0\'a0\'a0delete char x of theText\
+\'a0\'a0\'a0\'a0\'a0\'a0put c before theText\
+\'a0\'a0\'a0\'a0end repeat\
+\'a0\'a0end if\
+\'a0\'a0return theText\
+end backwardsLinewise\
+\
+on dobackwardsTextwise\
+\'a0\'a0put backwardsTextwise(bg fld 1,false) into rslt\
+\'a0\'a0return rslt\
+end dobackwardsTextwise\
+\
+function backwardsTextwise theText,lineBool\
+\'a0\'a0put empty into newText\
+\'a0\'a0if lineBool is true then\
+\'a0\'a0\'a0\'a0repeat with l=1 to number of lines of theText\
+\'a0\'a0\'a0\'a0\'a0\'a0put backwardsTextwise(line l of theText,false) & return after newText\
+\'a0\'a0\'a0\'a0end repeat\
+\'a0\'a0\'a0\'a0put newText into theText\
+\'a0\'a0else\
+\'a0\'a0\'a0\'a0repeat with x=1 to number of chars of theText\
+\'a0\'a0\'a0\'a0\'a0\'a0put char x of theText into c\
+\'a0\'a0\'a0\'a0\'a0\'a0delete char x of theText\
+\'a0\'a0\'a0\'a0\'a0\'a0put c before theText\
+\'a0\'a0\'a0\'a0end repeat\
+\'a0\'a0end if\
+\'a0\'a0return theText\
+end backwardsTextwise
+\f0 \
+\
+\
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 boingharmony\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 This script demonstrates using sound channels. Probably, this one is by Paul Gronemeyer.\
+\
+\
+\pard\pardeftab720\sa120\ql\qnatural
+\cf0 \
+\pard\pardeftab720\ql\qnatural
+\cf0 \
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on boingFun\
+\'a0\'a0play boing a5 a ah aq a ah aq c6 f5q. ge aw"\
+\'a0\'a0play boing "bb5 bb bbq. bbe bbq aq a ae a cq6 c bb5 g f"\
+\'a0\'a0wait until the sound is done\
+\'a0\'a0boingharmony\
+end boingFun -- You can, if you prefer, insert more melody\
+\
+on boingharmony\
+\'a0\'a0set the soundchannel to 1\
+\'a0\'a0play boing "f6h f6w a6h"\
+\'a0\'a0set the soundchannel to 2\
+\'a0\'a0play boing "a6h a6w f5h"\
+\'a0\'a0set the soundchannel to 3\
+\'a0\'a0play boing "c6h cw ch"\
+\'a0\'a0set the soundchannel to 4\
+\'a0\'a0play boing "f7h f6w"\
+\'a0\'a0-- flash 4\
+end boingharmony\
+\
+on boingharmony2\
+\'a0\'a0set the soundchannel to 1\
+\'a0\'a0play flute "f g a"\
+\'a0\'a0set the soundchannel to 2\
+\'a0\'a0play harpsichord "f g a"\
+end boingharmony2\
+\pard\pardeftab720\ql\qnatural
+
+\f0 \cf0 \
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 Case Sensitive Offset\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 HyperTalk case sensitive offset function.\
+\
+\
+\pard\pardeftab720\sa120\ql\qnatural
+\cf0 \
+\pard\pardeftab720\ql\qnatural
+\cf0 \
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 -- Michael D. Mays\
+function caseSensOffsetModified theLookedFor,theChunk\
+\'a0\'a0put (the length of theLookedFor) into theLen\
+\'a0\'a0put 0 into theOffsetsOffset\
+\'a0\'a0repeat\
+\'a0\'a0\'a0\'a0put offset(theLookedFor,theChunk) into theOffset\
+\'a0\'a0\'a0\'a0if theOffset=0 then return 0\
+\'a0\'a0\'a0\'a0put char theOffset to theLen-1+theOffset of theChunk into theHit\
+\'a0\'a0\'a0\'a0if (theLookedFor<theHit or theLookedFor>theHit)\
+\'a0\'a0\'a0\'a0then\
+\'a0\'a0\'a0\'a0\'a0\'a0put "" into char theOffset of theChunk\
+\'a0\'a0\'a0\'a0\'a0\'a0add 1 to theOffsetsOffset\
+\'a0\'a0\'a0\'a0else\
+\'a0\'a0\'a0\'a0\'a0\'a0return theOffset+theOffsetsOffset\
+\'a0\'a0\'a0\'a0end if\
+\'a0\'a0end repeat\
+end caseSensOffsetModified
+\f0 \
+\
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 Case Sensitive Offset (CompileIt!)\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 COMPILEIT HANDLER - This script should compile in the demo version of CompileIt since it is less than 10 lines long.\
+\
+\
+\pard\pardeftab720\sa120\ql\qnatural
+\cf0 \
+\pard\pardeftab720\ql\qnatural
+\cf0 \
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 -- Michael D. Mays\
+function mungIt findThis, inThis\
+\'a0\'a0-- mungIt() is just like offset()\
+\'a0\'a0put CharsHandle(inThis) into inThisHandler\
+\'a0\'a0put CharsHandle(findThis) into findThisHandler\
+\'a0\'a0put findThisHandler@.ptrType into findThisPtr\
+\'a0\'a0put the length of findThis into lenFindThis\
+\'a0\'a0return Munger(inThisHandler,0,findThisPtr,lenFindThis,"","")+1\
+end mungIt
+\f0 \
+\
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 Case Sensitive Offset w/delete\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 HyperTalk case sensitive offset function.\
+\
+\
+\pard\pardeftab720\sa120\ql\qnatural
+\cf0 \
+\pard\pardeftab720\ql\qnatural
+\cf0 \
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 -- M. Uli Kusterer\
+function caseSensOffset ch,inTxt\
+\'a0\'a0put false into foundSomething\
+\'a0\'a0put 0 into relOffset\
+\'a0\'a0put length(ch) into chLen -- keep us from repeating this inside loop\
+\'a0\'a0repeat until foundSomething\
+\'a0\'a0\'a0\'a0put offset(ch,inTxt) into thePos\
+\'a0\'a0\'a0\'a0if thePos = 0 then -- no match\
+\'a0\'a0\'a0\'a0\'a0\'a0put true into foundSomething\
+\'a0\'a0\'a0\'a0\'a0\'a0put 0 into returnOffset\
+\'a0\'a0\'a0\'a0else -- we have a match, now check case\
+\'a0\'a0\'a0\'a0\'a0\'a0put char thePos to thePos +chLen -1 of inTxt into foundTxt\
+\'a0\'a0\'a0\'a0\'a0\'a0if foundTxt > ch or foundTxt < ch then -- case mismatch :-(\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0delete char 1 to thePos of inTxt\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0-- above, we don't delete "1 to thePos +chLen -1" or else\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0-- we would get wrong results when, e.g. ch = "AA" and inTxt = "aAA"\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0add thePos to relOffset\
+\'a0\'a0\'a0\'a0\'a0\'a0else -- case matches\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0put true into foundSomething\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0put thePos +relOffset into returnOffset\
+\'a0\'a0\'a0\'a0\'a0\'a0end if\
+\'a0\'a0\'a0\'a0end if\
+\'a0\'a0end repeat\
+\'a0\'a0return returnOffset\
+end caseSensOffset\
+\pard\pardeftab720\ql\qnatural
+
+\f0 \cf0 \
+\
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 Center Window on Screen\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 The screenRect is the rect of the current card window's screen; this script calculates the width of the rect to center the window, since the screen's upper left may be not at 0,0. This way we avoid wrong results on multiple-screen systems.\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 -- M. Uli Kusterer\
+on centerwin theWindow\
+\'a0\'a0put the screenrect into sr\
+\'a0\'a0put item 3 of sr -item 1 of sr into wWidth\
+\'a0\'a0put item 4 of sr -item 2 of sr into wHeight\
+\'a0\'a0put item 1 of sr +wWidth div 2 into X\
+\'a0\'a0put item 2 of sr +wHeight div 2 into Y\
+\'a0\'a0set the loc of window theWindow to X,Y\
+end centerwin
+\f0 \
+\
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 Center Window Relative to Card Window\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 This is a short script that returns the coordinates of the center of the screen relative to the card window. If you want to center a window created by xDialogs, w and h are the width and height of the centered window. In other occasions, you may want to set w and h to 0 (zero).\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 function centerLocRelative w,h\
+\'a0\'a0put the loc of the card window into cardLoc\
+\'a0\'a0put (item 3 of the screenRect / 2) & comma & \'ac\
+\'a0\'a0(item 4 of the screenRect / 2) into theGlobalCenter\
+\'a0\'a0put (item 1 of theGlobalCenter - item 1 of the loc of the card window - (w/2)) \'ac\
+\'a0\'a0& comma & \'ac\
+\'a0(item 2 of theGlobalCenter - item 2 of the loc of the card window - (h/2)) \'ac\
+\'a0\'a0into relativeLoc\
+\'a0\'a0return relativeLoc\
+end centerLocRelative
+\f0 \
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 CenterImage\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 Script by Colin Holgate to move the card picture to the center of the card.\
+\
+Quote from an e-mail from Colin:\
+\
+I am absolutely sure that using a binary split half technique it \
+would be possible to speed this up a lot, but just so you know that \
+it's possible, this will center whatever card art there is. Just put \
+this somewhere (card, bg, stack, etc) and type centerimage in the \
+message box, after doing some doodling.\
+\
+The demo has been slightly adjusted by \
+\
+\
+\pard\pardeftab720\sa120\ql\qnatural
+\cf0 \
+\pard\pardeftab720\ql\qnatural
+\cf0 \
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on centerimage\
+\'a0\'a0lock screen\
+\'a0\'a0put the width of card window into cardwidth\
+\'a0\'a0put the height of card window into cardheight\
+\'a0\'a0put findleft() into theleft\
+\'a0\'a0put findright() into theright\
+\'a0\'a0put findtop() into thetop\
+\'a0\'a0put findbottom() into thebottom\
+\'a0\'a0if theleft*theright*thetop*thebottom = 0 then\
+\'a0\'a0\'a0\'a0answer "no card picture"\
+\'a0\'a0else\
+\'a0\'a0\'a0\'a0choose select tool\
+\'a0\'a0\'a0\'a0drag from 0,0 to cardwidth,cardheight with commandkey\
+\'a0\'a0\'a0\'a0drag from theleft+round((theright-theleft)/2),thetop+round((thebottom-thetop)/2) to cardwidth/2,cardheight/2\
+\'a0\'a0end if\
+\'a0\'a0choose browse tool\
+end centerimage\
+\
+function findleft\
+\'a0\'a0put the width of card window into cardwidth\
+\'a0\'a0put the height of card window into cardheight\
+\'a0\'a0choose select tool\
+\'a0\'a0put 0 into theleft\
+\'a0\'a0repeat with a = 1 to cardwidth\
+\'a0\'a0\'a0\'a0drag from 0,0 to a,cardheight with commandkey\
+\'a0\'a0\'a0\'a0if there is a menuitem "copy picture" of menu "edit" then\
+\'a0\'a0\'a0\'a0\'a0\'a0put a into theleft\
+\'a0\'a0\'a0\'a0\'a0\'a0exit repeat\
+\'a0\'a0\'a0\'a0end if\
+\'a0\'a0end repeat\
+\'a0\'a0return theleft\
+end findleft\
+\
+function findright\
+\'a0\'a0put the width of card window into cardwidth\
+\'a0\'a0put the height of card window into cardheight\
+\'a0\'a0choose select tool\
+\'a0\'a0put 0 into theright\
+\'a0\'a0repeat with a = cardwidth down to 1\
+\'a0\'a0\'a0\'a0drag from a,0 to cardwidth,cardheight with commandkey\
+\'a0\'a0\'a0\'a0if there is a menuitem "copy picture" of menu "edit" then\
+\'a0\'a0\'a0\'a0\'a0\'a0put a into theright\
+\'a0\'a0\'a0\'a0\'a0\'a0exit repeat\
+\'a0\'a0\'a0\'a0end if\
+\'a0\'a0end repeat\
+\'a0\'a0return theright\
+end findright\
+\
+function findtop\
+\'a0\'a0put the width of card window into cardwidth\
+\'a0\'a0put the height of card window into cardheight\
+\'a0\'a0choose select tool\
+\'a0\'a0put 0 into thetop\
+\'a0\'a0repeat with a = 1 to cardheight\
+\'a0\'a0\'a0\'a0drag from 0,0 to cardwidth,a with commandkey\
+\'a0\'a0\'a0\'a0if there is a menuitem "copy picture" of menu "edit" then\
+\'a0\'a0\'a0\'a0\'a0\'a0put a into thetop\
+\'a0\'a0\'a0\'a0\'a0\'a0exit repeat\
+\'a0\'a0\'a0\'a0end if\
+\'a0\'a0end repeat\
+\'a0\'a0return thetop\
+end findtop\
+\
+function findbottom\
+\'a0\'a0put the width of card window into cardwidth\
+\'a0\'a0put the height of card window into cardheight\
+\'a0\'a0choose select tool\
+\'a0\'a0put 0 into theright\
+\'a0\'a0repeat with a = cardheight down to 1\
+\'a0\'a0\'a0\'a0drag from 0,a to cardwidth,cardheight with commandkey\
+\'a0\'a0\'a0\'a0if there is a menuitem "copy picture" of menu "edit" then\
+\'a0\'a0\'a0\'a0\'a0\'a0put a into thebottom\
+\'a0\'a0\'a0\'a0\'a0\'a0exit repeat\
+\'a0\'a0\'a0\'a0end if\
+\'a0\'a0end repeat\
+\'a0\'a0return thebottom\
+end findbottom\
+\
+on parkPict\
+\'a0\'a0lock screen\
+\'a0\'a0choose select tool\
+\'a0\'a0doMenu "Select" with commandKey\
+\'a0\'a0doMenu "opaque"\
+\'a0\'a0drag from 300,200 to 200,365\
+\'a0\'a0choose browse tool\
+end parkPict\
+\
+on closeCard\
+\'a0\'a0parkPict\
+end closeCard
+\f0 \
+\
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 Change Folder Icon\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 Change icon of a folder to icon of a particilar file, using AppleScript.\
+\
+\
+\pard\pardeftab720\sa120\ql\qnatural
+\cf0 \
+\pard\pardeftab720\ql\qnatural
+\cf0 \
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on changeIcon()\
+\'a0set rslt to ""\
+\'a0tell application "Finder"\
+\'a0\'a0try\
+\'a0\'a0\'a0choose file with prompt \'ac\
+\'a0\'a0\'a0\'a0"Choose the file whose icon you want to copy..."\
+\'a0\'a0\'a0set newIcon to icon of the result\
+\'a0\'a0\'a0choose folder with prompt \'ac\
+\'a0\'a0\'a0\'a0"Choose folder whose icon you want to change..."\
+\'a0\'a0\'a0set folderName to the result as alias\
+\'a0\'a0\'a0set the icon of folderName to newIcon\
+\'a0\'a0on error errMsg\
+\'a0\'a0\'a0set rslt to errMsg\
+\'a0\'a0end try\
+\'a0end tell\
+\'a0return rslt\
+end changeIcon
+\f0 \
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 Change Permissions\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 Here is an easy way for changing permissions. This is useful when files are constantly being swapped around between users, or you want to access your files while logged in another administrator's account, and vice versa.\
+\
+See http://www.macosxhints.com/dlfiles/permissions_change_scpt.txt for the original\
+\
+\
+\pard\pardeftab720\sa120\ql\qnatural
+\cf0 \
+\pard\pardeftab720\ql\qnatural
+\cf0 \
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 property excluded_users : \{"Deleted Users"\}\
+-- Feel free to add any user you want excluded. e.g \{"Deleted Users", "Admin","Shared","Steve"\}\
+-- Remember this only applies to users that have their home folder in "startup disk:Users:"\
+-- note: "Deleted Users" is where users deleted from the accounts prefpane go when archived.\
+\
+-- Get folders in the "Users" folder\
+tell application "Finder"\
+\'a0set these_folders to folders of folder "Users" of startup disk\
+end tell\
+\
+-- Add 'Admin' item if not in excluded_users\
+if "Admin" is in excluded_users then\
+\'a0set these_names to \{\}\
+else\
+\'a0set these_names to \{"Admin"\}\
+end if\
+-- Get the names of the folders for use in our list\
+repeat with this_folder in these_folders\
+\'a0set this_name to name of this_folder\
+\'a0-- Excluded the names in excluded_users\
+\'a0if this_name is not in excluded_users then\
+\'a0\'a0set end of these_names to this_name\
+\'a0end if\
+end repeat\
+\
+-- Choose from list of names\
+set current_user to choose from list these_names with prompt "Choose a User\'c9"\
+\
+if current_user is false then -- User canceled\
+\'a0beep\
+else -- User chose a name\
+\'a0-- Make current_user a string instead of a list item sice it is easier to read. \{"Admin"\} > "Admin".\
+\'a0-- Not set earlier because there might be a user named 'false'.\
+\'a0set current_user to current_user as string\
+\'a0\
+\'a0if current_user is "Admin" then\
+\'a0\'a0-- Set default location to the startup disk not '/private/var/root/' for obvious reasons\
+\'a0\'a0-- Can be set to Library folder: replace with 'path to (library folder)'\
+\'a0\'a0set default_location to path to startup disk\
+\'a0else\
+\'a0\'a0-- Get path to the chosen user's folder for use in choose folder's default location\
+\'a0\'a0set default_location to (path to users folder) & current_user as string as alias\
+\'a0end if\
+\'a0\
+\'a0set choose_format to (choose from list \{"File", "Folder"\} with prompt "Choose File or Folder") as string\
+\'a0if choose_format is "false" then -- User canceled\
+\'a0\'a0beep\
+\'a0else\
+\'a0\'a0if choose_format is "File" then\
+\'a0\'a0\'a0-- Choose files(s) to change permissions to chosen user\
+\'a0\'a0\'a0set item_selection to (choose file with prompt "Choose file(s) to change permissions to " & quoted form of current_user & " with:" default location default_location with multiple selections allowed)\
+\'a0\'a0else -- if choose_format is "Folder" then \
+\'a0\'a0\'a0-- Choose folder(s) to change permissions to chosen user\
+\'a0\'a0\'a0set item_selection to (choose folder with prompt "Choose folder(s) to change permissions to " & quoted form of current_user & " with:" default location default_location with multiple selections allowed)\
+\'a0\'a0end if\
+\'a0\'a0\
+\'a0\'a0if current_user is "Admin" then\
+\'a0\'a0\'a0-- Change group of folder to admin\
+\'a0\'a0\'a0set shell_script_chown to "sudo chown -R root:admin "\
+\'a0\'a0\'a0-- Change mode of folder to rwxrwxr-x\
+\'a0\'a0\'a0set shell_script_chmod to "sudo chmod -R 775 "\
+\'a0\'a0else if current_user is "Shared" then\
+\'a0\'a0\'a0-- Change owner and group of folder to root and wheel\
+\'a0\'a0\'a0set shell_script_chown to "sudo chown -R root:wheel "\
+\'a0\'a0\'a0-- Change mode of folder to rwxrwxrwx\
+\'a0\'a0\'a0set shell_script_chmod to "sudo chmod -R -f 777 "\
+\'a0\'a0else\
+\'a0\'a0\'a0-- I use the following since the I want to be able to access my files when I'm in another administrators account.\
+\'a0\'a0\'a0-- Feel free to post other permission settings that you use.\
+\'a0\'a0\'a0\
+\'a0\'a0\'a0-- Change owner and group of folder to chosen user and admin\
+\'a0\'a0\'a0set shell_script_chown to "sudo chown -R " & current_user & ":admin "\
+\'a0\'a0\'a0-- Change mode of folder to rwxrwxr-x\
+\'a0\'a0\'a0set shell_script_chmod to "sudo chmod -R 775 "\
+\'a0\'a0end if\
+\'a0\'a0\
+\'a0\'a0-- Repeat for every item in item_selection\
+\'a0\'a0repeat with i from 1 to (count of item_selection)\
+\'a0\'a0\'a0-- Format path for use in shell script\
+\'a0\'a0\'a0set selected_folder to quoted form of POSIX path of (item i of item_selection)\
+\'a0\'a0\'a0\
+\'a0\'a0\'a0-- Perform both shell scripts\
+\'a0\'a0\'a0repeat with this_shell_script in \{shell_script_chown, shell_script_chmod\}\
+\'a0\'a0\'a0\'a0try\
+\'a0\'a0\'a0\'a0\'a0do shell script this_shell_script & selected_folder as string\
+\'a0\'a0\'a0\'a0\'a0display dialog ("item " & i & " of " & (count of item_selection) & return & this_shell_script & selected_folder as string) giving up after 1\
+\'a0\'a0\'a0\'a0on error error_message number error_number\
+\'a0\'a0\'a0\'a0\'a0-- If error occurs beep user and bring up why there was an error\
+\'a0\'a0\'a0\'a0\'a0beep\
+\'a0\'a0\'a0\'a0\'a0display dialog ("Error number: " & error_number & return & error_message as string) giving up after 5\
+\'a0\'a0\'a0\'a0end try\
+\'a0\'a0\'a0end repeat\
+\'a0\'a0end repeat\
+\'a0\'a0\
+\'a0\'a0beep 2\
+\'a0\'a0display dialog "Permission fixup complete." buttons "OK" default button 1 giving up after 1\
+\'a0end if\
+end if\
+\pard\pardeftab720\ql\qnatural
+
+\f0 \cf0 \
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 CheckWidth()\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 This function returns the text width of a field. It uses a kind of default field to put the text into before calculating the width of that text.\
+\
+\
+\pard\pardeftab720\sa120\ql\qnatural
+\cf0 \
+\pard\pardeftab720\ql\qnatural
+\cf0 \
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on doTheCheck\
+\'a0\'a0get checkwidth(2, cd field 1)\
+\'a0\'a0return it\
+end doTheCheck\
+\
+function checkwidth theField, theText\
+\'a0\'a0set the dontWrap of cd field theField to true\
+\'a0\'a0put theText into cd field theField\
+\'a0\'a0select before char 1 of cd field theField\
+\'a0\'a0put item 1 of the selectedLoc into leftEnd\
+\'a0\'a0select after the last char of cd field thefield\
+\'a0\'a0put item 1 of the selectedLoc into rightEnd\
+\'a0\'a0select empty\
+\'a0\'a0return rightEnd - leftEnd\
+end checkwidth\
+\pard\pardeftab720\ql\qnatural
+
+\f0 \cf0 \
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 ClickCentral\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 \'a0\'a0\'a0\'a0Geoff Johnson-Brett, July 2003.\
+_____________________________\
+Click anywhere INSIDE the picture to move it to the centre of the card, and return its subsequent rect.\
+\
+Move the image back to its parking place with the button "Reset". On leaving the card the picture will be parked automatically. \
+\
+To prove that the script works in other positions, you may select and drag the picture anywhere within the rectangle in which it now resides. \
+[The script of sampleStacks limits the area available for this demonstration].\
+\
+You may replace the picture with any other small picture, if you wish. \
+\
+\
+\pard\pardeftab720\sa120\ql\qnatural
+\cf0 \
+\pard\pardeftab720\ql\qnatural
+\cf0 \
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on closeCard\
+\'a0\'a0parkPict\
+end closeCard\
+\
+on parkPict\
+\'a0\'a0lock screen\
+\'a0\'a0choose select tool\
+\'a0\'a0doMenu "Select" with commandKey\
+\'a0\'a0doMenu "opaque"\
+\'a0\'a0drag from 300,200 to 120,350\
+\'a0\'a0choose browse tool\
+end parkPict\
+\
+on clickCentral\
+\'a0\'a0lock screen\
+\'a0\'a0\
+\'a0\'a0put round((the width of cd window)/2) & "," \'ac\
+\'a0\'a0& round((the height of cd window)/2) into midCard\
+\'a0\'a0--Establishes the centre point of the card, whatever its size\
+\'a0\'a0\
+\'a0\'a0choose select tool\
+\'a0\'a0doMenu "Select" with commandKey\
+\'a0\'a0doMenu "Copy Picture"\
+\'a0\'a0\
+\'a0\'a0drag from the clickLoc to 0,0\
+\'a0\'a0-- Select the picture tightly, copy it, then drag it completely\
+\'a0\'a0-- to the top left corner [so its topLeft is at 0,0]\
+\'a0\'a0\
+\'a0\'a0-- Now borrow some of the functionality of 'Picture' XCMD to get\
+\'a0\'a0--the size of the copied image.\
+\'a0\'a0\
+\'a0\'a0picture "theCopy","clipboard",,false,0\
+\'a0\'a0\
+\'a0\'a0--False means that the picture window is created but not shown\
+\'a0\'a0--The empty windowStyle creates the default Zoom style window\
+\'a0\'a0--the windowStyle is not material here ...\
+\'a0\'a0\
+\'a0\'a0choose browse tool\
+\'a0\'a0put round((the pictureWidth of window "theCopy")/2) into x\
+\'a0\'a0put round((the pictureHeight of window "theCopy")/2) into y\
+\'a0\'a0\
+\'a0\'a0-- ... for pictureWidth & pictureHeight refer to the original image,\
+\'a0\'a0-- not to the created window\
+\'a0\'a0\
+\'a0\'a0put x & "," & y into midPict\
+\'a0\'a0-- The centre of the image\
+\'a0\'a0\
+\'a0\'a0choose select tool\
+\'a0\'a0get the bottomRight of cd\
+\'a0\'a0drag from it to 0,0 with commandKey\
+\'a0\'a0--selecting the picture by its bounding rectangle\
+\'a0\'a0\
+\'a0\'a0drag from midPict to midCard\
+\'a0\'a0--Drags the centre of the picture to the centre of the card\
+\'a0\'a0\
+\'a0\'a0choose browse tool\
+\'a0\'a0put "a,b,c,d" into myRect\
+\'a0\'a0put (item 1 of midCard)-x into item 1 of myRect\
+\'a0\'a0put (item 2 of midCard)-y into item 2 of myRect\
+\'a0\'a0--x is half the picture width - see above\
+\'a0\'a0--and y is half the picture height\
+\'a0\'a0\
+\'a0\'a0put (item 1 of myRect) + (the pictureWidth of window "theCopy")\'ac\
+\'a0\'a0into item 3 of myRect\
+\'a0\'a0put (item 2 of myRect) + (the pictureHeight of window "theCopy")\'ac\
+\'a0\'a0into item 4 of myRect\
+\'a0\'a0\
+\'a0\'a0put "My rect when centred is" && myRect\
+\'a0\'a0\
+\'a0\'a0close window "theCopy"\
+\'a0\'a0--Get rid of it, or it may cause confusion another time\
+\'a0\'a0\
+end clickCentral\
+\pard\pardeftab720\ql\qnatural
+
+\f0 \cf0 \
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 ClickLine Fun\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 A way to get the clickLine only if it is different from te previous clickLine.\
+\
+\
+\pard\pardeftab720\sa120\ql\qnatural
+\cf0 \
+\pard\pardeftab720\ql\qnatural
+\cf0 \
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on mouseWithin\
+\'a0\'a0global oldClickLine\
+\'a0\'a0if the target is "card field 1" then\
+\'a0\'a0\'a0\'a0if the clickLine is not oldClickLine then\
+\'a0\'a0\'a0\'a0\'a0\'a0put the clickLine into oldClickLine\
+\'a0\'a0\'a0\'a0\'a0\'a0-- rest of script\
+\'a0\'a0\'a0\'a0\'a0\'a0put oldClickLine --for testing purposes\
+\'a0\'a0\'a0\'a0end if\
+\'a0\'a0end if\
+end mouseWithin
+\f0 \
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 ClickLine Fun\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 A way to get the clickLine only if it is different from te previous clickLine.\
+\
+\
+\pard\pardeftab720\sa120\ql\qnatural
+\cf0 \
+\pard\pardeftab720\ql\qnatural
+\cf0 \
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on mouseWithin\
+\'a0\'a0global oldClickLine\
+\'a0\'a0if the target is "card field 1" then\
+\'a0\'a0\'a0\'a0if the clickLine is not oldClickLine then\
+\'a0\'a0\'a0\'a0\'a0\'a0put the clickLine into oldClickLine\
+\'a0\'a0\'a0\'a0\'a0\'a0-- rest of script\
+\'a0\'a0\'a0\'a0\'a0\'a0put oldClickLine --for testing purposes\
+\'a0\'a0\'a0\'a0end if\
+\'a0\'a0end if\
+end mouseWithin
+\f0 \
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 Color button animation\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 1. create a series of icons to "animate" using Hypercard's icon editor.\
+\
+2. invert the icons. In other words, the white pixels are the ones\
+which will be colored.\
+\
+3. color the button the color that you want to give to the icons, using\
+addColor. The color will show through the white pixels in the icon.\
+\
+4. place the icon in a black area of the card, for example a black\
+header, title, footer, etc.\
+\
+5. place a script in your card script:\
+\
+\
+6. When the icon changes, it will do so in color, as the color will always fill the white space in the button. I've used this to animate a beating heart for example.\
+\
+Brian Yennie\
+\
+\
+The scripts and comments come from HyperActive Software HyperCard Tips and Tricks websiteAll contents copyright (C) 1996, HyperActive Software. All rights reserved.\
+http://www.hyperactivesw.com/\
+\
+\
+\pard\pardeftab720\sa120\ql\qnatural
+\cf0 \
+\pard\pardeftab720\ql\qnatural
+\cf0 \
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on idleHandler\
+\'a0\'a0global currentIcon, firstIcon, lastIcon, lastTime\
+\'a0\'a0if firstIcon is empty then put 400 into firstIcon -- this is arbitrary\
+\'a0\'a0if lastIcon is empty then put 410 into lastIcon -- ditto\
+\'a0\'a0if currentIcon is empty then put firstIcon into currentIcon\
+\'a0\'a0if lastTime is empty then put the ticks into lastTime\
+\'a0\'a0if lastTime - 60 >= the ticks then -- wait 1 second between frames\
+\'a0\'a0\'a0\'a0\'a0\'a0put the ticks into lastTime\
+\'a0\'a0\'a0\'a0\'a0\'a0if currentIcon = lastIcon then\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0put firstIcon into currentIcon\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0else\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0add 1 to currentIcon\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0end if\
+\'a0\'a0\'a0\'a0\'a0\'a0set the icon of cd btn "icon button" to currentIcon -- arbitrary button\
+\'a0\'a0end if\
+end idleHandler
+\f0 \
+\
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 Combinations\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 The Combinations function returns all possible combinations of characters in a string, if each character may occur once.\
+\
+\
+\pard\pardeftab720\sa120\ql\qnatural
+\cf0 \
+\pard\pardeftab720\ql\qnatural
+\cf0 \
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 function combinations theData\
+\'a0\'a0put empty into myNewData\
+\'a0\'a0repeat with myLineNr = 1 to number of lines of theData\
+\'a0\'a0\'a0\'a0put line myLineNr of theData into myLine\
+\'a0\'a0\'a0\'a0repeat with x = 1 to number of chars of myLine\
+\'a0\'a0\'a0\'a0\'a0\'a0put myLine into myTemp\
+\'a0\'a0\'a0\'a0\'a0\'a0delete char x of myTemp\
+\'a0\'a0\'a0\'a0\'a0\'a0if number of chars of myTemp is 2 then\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0put myTemp & return & char 2 of myTemp & char 1 of myTemp into myTemp\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0repeat with y = 1 to number of lines of myTemp\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0put char x of theData & line y of myTemp & return after myNewData\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0end repeat\
+\'a0\'a0\'a0\'a0\'a0\'a0else\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0put combinations(myTemp) into myMoreTempData\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0repeat with z = 1 to number of lines of myMoreTempData\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0put char x of myLine before line z of myMoreTempData\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0end repeat\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0put myMoreTempData after myNewData\
+\'a0\'a0\'a0\'a0\'a0\'a0end if\
+\'a0\'a0\'a0\'a0end repeat\
+\'a0\'a0end repeat\
+\'a0\'a0return myNewData\
+end combinations\
+\
+on calculate\
+\'a0\'a0ask "Enter a string..." with "abcd"\
+\'a0\'a0if it is not empty then\
+\'a0\'a0\'a0\'a0get combinations(it)\
+\'a0\'a0\'a0\'a0answer "Number of combinations is:" && (number of lines of it)\
+\'a0\'a0end if\
+end calculate\
+\pard\pardeftab720\ql\qnatural
+
+\f0 \cf0 \
+\
+\pard\pardeftab720\sa280\ql\qnatural
+
+\b\fs36 \cf0 Conditional Idle\
+\pard\pardeftab720\ql\qnatural
+
+\b0\fs24 \cf0 This script makes a button blink if the mouse is not moving and the selection is empty.\
+Have fun.\
+\
+[MS]\
+\
+\
+\pard\pardeftab720\sa120\ql\qnatural
+\cf0 \
+\pard\pardeftab720\ql\qnatural
+\cf0 \
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 on idle\
+\'a0\'a0global oldTicks,oldLoc,lastBlink\
+\'a0\'a0-- change the following condition between\
+\'a0\'a0-- brackets to any condition you want\
+\'a0\'a0if (the mouse is not down) then\
+\'a0\'a0\'a0\'a0put 60 into delay\
+\'a0\'a0\'a0\'a0if oldTicks is empty then put the ticks into oldTicks\
+\'a0\'a0\'a0\'a0if oldLoc is empty then put the mouseLoc into oldLoc\
+\'a0\'a0\'a0\'a0put the ticks into currTicks\
+\'a0\'a0\'a0\'a0if the ticks - oldTicks > 300 and\'ac\
+\'a0\'a0\'a0\'a0the selectedChunk is empty then\
+\'a0\'a0\'a0\'a0\'a0\'a0if the mouseLoc is oldLoc then\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0if the ticks - lastBlink > delay then\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0changeHilite\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0put the ticks into lastBlink\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0end if\
+\'a0\'a0\'a0\'a0\'a0\'a0else\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0put the ticks into oldTicks\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0put the mouseLoc into oldLoc\
+\'a0\'a0\'a0\'a0\'a0\'a0end if\
+\'a0\'a0\'a0\'a0else\
+\'a0\'a0\'a0\'a0\'a0\'a0drawNeutralHilite\
+\'a0\'a0\'a0\'a0end if\
+\'a0\'a0end if\
+end idle\
+\
+on changeHilite\
+\'a0\'a0global theHilite\
+\'a0\'a0if theHilite is empty or theHilite is true then\
+\'a0\'a0\'a0\'a0addColor "colorButton","cd",id of cd button 1,"56797,00000,00000",1\
+\'a0\'a0\'a0\'a0put false into theHilite\
+\'a0\'a0else\
+\'a0\'a0\'a0\'a0addColor "colorButton","cd",id of cd button 1,"00000,00000,56797",1\
+\'a0\'a0\'a0\'a0put true into theHilite\
+\'a0\'a0end if\
+end changeHilite\
+\
+on drawNeutralHilite\
+\'a0\'a0addColor "colorButton","cd",id of cd button 1,"00000,56797,00000",1\
+end drawNeutralHilite\
+\
+on closeCard\
+\'a0\'a0addColor "colorCard"\
+end closeCard
+\f0 \
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+}

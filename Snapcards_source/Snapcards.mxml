@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+  xmlns:v="views.*"
+	layout="absolute" creationComplete="cardsByCatRPC.send()"
+	width="100%" height="100%"
+	horizontalAlign="center"
+	viewSourceURL="Snapcards_source/">
+
+	<mx:Script>
+		<![CDATA[
+		import mx.collections.ArrayCollection;
+		import mx.rpc.events.ResultEvent;
+		import cardObjects.Card;
+
+		[Bindable] private var cardsInventory:ArrayCollection;
+		[Bindable] public var isExpanded:Boolean;
+		
+		public var yTab:Number = 120;
+
+		private function cardHandler(event:ResultEvent):void {
+			var cardArray:Array = new Array();
+
+			for each (var c:XML in event.result..card){
+				var cd:Card = new Card
+				(
+					Number(c.@catID), 
+					Number(c.@cardID), 
+					String(c.@frenchName),
+					String(c.@englishName),
+					String(c.@imageFile),
+					Number(c.@frequency), 
+					String(c.@description)
+				);
+				cardArray.push(cd);
+				yTab = 120;
+			}
+			cardsInventory=new ArrayCollection(cardArray);
+		}
+
+    private function showAll():void {
+      for (var i:int=0; i < cardList.numChildren; i++) {
+        cd[i].cardTab.y=120;
+      };
+    }
+
+    private function hideAll():void {
+      for (var i:int=0; i < cardList.numChildren; i++) {
+        cd[i].cardTab.y=50;
+      };
+    }
+    
+		]]>
+	</mx:Script>
+
+	<mx:HTTPService id="cardsByCatRPC"
+		url="http://www.widged.com/labs/flex/gallery/open/courseware/Snapcards_source/assets/xml/cardCatalog.xml"
+		result="cardHandler(event)"
+		resultFormat="e4x"/>
+
+  <mx:ApplicationControlBar dock="true" width="100%" height="40">
+		<mx:Canvas width="100%" height="100%">
+      <mx:Label x="0" y="0" text="Click on any picture to reveal the French name" id="instructions"/>
+			<mx:Button label="Show All" id="btnViewCart" right="90" y="0" click="showAll()"/>
+			<mx:Button label="Hide All" id="btnCheckout" right="10" y="0" click="hideAll()"/>
+		</mx:Canvas>
+	</mx:ApplicationControlBar>
+	
+	<mx:Tile id="cardList"  width="100%" height="100%" direction="horizontal" paddingTop="20" paddingLeft="20" backgroundColor="white">
+	<mx:Repeater id="cardRepeater" dataProvider="{cardsInventory}">
+    <v:CardItem id="cd" cardItem="{cardRepeater.currentItem}" width="250" height="180"/>
+  </mx:Repeater>
+  </mx:Tile>
+	
+</mx:Application>

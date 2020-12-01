@@ -1,0 +1,25 @@
+<!ELEMENT store (events+)>
+<!ELEMENT events (Title,Description,Specialsale,Relational,Notes)>
+<!ATTLIST events Location (Atlanta|Cherryhill|Chicago|Jerseycity|Newyork|Northbrunswick|Parsippany|Springfield|Stamford|Westbury|Whiteplains|Woodbridge) "Parsippany" 
+			   Dates CDATA #REQUIRED 
+			   Time CDATA #REQUIRED>
+
+<!ELEMENT Title (#PCDATA)>
+
+<!ELEMENT Description (#PCDATA)>
+
+<!ENTITY  bkman "Our BookMan mascot will be out
+in the crowd with lots of fun prizes!So come out all
+you book lovers and celebrate the joy of reading.">
+
+<!ENTITY  bksigning "Come out and celebrate with some of your favorite 
+ Authors,bring out the entire family and make it a fun fill day.">
+
+ <!ENTITY  lec "Here is your chance to take on a great oppertunity of
+learning tips on writing and publishing your works by one of our most 
+celebrated authors Michael Keaton.">
+
+
+<!ELEMENT Specialsale (#PCDATA)>
+<!ELEMENT Relational (#PCDATA)>
+<!ELEMENT Notes (#PCDATA)>
