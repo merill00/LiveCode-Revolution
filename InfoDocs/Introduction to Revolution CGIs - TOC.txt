@@ -1,0 +1,76 @@
+Introduction to Revolution CGIs - TOC 
+
+
+
+Introduction to Revolution CGIs
+ 
+      Table of Contents
+        
+      Each section of this tutorial depends on the ones before it. Depending on 
+      your familiarity with CGIs and Revolution, some sections may be hard to 
+      understand if taken out of order. 
+      HyperActive Software offers professional CGI services. If you would like 
+      us to help you develop a CGI, contact us at info@hyperactivesw.com. Since 
+      this is our business, we cannot answer email questions about Revolution 
+      CGIs without a consulting contract. However, if you find errors in this 
+      tutorial we would appreciate a note so that we can fix them.
+
+
+
+
+Introduction
+  What's a CGI? 
+  How they work 
+  Revolution advantages 
+  Security 
+  The two ways to do Revolution CGIs 
+  Installing the Revolution engine 
+  Setting permissions 
+Simple CGIs
+  The structure of a CGI script 
+  Things to keep in mind 
+  First CGI: "Hello World" 
+  Troubleshooting Tips 
+  Creating files on the server 
+  Example: Expanded "Hello World" 
+Working with text files
+  Example: Visitor counter 
+  Example: Random content 
+Working with stacks
+  Example: Using stacks with CGIs 
+  Setting up the files 
+  Use of environment variables 
+  Parsing URL-encoded parameters 
+  Putting the stack in use 
+  Creating HTML from within the script 
+Using stacks as libraries
+  Using the library command 
+  Advantages of the library method 
+  Changing the Addresses example 
+  The LibCGI library 
+Appendix: Debugging text-based CGIs
+  Debugging Revolution CGIs 
+  Quick Checklist 
+  Other Debugging Techniques 
+  Determining Environment Variables 
+  Other Online References 
+
+
+
+
+Up to top 
+
+
+
+ 
+
+ 
+
+
+ 
+ 
+ 
+ 
+All contents copyright (C) 1996, HyperActive Software. All rights reserved.
+Revised: December 3, 2001
+URL: http://www.hyperactivesw.com/mctutorial/tutorialtoc.html 

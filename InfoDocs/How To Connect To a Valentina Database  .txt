@@ -1,0 +1,35 @@
+How To Connect To a Valentina Database  
+
+--------------------------------------------------------------------------------
+
+>What is the correct syntax to connect to a Valentina database? Could
+>someone post an example? The docs don't mention it, at least I didn't see
+>it in the database topics. I've downloaded the database examples and tried
+>those, but am looking for the simple line to connect to Valentina through a
+>script. My best guess is below...
+
+(Copied from the revdb_connect entry in the dictionary):
+
+syntax: 
+revdb_connect(databaseType,[host],databaseName,[userName],[password] \
+   [,valentinaCacheSize,valentinaMacSerial,valentinaWindowsSerial])
+example: 
+get revdb_connect("Valentina","","::Project:MyVal.vdb",,,, \
+   the serialNumber of this card,"")
+The databaseType is one of "MySQL","Oracle", "ODBC", or "Valentina".
+
+The host is the IP address or name of the system hosting the database. For Valentina databases, which reside on the local system, the host should be empty. If no host is specified, the local system is used.
+
+The databaseName is the name of the database to connect to. For Valentina databases, this is the path to the file that contains the database.
+
+Important! When connecting to a Valentina database on a Mac OS or OS X system, the databaseName must be a Mac-style file path. (To convert from a Revolution file path to the Mac style, use the revMacFromUnixPath function.) When connecting to a Valentina database on a Windows system, the databaseName must be a Windows-style file path.
+
+The userName is your authorized user name for the database. (Some databases do not require a user name.)
+
+The password is the authentication password for userName. (Some databases do not require a password.)
+
+The valentinaCacheSize is the size in bytes of the database cache used for Valentina databases. The minimum cache size is 524288 (512K). If the valentinaCacheSize is not specified, the database cache is 3 megabytes. If the databaseType is not "Valentina", the valentinaCacheSize has no effect.
+
+The valentinaMacSerial or valentinaWindowsSerial is the serial number that unlocks the Valentina VXCMD. (On Mac OS and OS X systems, specify a valentinaMacSerial and leave the valentinaWindowsSerial parameter empty. On Windows systems, specify a valentinaWindowsSerial and leave the valentinaMacSerial empty.) If no valentinaMacSerial or valentinaWindowsSerial is specified, the connection closes automatically after ten minutes. 
+
+
