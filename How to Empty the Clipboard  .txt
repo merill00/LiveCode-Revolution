@@ -1,9 +1,0 @@
-How to Empty the Clipboard  
-
---------------------------------------------------------------------------------
-
-To empty the clipboard, run this function: 
-function ClearClip
-  select empty
-  cut
-end ClearClip
