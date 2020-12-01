@@ -1,0 +1,295 @@
+ReactorLab.net - Starter Kit scriptingHome |  Tools 
+Writing long scripts with Revolution and MetaCard’s free "starter kit"
+ 
+You can get a free, time-limited version of Revolution with no script limits at 
+www.runrev.com.  The time-UN-limited, free “starter kit" version of Revolution, 
+using the MetaCard IDE (Integrated Development Environment), can be used to 
+build very complex stacks within the script-length limit of the starter kit.  
+Below is an example of how a very long script is broken into units so that it 
+can be written and run within the starter kit's script-length limit.  Whereas 
+writing long scripts can be done, it takes planning and work, and you lose the 
+convenience and debugging capabilities of the licensed version.
+ 
+Conclusion: money spent to license Revolution is money well spent!
+ 
+To get the free “starter kit” go to the MetaCard IDE group at Yahoo 
+http://groups.yahoo.com/group/MC_IDE/ , join the group, and download the MC IDE 
+files. Then go to the Runtime Revolution site and download the distribution for 
+your OS-hardware platform at http://downloads.runrev.com/revolution/ .  Copy the 
+Revolution.exe file from the Revolution distribution, paste it in the MC IDE 
+folder, and rename it mc.exe.  Then double-click mc.exe and you are in the free 
+starter kit.  Note that the MC IDE is minimalistic and very different from the 
+rich Revolution IDE.
+ 
+The example below shows the script and the custom properties of a single button. 
+ The button script contains a global variable declaration and two handlers:  
+"mouseUp" and "doCS" for do Custom (property) Script.  The script that is 
+executed has been broken into parts and put into the button's custom properties.
+ 
+The MetaCard "do" command is used to execute the script line-by-line.  Instances 
+of "do" and "doCS" below are colored.
+ 
+The button integrates a differential equation using the Runge-Kutta 4th-order 
+numerical integration method.  What the script does is irrelevant to this 
+example, so you can ignore the details and just look at which types of scripts 
+can be executed by "do" and which must be executed by "doCS".
+ 
+BUTTON SCRIPT
+ 
+# The script of this button has been modified so that it can be edited
+# with the Starter Kit. Global variable declarations at the top of the
+# button script apply to all "scripts" stored in the custom properties
+# of the button ("custom scripts"). All variables shared by the custom scripts, 
+# including those that otherwise would be arguments
+# of function and message handlers, must be declared as global, or
+# alternatively, the values could be stored and accessed in custom properties.
+ 
+# lines continued with \ count as 1 line in the Starter Kit line limits
+ 
+global runCount, dataArray, press, k, cin, n, Po, E, t, dt, dxdt,\
+i, steps, conv, Xconv, dx1, dx2, dx3, dx4, startingTime, waitTime
+ 
+on mouseUp
+  # csRun is a custom property of this button
+  # it has many lines so use doCS message handler
+  # of this button script to "do" it
+  doCS csRun 
+end mouseUp
+ 
+on doCS csScript
+  # doCS is also used by scripts in the custom property scripts of this button
+  repeat for each line j in the csScript of button "Run Reaction"
+    do j
+  end repeat
+end doCS
+ 
+ 
+BUTTON CUSTOM PROPERTIES
+
+
+The following scripts stored in the custom properties would normally, in a 
+licensed version, be separate message handlers or functions contained by the 
+single main button script:  csRun (would be button's mouseUp message handler), 
+csRK4, and csDeriv.  The scripts csIntegrateRepeat, csIntegrateActions, and 
+csTimerRepeat would normally be an integral part of the button's mouseUp message 
+handler (csRun).  They are separated out here to allow editing and saving them 
+within the Starter Kit script limits.  csIntegrateRepeat and csTimerRepeat were 
+separated because they contain repeat structures which cannot be executed by a 
+line-by-line "do" in the message handler doCS: one must "do" them as a unit.  
+The actions performed within the repeat structure in csIntegrateRepeat, however, 
+would make csIntegrateRepeat too long to "do" as a unit, so the actions within 
+the repeat structure are contained in csIntegrateActions, and csIntegrateRepeat 
+calls the long csIntegrateActions with a one-line command.  The long 
+csIntegrateActions is executed by the message handler doCS
+ 
+BUTTON CUSTOM PROPERTY - csRun
+ 
+  # csRun called by button "Run Reaction"
+  # csRun calls csIntegrateRepeat
+ 
+  set the cursor to watch
+  setInfo "Running reaction..."
+  
+  # get input variable values
+  
+  put line 1 of cd fld "inputs" into k300
+  put line 2 of cd fld "inputs" into Ea
+  put line 3 of cd fld "inputs" into n
+  put line 4 of cd fld "inputs" into a
+  put line 5 of cd fld "inputs" into b
+  put line 6 of cd fld "inputs" into Po
+  put line 7 of cd fld "inputs" into Tin
+  put line 8 of cd fld "inputs" into thisTime
+  
+  # set initial conditions
+  
+  put zero into t
+  put zero into conv
+  put Po into press  # pressure in kPa
+  put Po/(R_kPam3_molK()*Tin) into cin  # mol/m3
+  
+  # load input variables into line 1
+  
+  put empty into dataArray
+  put format("%10.3e", k300) into item 1 of line 1 of dataArray
+  put format("%10.3e", Ea) into item 2 of line 1 of dataArray
+  put n into item 3 of line 1 of dataArray
+  put a into item 4 of line 1 of dataArray
+  put b into item 5 of line 1 of dataArray
+  put format("%10.3e", press) into item 6 of line 1 of dataArray
+  put format("%10.3e", Tin) into item 7 of line 1 of dataArray
+  put format("%10.3e", thisTime) into item 8 of line 1 of dataArray
+  
+  # also load output variables into line 1
+  
+  put format("%10.3e", t) into item 9 of line 1 of dataArray
+  put format("%10.3e", conv) into item 10 of line 1 of dataArray
+  put format("%10.3e", press) into item 11 of line 1 of dataArray
+  
+  # begin calculations specific to this lab
+  
+  put k300*exp((Ea/R_kJ_molK())*((1/300) - (1/Tin))) into k
+ 
+  put (b/a)-1 into E
+  
+  # select integration step size
+  
+  put 20 into steps  # initial guess at number of steps
+  put thisTime/steps into dt
+  
+  put 0.05 into maxConvChange  # max conversion change allowed in one step
+  
+  # if n < 0 then check step size at 0.9 conversion
+  if n < 0 then put k*(cin)^(n-1)*(1-0.9)^n into dxdt
+  # else check step size at zero conversion
+  if n >= 0 then put k*(cin)^(n-1)*(1-0)^n into dxdt
+  
+  put dt*dxdt into dx
+  
+  # if dx > maxConvChange then take smaller steps
+  if dx > maxConvChange then put maxConvChange/dxdt into dt
+  if dx > maxConvChange then put round(thisTime/dt) into steps
+  
+  # but don't take more than 100 steps or fewer than 20
+  if steps > 100 then put 100 into steps
+  if steps < 20 then put 20 into steps
+  
+  # steps now set, so recalculate dt
+  put (thisTime/steps) into dt
+  
+  # set duration of experiment animation
+  put 5 into durationSec  # min duration of each run in seconds
+  put durationSec*60/steps into waitTime  # min duration of each step in ticks
+  
+  do the csIntegrateRepeat of button "Run Reaction"
+ 
+  # csIntegrateRepeat has a repeat structure so must do it all at once with "do"
+ 
+  # SWITCH structures and multiple-line IF structures also have to be put into
+  # a separate custom property and done all at once with the "do" command, and
+  # if they are long, the actions inside them must be done with the doCS handler
+  
+  # end of calculations specific to this lab
+  
+  put sciNote(conv) into line 1 of cd fld "outputs"
+  put sciNote(press) into line 2 of cd fld "outputs"
+  
+  put steps+1 into runCount  # total number lines in dataArray for Table and 
+plotting
+  
+  goodEnd
+ 
+#---------------------
+ 
+BUTTON CUSTOM PROPERTY - csIntegrateRepeat
+ 
+# csIntegrateRepeat is called by csRun
+# csIntegrateRepeat calls csIntegrateActions
+ 
+# csIntegrateActions has many lines so must use doCS to do it line-by-line
+ 
+repeat with i = 1 to steps
+   doCS csIntegrateActions
+end repeat
+ 
+#---------------------
+ 
+BUTTON CUSTOM PROPERTY - csIntegrateActions
+ 
+# csIntegrateActions is called by csIntegrateRepeat
+# csIntegrateActions calls csRK4 and csTimerRepeat
+ 
+put the ticks into startingTime
+ 
+if conv > 0.999 then put 0.999 into conv  # not 1 or can get an error in 
+(1-conv)^n in dxdt with n = -1
+if conv < 0.0000 then put zero into conv
+ 
+# use 4th-order Runge-Kutta
+# algorithm to get dxdt
+ 
+# csRK4 has many lines so must use doCS to do it line-by-line
+ 
+doCS csRK4
+  
+put conv + dxdt*dt into conv
+  
+if conv > 0.999 then put 0.999 into conv  # not 1 or can get an error in 
+(1-conv)^n in dxdt with n = -1
+if conv < 0.0000 then put zero into conv
+  
+put Po*(1+E*conv) into press
+  
+send "update " & press to group "dial"
+  
+put round(255*conv) into item 1 of gasColor
+put 0 into item 2 of gasColor
+put round(255*(1-conv)) into item 3 of gasColor
+set the backgroundColor of cd btn "gas" to gasColor
+  
+put t + dt into t
+  
+# load next line of dataArray with results for this step
+  
+put empty into line i+1 of dataArray  # need this!
+put format("%10.3e", t) into item 9 of line i+1 of dataArray
+put format("%10.3e", conv) into item 10 of line i+1 of dataArray
+put format("%10.3e", press) into item 11 of line i+1 of dataArray
+ 
+do the csTimerRepeat of button "Run Reaction"
+ 
+# csTimerRepeat has a repeat structure so must "do" it all at once
+ 
+#---------------------
+ 
+BUTTON CUSTOM PROPERTY - csRK4
+ 
+# csRK4 is called by csIntegrateActions
+# csRK4 calls csDeriv
+ 
+put conv into Xconv
+do the csDeriv of button "Run Reaction"
+put dxdt into dx1
+  
+put conv+dx1*dt/2 into Xconv
+do the csDeriv of button "Run Reaction"
+put dxdt into dx2
+ 
+put conv+dx2*dt/2 into Xconv
+do the csDeriv of button "Run Reaction"
+put dxdt into dx3
+  
+put conv+dx3*dt into Xconv
+do the csDeriv of button "Run Reaction"
+put dxdt into dx4
+  
+put (dx1/6 + dx2/3 + dx3/3 + dx4/6) into dxdt
+ 
+#---------------------
+ 
+BUTTON CUSTOM PROPERTY - csDeriv
+ 
+# csDeriv is called by csRK4
+ 
+if conv > 0.999 then put 0.999 into conv
+# not 1 or can get an error in (1-conv)^n in dxdt with n = -1
+ 
+if conv < 0.0000 then put zero into conv
+  
+put k*(cin)^(n-1)*(1-Xconv)^n into dxdt
+ 
+#---------------------
+ 
+BUTTON CUSTOM PROPERTY - csTimerRepeat
+ 
+# csTimerRepeat called by csIntegrateActions
+ 
+# NOTE: this is not a good way to do a "wait"
+# should use the "send in" command
+ 
+repeat until the ticks - startingTime >= waitTime
+  # do nothing
+end repeat
+ 
+Home |  Tools 
+ 
