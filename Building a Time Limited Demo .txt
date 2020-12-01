@@ -1,0 +1,18 @@
+Building a Time Limited Demo  
+
+--------------------------------------------------------------------------------
+
+Ages ago I asked if there was any way to set up a time limited standalone demo without using an external file. Phil Jimmieson contacted me off list to suggest I obtain the date created from the 'detailed files'. I finally tried it and it works fine - thanks Phil. All you do is, in an openstack handler in the splashscreen/standalone, find the line of the detailed files relating to the standalone itself. Item 4 is the date created. Work out the days elapsed and bobs your uncle. I now have a 10 day demo and a 12 month license version, each with a 7 day countdown to expiry reminder to pay me some money. 
+The nice thing is you don't have to set the expiry everytime you build, or worry about a secret file somewhere. The bad thing is that you need to build for each customer. Since I produce very small numbers and build for each copy anyway, this is no problem. 
+
+Of course, users could set back the clock on their machine, but I timestamp all output which in forensic assessment (which is what I do) would render a false date serious professional misconduct - much more scary than unauthorised use of software. 
+
+The script would be a breeze for all the scripting gurus out there, but if any apprentice gurus want to take a look at the script, contact me off list - it has a couple of twists I didn't mention above. 
+
+Best wishes, 
+
+David Glasgow
+Home/ forensic assessments --> DVGlasgow
+Courses --> i-Psych
+
+
