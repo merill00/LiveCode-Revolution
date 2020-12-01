@@ -1,0 +1,1 @@
+#pragma precompile_target "MCexternalPreComp"#define MACOS#define powerc#define __powerc#define TARGET_API_MAC_CARBON 1#include <ansi_prefix.mac.h>   //<MacHeaders.h>

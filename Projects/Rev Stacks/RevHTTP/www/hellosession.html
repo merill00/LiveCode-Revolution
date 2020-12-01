@@ -1,0 +1,29 @@
+<html>
+<head>
+	<link rel="stylesheet" href="/css/default.css" type="text/css" />
+<title></title>
+</head>
+<body>
+	<div id="header">
+		<img id="logo" src="/images/revonrockets.png" />
+		</div>
+		<div id="mainContent">
+			<h1>Sessions example</h1>
+			<p>This demo uses EasySessions library. This library is self contained and can be used without the other EasyCGI libraries. In this demo you'll fill your first and last name. You'll then be show a confirmation page, upon confirming, you'll see the hello page. check both <span id="laranja">session-confirm.cgi</span> and <span id="laranja">session-process.cgi</span> to see how every thing works. Take notice that the data from the form, is not carried around in the html from the confirmation page, the only data on the confirmation page is a <span id="laranja">unique id</span> that tags your session. This id is passed around, it can be passed as URL parameters or hidden form values. Old ids cannot be re-used. If you need more information on this library, check my home page.</p>
+<form name="input" action="/cgi-bin/session-confirm.cgi" method="get">
+
+Type your first name: 
+<input type="text" name="FirstName" value="Mickey" size="20">
+<br>Type your last name: 
+<input type="text" name="LastName" value="Mouse" size="20">
+<br>
+<input type="submit" value="Submit">
+
+</form> 
+
+<p>
+If you click the "Submit" button, you will send your input to a cgi called session-confirm.cgi.
+</p>
+</div>
+</body>
+</html>

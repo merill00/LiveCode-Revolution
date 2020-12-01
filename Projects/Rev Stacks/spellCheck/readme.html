@@ -1,0 +1,98 @@
+<HTML><HEAD>
+<TITLE>SpellCheck for MetaCard</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+
+<TABLE border=0>
+<TR>
+	<TD><B>UTILITY</B> Spellchecker for MetaCard</TD></TR>
+<TR>
+	<TD><B>SIZE</B> 400k</TD></TR>
+<TR>
+	<TD><B>DESCRIPTION</B><br>
+	- A self-contained, "single-pass" spellcheck utility including a 130,000 word Main
+	dictionary, customisable User dictionary, import/export list, multiple suffix
+	options, "No error" reponse preferences. <br>
+	- spellCheck.mc is based on straight Xtalk functionality. Speed will depend on your processor.<br>
+	- The "custom word list" folder is purely optional and included only so you can use the import /export  popup more easily.<BR>
+	- spellCheck.mc is designed for use as a shared utility in order to make spell checking available in all your stacks.
+	<P>&nbsp;
+	</TD></TR>
+
+<TR>
+	<TD><B>To implement the spellCheck stack</B><br>
+	
+	
+	First of all, your own stack needs to be able to find the spellCheck stack. Put spellCheck.mc in the same directory as your MetaCard application program. Then...
+<P>
+	<B>Method 1</B><br>
+	Use this syntax in your own stack:
+	<blockquote>
+	send "spellCheck &lt;TextToCheck&gt;" to stack "spellCheck"
+	</blockquote>
+	Example 1:
+  	<blockquote>
+	on closeField<br>
+    	&nbsp;&nbsp;put me into tStr<br>
+    	&nbsp;&nbsp;send "spellCheck tStr" to stack "spellCheck"<br>
+  	end closeField</blockquote>
+
+	Example 2:
+  	<blockquote>
+	on checkSpelling<br>
+    	&nbsp;&nbsp;put fld 1 && fld 2 into tStr<br>
+    	&nbsp;&nbsp;send "spellCheck tStr" to stack "spellCheck"<br>
+  	end checkSpelling
+	</blockquote>
+
+	<B>Method 2</B><BR>
+	Put this in your openStack handler:
+	<blockquote>
+	"start using stack spellCheck"</blockquote>
+	Example:
+  	<blockquote>
+	on closeField<br>
+    	&nbsp;&nbsp;put me into tStr<br>
+    	&nbsp;&nbsp;spellCheck tStr<br>
+  	end closeField"</blockquote>
+
+	The rest is automatic. Misspellings are reported in a dialog list with "Cancel",
+	"Learn" and "Edit" options. You can choose which words you want it to "learn" by using non-contiguous line selection.<br>
+	<i>Note: There is a brief delay the first time it is called while the dictionaries are initialised.</i><P>
+	<B>To open the Custom Dictionary</B><br>
+	Since changes are shown dynamically you can leave the spellCheck stack open
+	while working:
+	 	<blockquote>
+	on openDictionary<br>
+    	&nbsp;&nbsp;palette "spellCheck"<br>
+  	end openDictionary<P>
+	</blockquote>
+	</TD></TR>
+	
+<TR>
+	<TD><B>Modifications</B><br>
+	If you do modify the program for your own use, please advise me so I can
+	maintain and support the utility appropriately.<P>
+	<B>Legal</B><br>
+	No responsibility or liability whatsoever of any kind under any circumstances is
+	assumed or accepted. It is provided entirely on an AS IS basis and you use it
+	entirely at your own risk. To the best of my knowledge, the word list contents are
+	public domain.
+	<br>
+	This is Goodwillware so you can use it in personal and non-profit
+	making situations only. You may pass the utility on to others or make it available
+	to others but you must include this accompanying documentation in its entirety.
+	You may not sell it, use it for profit or include it in any for-profit programs
+	without the express permission of the author.<br></TD></TR>
+</TABLE>
+
+<hr noshade size=1>
+&copy;June, 1999<br>
+Hugh Senior<br>
+The Flexible Learning Company<br>
+www.flexibleLearning.com<br>
+eMail: <A HREF="mailto:support@flexibleLearning.com">support@flexibleLearning.com</A>
+
+
+</BODY>
+</HTML>

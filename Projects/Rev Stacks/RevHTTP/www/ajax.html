@@ -1,0 +1,51 @@
+<html>
+<head>
+	<script type="text/javascript" src="/js/EasyAjax.js" ></script>
+	<script type="text/javascript">
+	function showHint(str)
+	{
+	if (str.length==0)
+	{ 
+	document.getElementById("txtHint").innerHTML=""
+	return
+	}
+	createXMLHttpRequest();
+	if (xmlHttp==null)
+	{
+	alert ("Browser does not support HTTP Request")
+	return
+	} 
+	var url="/cgi-bin/ajax-demo.cgi"
+	url=url+"?q="+str
+	url=url+"&sid="+Math.random()
+	xmlHttp.onreadystatechange=stateChanged 
+	xmlHttp.open("GET",url,true)
+	xmlHttp.send(null)
+	}
+	function stateChanged() 
+	{ 
+	if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+	{ 
+	document.getElementById("txtHint").innerHTML=xmlHttp.responseText 
+	} 
+	}
+	</script>
+	<link rel="stylesheet" href="/css/default.css" type="text/css" />
+<title></title>
+</head>
+<body>
+	<div id="header">
+		<img id="logo" src="/images/revonrockets.png" />
+		</div>
+		<div id="mainContent">
+			<h1>Ajax example</h1>
+			<p>I'll not explain what is AJAX, if you don't know what it is then go here: <a href="http://www.w3schools.com/ajax/default.asp">w3schools AJAX Home</a> to learn more. This demo is easy, go typing revolution commands in the text field, you'll see that some command suggestions will be shown below. For each keyUp, we call the server and check the commandNames against the string you typed.</p>
+			<form> 
+			Command:
+			<input type="text" id="txt1"
+			onkeyup="showHint(this.value)">
+			</form>
+			<p>Suggestions: <span id="txtHint"></span></p>
+</div>
+</body>
+</html>

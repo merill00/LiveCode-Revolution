@@ -1,0 +1,20 @@
+Page 112
+
+Step 4 in the Laboratory is wrong. To get at the stack script, choose "Stack Script" from the Object menu.
+
+Page 123
+
+Third line of the script needs a space between "the" and "mouseLoc"
+
+Page 131
+
+Indenting of the script in the Laboratory is wrong but the script is correct and works.
+
+Page 154
+
+In the Laboratory exercise that continues at the top of this page, a couple of notes are useful.
+
+First, if you don't put a value into the field before pressing the button or if you put the number 0 into the field, you will cause an "infinite loop" because the value in the field will never become 64. You can break out of this loop by hitting Command-period on the Mac or Control-period on Windows.
+
+Second, execution of this script is so fast that you never really get to see intermediate values display. If this annoys you, you can do one of two things. Either change the "64" to a very high number or insert a "wait 10" statement into the handler right after the "put" statement.
+

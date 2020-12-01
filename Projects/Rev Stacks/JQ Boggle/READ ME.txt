@@ -1,0 +1,17 @@
+HyperActive Software - JQ Boggle
+
+READ ME
+
+NOTE: This file requires the Runtime Revolution engine. You can download the Revolution engine for virtually any operating system here:
+
+http://www.runrev.com
+
+The JQ_Boggle.rev file is not an executable. Without the Revolution engine, it will not work.
+
+Complete gameplay instructions and help information are available under the Help menu after launching the game.
+
+
+JQ Boggle 1.0
+HyperActive Software
+http://www.hyperactivesw.com
+April 7, 2004

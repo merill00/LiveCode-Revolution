@@ -1,0 +1,23 @@
+<html>
+<head>
+	<link rel="stylesheet" href="/css/default.css" type="text/css" />
+<title></title>
+</head>
+<body>
+	<div id="header">
+		<img id="logo" src="/images/revonrockets.png" />
+		</div>
+		<div id="mainContent">
+			<h1>LibCGI example</h1>
+			<p>LibCGI was created by Rodney and Monte. It is based on stacks, so instead of using plain text files for cgi programming like my EasyCGI library does, you can build your application from inside Rev using stack files. A minimal compatibility is provided thru RevHTTP so that stacks created for libCGI are able to run inside our server. I'll not provide support for libCGI or explain how to use it. Refer to libCGI manual.</p>
+			<p>Check the file <span id="laranja">libcgidemo.rev</span> inside the <span id="laranja">stacks</span> folder. See that each handler in the stack script is tied to the <span id="laranja">cmd</span> parameter in the URL.</p>
+			<p><a href="libcgidemo.rev?cmd=sayHi">LibCGI says hello</a>.</p>
+			<p><a href="libcgidemo.rev?cmd=sayTheTime">LibCGI says the time</a>.</p>
+			<p><a href="libcgidemo.rev?cmd=tellOpenStacks">LibCGI tells the stacks in use.</a></p>
+			<p><a href="libcgidemo.rev?cmd=funWithParams&name=andre+garzia">LibCGI fun with params</a>. See the URL in the browser, try changing the name parameter.</p>
+			
+			
+			
+</div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<html>
+<head>
+	<link rel="stylesheet" href="/css/default.css" type="text/css" />
+<title></title>
+</head>
+<body>
+	<div id="header">
+		<img id="logo" src="/images/revonrockets.png" />
+		</div>
+		<div id="mainContent">
+			<h1>EasyDebug example</h1>
+			<p>EasyDebug helps CGI programming by trapping errors and generating a nice online HTML report. More info can be found on my site.</p>
+			<p>Check the file <span id="laranja">errortest.cgi</span> inside the <span id="laranja">www/cgi-bin</span> folder. See that we try to access the title of a stack that is not on memory and that triggers the error that is handled by a try/catch block. This block uses the<span id="laranja">cgiError</span> function to generate the detailed report.</p>
+			<p><a href="/cgi-bin/errortest.cgi">Error Test</a>. This link will trigger an error! What you'll see when you click is a detailed report on the error as gathered by EasyDebug library.</p>
+</div>
+</body>
+</html>

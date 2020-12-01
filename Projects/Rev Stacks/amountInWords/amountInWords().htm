@@ -1,0 +1,55 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<title>amountInWords()</title>
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<p align="left"><font size="4"><strong>amountInWords()</strong></font></p>
+
+<p>This function requires MetaCard and returns a number in words.
+Decimals are rounded to 2 places.</p>
+
+<p><strong>Syntax</strong><br>
+amountInWords (tAmount, [tMajor], [tMinor])</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td>tAmount</td>
+        <td align="center" width="20">:</td>
+        <td>Evaluates to a number from 0 to
+        999,999,999,999,999,999,999,999,999,999,999.99</td>
+    </tr>
+    <tr>
+        <td>[tMajor]</td>
+        <td align="center" width="20">:</td>
+        <td>Optional - Defaults to &quot;Dollar&quot; if not
+        specified</td>
+    </tr>
+    <tr>
+        <td>[tMinor]</td>
+        <td align="center" width="20">:</td>
+        <td>Optional - Defaults to &quot;Cents&quot; if not
+        specified</td>
+    </tr>
+</table>
+
+<p><strong>Examples</strong><br>
+put amountInWords (1,020.56) into fld 1</p>
+
+<p>get amountInWords (587946,&quot;Pound&quot;,&quot;pence&quot;)</p>
+
+<p>get amountInWords (fld 1,&quot;Franc&quot;,&quot;Centimes&quot;)<br>
+if &quot;error&quot; is in it then answer it<br>
+else put it into fld 2</p>
+
+<p><strong>Eror handling</strong><br>
+Not a number : Returns &quot;error: not a number&quot;<br>
+Number exceeds limit: Returns &quot;error: too big&quot;<br>
+</p>
+
+</body>
+</html>

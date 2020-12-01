@@ -1,0 +1,30 @@
+<html>
+<head>
+	<script type="text/javascript" src="/cgi-bin/rpcdemo.cgi?func=jslib" ></script>
+	<script type="text/javascript">
+	function hello() {
+		var name = document.getElementById('name').value;
+		var buffer = sayHi(name);
+		document.getElementById('txtHint').innerHTML = "result: " +buffer;
+	}
+	
+	</script>
+	<link rel="stylesheet" href="/css/default.css" type="text/css" />
+<title></title>
+</head>
+<body>
+	<div id="header">
+		<img id="logo" src="/images/revonrockets.png" />
+		</div>
+		<div id="mainContent">
+			<h1>RPC example</h1>
+			<p>I'll not explain what is AJAX, if you don't know what it is then go here: <a href="http://www.w3schools.com/ajax/default.asp">w3schools AJAX Home</a> to learn more. This demo is easy, go typing revolution commands in the text field, you'll see that some command suggestions will be shown below. For each keyUp, we call the server and check the commandNames against the string you typed.</p>
+			<form method="GET"> 
+			Command:
+			<input type="text" id="name">
+			<input type="button" value="Say Hi" onclick="javascript:hello();">
+			</form>
+			<p>Suggestions: <span id="txtHint"></span></p>
+</div>
+</body>
+</html>
