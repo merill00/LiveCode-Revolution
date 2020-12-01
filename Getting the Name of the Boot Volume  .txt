@@ -1,0 +1,24 @@
+Getting the Name of the Boot Volume  
+
+--------------------------------------------------------------------------------
+
+> I am working on a MetaCard project that may run from a CD, but
+> needs to write to the computer's hard drive. However, I have not
+> found a way to get the name of the computer's boot disk if the
+> MetaCard program is running on the CD. Does anyone know how to
+> reference the boot volume from a CD in MetaCard?
+
+If I understand your question, it sounds like the tempName is what you want.
+
+Perhaps the following would do what you need: 
+function getBootVolume
+  if "Win" is in platform() then
+    set itemDel to "\"
+    put item 1 of tempName() into tVolume
+  end if
+  if "Mac" is in platform() then
+    set itemDel to "/"
+    put item 2 of tempName() into tVolume
+  end if
+  return tVolume
+end getBootVolume

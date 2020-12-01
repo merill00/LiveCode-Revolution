@@ -1,0 +1,61 @@
+Getting the MAC Address Last Updated 11/12/2002  
+
+--------------------------------------------------------------------------------
+
+This code will work to return the MAC Address of the current computer. The different ways of accessing this is noted below:
+
+For Mac OS9, AppleScript is used, and requires having Apple System Profiler installed on the machine, and assumes it is located in the Apple Menu Items folder. Although ASP is opened and closed very quickly, it still opens behind your application and thus you might want to include a backdrop of some sort.
+
+For Mac OSX, the shell command is used, and assumes you have superuser access (as it access /sbin).
+
+For Windows, it uses the IPCONFIG.EXE application to retrieve the MAC Address. Also note that IPCONFIG.EXE has no dependencies, so you can include it in your distribution (either on the disk or encapsulated as binary in a custom property and then spit out when needed) - you may need to check w/Microsoft first though. :-) 
+You can customize this code for your own purposes, or use it as is. 
+
+on mouseUp
+  put GetMACAddress() into theMACAddress
+end mouseUp
+
+function GetMACAddress
+  local retVal
+  switch (the platform)
+  case "MacOS"
+    set the itemDel to "."
+    if item 1 of the systemVersion < 10 then
+      set the directory to specialFolderPath("apple")
+      put "tell application" && quote & "Apple System Profiler" & \
+        quote & cr & "get appletalk address" & cr & "end tell" into getMACScript
+      put "tell application" && quote & "Apple System Profiler" & \
+        quote & cr & "close window" && quote & "Apple System Profiler" & quote & \
+        cr & "end tell" into quitASPScript
+      do getMACScript as AppleScript
+      put the result into retVal
+      do quitASPScript as AppleScript
+      replace "{" with "" in retVal
+      replace "}" with "" in retVal
+      replace quote with "" in retVal
+    else
+      put shell("/sbin/ifconfig en0") into ifConfigs
+      if char 1 to 4 of ifConfigs = "zsh:" then
+        return "Error retrieving interface configuration."
+      else
+        get matchText(ifconfigs,"(?s)ether (.*?) ",retVal)  -- These are spaces on either side of (.*?)
+        if it is false then
+          return "Error retrieving MAC address."
+        end if
+      end if
+    end if
+    break
+  case "Win32"
+    put (there is a file (specialFolderPath("system") & "/IPCONFIG.EXE")) into winExists
+    put (there is a file (specialFolderPath("system") & "/SYSTEM32/IPCONFIG.EXE")) into sys32Exists
+    if winExists or sys32Exists then
+      set the hideConsoleWindows to true
+      put shell("ipconfig /all") into temp
+      get matchText(temp,"Physical Address[\. ]*: ([A-Z0-9-]*)",retVal)
+    else
+      return "IPCONFIG not found"
+    end if
+    break
+  end switch
+  return retVal
+end GetMACAddress
