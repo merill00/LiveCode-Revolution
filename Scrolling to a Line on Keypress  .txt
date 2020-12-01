@@ -1,0 +1,33 @@
+List Fields: Scrolling to a Line on Keypress  
+
+--------------------------------------------------------------------------------
+
+> I have a cd with 3 flds
+>
+> One of those flds is a scrolling list field
+> The text in the fld is a list sorted alphabetically
+>
+> I'd like that when the user press a keybord key, the fld scroll so that 
+> the first words in the fld begin with this letter
+
+put this in the card-script:
+
+
+## fld 1 is the list-field.
+
+on keyUp lekey
+   if lekey is "a" then
+  ## or whatever is your first letter
+     set the scroll of fld 1 to 0
+     exit keyup
+     ## will scroll to top
+   end if
+   put lineOffset(CR & lekey, field 1) into lo
+   set the scroll of field 1 to lo * the effective textHeight of field 1
+   if lo is 0 then
+     beep
+     ## or whatever...
+   end if
+end keyUp
+			
+Tested and works. You can enhance it by adding some automatic hiliting or send "mouseup" etc... 

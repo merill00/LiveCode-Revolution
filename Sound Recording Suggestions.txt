@@ -1,0 +1,13 @@
+Sound Recording Suggestions  
+
+--------------------------------------------------------------------------------
+
+> I've wasted a lot of time in the past trying to get QuickTime sound
+> recording working. So before I try again with the latest version of MetaCard, has anyone had any success with it? 
+Seems to work fine here now in 2.4.3. It's a major hack internally, though, because of bugs in QT recording (we have to always record CD quality to a QT movie and then use a conversion function to output the type of file requested). 
+
+> I still get irritating squeeks on my mac and grabled garbage on my
+> windows. 
+
+Be sure you're recording to a format that "play audioClip" understands, which mostly rules out all of the compressed formats QT can produce. If you must play those, use "play videoClip <file>" instead. That uses QT, which although much slower and more memory intensive can play many more formats than the default play command which uses low-level sound routines in Win32 and MacOS which don't support compression. 
+

@@ -1,0 +1,38 @@
+Viewing Data in Custom Property Sets  
+
+--------------------------------------------------------------------------------
+
+> I've been experimenting with CustomPropertySets and have yet to ever 
+> have any data returned from the CustomProperties command?
+
+(snip) 
+
+> Even using the function David Bovill posted in apr 2001 (thanks) I 
+> am unable to ever get / see data returned from the CustomProperties 
+> command?
+> 
+> http://www.mail-archive.com/metacard@lists.runrev.com/msg02219.html
+> http://www.mail-archive.com/metacard@lists.runrev.com/msg02021.html
+> 
+> function getStoredArray setName, someObject
+>   set the customPropertySet of someObject to setName
+>   put the customProperties of someObject into someArray
+>   set the customPropertySet of someObject to empty
+>   return someArray
+> end getStoredArray
+> 
+> Is it because the data is being put into an array that can't be 
+> displayed?
+
+Yes. Use the combine command to convert an array to a string: 
+
+combine someArray with cr
+put someArray			
+
+Richard Gaskin 
+Fourth World Media Corporation
+Custom Software and Web Development for All Major Platforms
+Developer of WebMerge 2.0: Publish any Database on Any Site
+___________________________________________________________
+Ambassador@FourthWorld.com      http://www.FourthWorld.com
+Tel: 323-225-3717                           AIM: FourthWorldInc

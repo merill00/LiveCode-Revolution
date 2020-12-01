@@ -1,0 +1,16 @@
+Valentina "Gotchas"  (Mac Only)  
+
+--------------------------------------------------------------------------------
+
+Here’s a discovery I made using the VXCMD with MetaCard: get a reference to a field ("fldRef") and then execute this code: 
+on mouseUp
+  put "1,2,4,8,16,32" into tFlags
+  put "" into tFlagVals
+  repeat with x = 1 to the number of items of tFlags
+    put Valentina("Field_GetFlag",fldRef,(item x of tFlags)) into line x of tFlagVals
+  end repeat
+  put tFlagVals
+end mouseUp
+You’ll notice that you get TRUE for every flag, regardless if whether it’s set or not. The reason is that the item x of tFlags is retrieving the number as a STRING and not as a NUMBER, so Valentina is treating it as such. 
+To make sure you coerce it to a number, add 0 to the result, so item x of tFlags becomes (item x of tFlags)+0. 
+

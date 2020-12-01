@@ -1,0 +1,220 @@
+Introduction to Revolution CGIs - Example CGIs 
+
+
+
+Introduction to Revolution CGIs
+
+
+      Table of Contents
+      Introduction
+      What's a CGI?
+      How they work
+      Revolution advantages
+      Security
+      Two ways to do Rev CGIs
+      Installing the engine
+      Setting permissions
+
+        
+      Simple CGIs
+      Structure of a CGI script
+      Things to keep in mind
+      "Hello World"
+      Troubleshooting Tips
+      Creating files
+      Expanded "Hello World"
+
+        
+      Working with text files
+      Example: Visitor counter
+      Example: Random content
+
+        
+      Working with stacks
+      Example: Addresses stack
+      Setting up files
+      Environment variables
+      Parsing parameters
+      Putting a stack in use
+      Creating scripted HTML
+
+        
+      Using stacks as libraries
+      The library command
+      Advantages
+      Example: Addresses 2
+      LibCGI library
+
+        
+      Debugging CGIs
+      Quick Checklist
+      Other techniques
+      Environment variables
+      Other online references
+      Example: Reading and writing a text file
+      This example is a simple visitor counter which keeps a record of the 
+      number of visitors to a web page. It uses a text file located in the cgi 
+      folder to store the number of visitors. Each time the web page loads, the 
+      cgi reads the text file, adds 1 to the number it has retrieved (to account 
+      for the current visitor,) writes the new number back to the file, and 
+      returns the count to the web browser. 
+      If you have followed the tutorial so far, you will already have a 
+      "hello.cgi" file available in the cgi folder. Edit the file to use this 
+      script: 
+
+
+#!revolution
+
+on startup
+  put url "file:visitors.txt" into theNumber
+  if theNumber = "" then put 0 into theNumber
+  add 1 to theNumber
+  put theNumber into url "file:visitors.txt"
+
+  put "Content-Type: text/plain" & cr & cr
+  put "Hello" && $REMOTE_ADDR && "The time is:" && the time & cr & cr
+  put "You are visitor number" && theNumber && "to this page."
+end startup
+Before you can run this script, you must create a text file with 
+      read/write permissions (766 or 666) and store it in the cgi folder. It is 
+      not possible to create a file inside the cgi folder from within a script, 
+      as this folder has restricted permissions. To accomodate that, we must 
+      provide an existing file the script can work with. The file should have 
+      the number zero (0) as its only content. Name the file "visitors.txt". 
+      As is the case with all Revolution file paths, the initial default 
+      directory is the one that contains the Revolution engine. Therefore, the 
+      script only needs to refer to the short file name of the text file. No 
+      additional path information is required. If the text file were stored in a 
+      different directory, then a full path would be necessary. Note that 
+      storing files within the cgi folder (or a subfolder) is more secure than 
+      storing them in other directories. It is not possible for others to access 
+      the contents of the cgi folder remotely. 
+      Once you have both the script and the visitors.txt file installed in the 
+      cgi folder, type this into your browser's location bar: 
+
+http://localhost/cgi-bin/hello.cgi
+Or if your cgi folder is on a remote web site, replace localhost with the 
+      URL of your domain. For example: 
+
+http://www.mydomain.com/cgi-bin/hello.cgi
+Every time you reload the web page, you should see the visitor count 
+      increment by one. While this example returns only plain text, it could 
+      easily be altered to calculate a .jpg to display and return that to the 
+      browser instead. The result could be embedded in a page as a server-side 
+      include and would show a graphic of the number of visitors to the page. 
+       
+      Example: Random content
+      CGIs are capable of returning more than just plain text; they can also 
+      return fully formatted HTML web pages. This example returns a formatted 
+      web page that contains a random tip of the day. It also shows that you can 
+      use more than just a startup handler in your CGI script. While all CGI 
+      scripts must include a startup handler, you can follow that handler with 
+      any number of others, including both command handlers and function 
+      handlers. This example uses a function to choose a random tip. 
+      You will need to create three files to do this example: 
+        a text file that contains several lines of text, one tip per line.
+        an HTML file to serve as a template to hold the tip
+        a CGI script file
+       
+      The tips file 
+      The tips file is simply a text file with one tip entered per line. 
+      Remember to use correct line endings. Create a file similar to this: 
+
+Buy low, sell high.
+Always carry an umbrella so it won't rain.
+If you must do unto others, do it remotely.
+Watch those line endings!
+For best results, use before expiration date on package.
+You can include any number of lines in the text file. Save it into the cgi 
+      folder and name it "tips.txt". 
+       
+      The HTML file 
+      There are two ways to return HTML from a CGI. One is to build the HTML 
+      from within a script, and the other is to store a template file and read 
+      that, replacing only the portions you want to change. The last method is 
+      much easier, so that's what we'll use. 
+      Create an HTML file as you would any other web page, but in the place 
+      where you want to display the tip of the day, put a placeholder. In this 
+      example, we use an asterisk surrounded by square brackets ([*]) as a 
+      placeholder. 
+      A sample HTML template file might look like this: 
+
+	<html>
+	<head>
+	     <title>Tip of the Day</title>
+	</head>
+	<body>
+	<center>
+	     <i>A random tip served by a Revolution CGI:</i>
+	     <p>[*]
+	</center>
+	</body>
+	</html>
+Save this file as "tipTemplate.txt" in the cgi folder on the server. Set 
+      its file permissions to 755. 
+       
+      The CGI file 
+      Now create a CGI script file with the following content: 
+
+#!revolution
+
+on startup
+  put "tipTemplate.txt" into theTemplateFile
+  if there is no file theTemplateFile then
+    put "Error: template missing" into theData
+  else
+    put url ("file:"&theTemplateFile) into theData
+    put offset("[*]",theData) into theStartChar
+    put getTip() into char theStartChar to theStartChar+2 of theData
+  end if
+  
+  # write minimal set of HTTP headers to stdout
+  put "Content-Type: text/html" & cr
+  put "Content-Length:" && the length of theData & cr & cr
+  put theData
+end startup
+
+
+function getTip
+  put "tips.txt" into theTFile
+  if there is no file theTFile then
+    return "Error: file missing"
+  else
+    return any line of url ("file:"&theTFile)
+  end if
+end getTip
+The script above looks for a file in the cgi folder called 
+      "tipTemplate.txt". If it does not exist, an error message is placed into 
+      the variable theData, otherwise the script loads the template file into 
+      the variable. It locates the offset of the placeholder characters and 
+      replaces them with a tip that is retrieved by the getTip function. The 
+      assembled text is then returned to the user's browser, preceded by a 
+      content-type header that specifies the content is HTML. 
+      Save this file as "tips.cgi" in the cgi folder on the server. 
+      When you call this CGI from your browser, you will see a random Tip of the 
+      Day, which will refresh every time you reload the page. HyperActive 
+      Software uses this same CGI script to present a tip of the day at the 
+      bottom of our Resources page. We also use a similar script to display 
+      random photos on our CGI page. 
+        
+
+
+
+
+      Up to top | Introduction to Revolution CGIs - TOC | Next Page 
+
+
+
+
+ 
+
+ 
+
+
+ 
+ 
+ 
+ 
+All contents copyright (C) 1996, HyperActive Software. All rights reserved.
+Revised: April 25, 2004
+URL: http://www.hyperactivesw.com/cgitutorial/tutorialtoc.html 

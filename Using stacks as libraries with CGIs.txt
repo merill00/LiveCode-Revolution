@@ -1,0 +1,191 @@
+Introduction to Revolution CGIs - Stack Libraries 
+
+
+
+Introduction to Revolution CGIs
+
+
+      Table of Contents
+      Introduction
+      What's a CGI?
+      How they work
+      Revolution advantages
+      Security
+      Two ways to do Rev CGIs
+      Installing the engine
+      Setting permissions
+
+        
+      Simple CGIs
+      Structure of a CGI script
+      Things to keep in mind
+      "Hello World"
+      Troubleshooting Tips
+      Creating files
+      Expanded "Hello World"
+
+        
+      Working with text files
+      Example: Visitor counter
+      Example: Random content
+
+        
+      Working with stacks
+      Example: Addresses stack
+      Setting up files
+      Environment variables
+      Parsing parameters
+      Putting a stack in use
+      Creating scripted HTML
+
+        
+      Using stacks as libraries
+      The library command
+      Advantages
+      Example: Addresses 2
+      LibCGI library
+
+        
+      Debugging CGIs
+      Quick Checklist
+      Other techniques
+      Environment variables
+      Other online references
+      Using stacks as libraries with CGIs
+      So far we have looked only at text-based solutions. All our previous 
+      examples have used text files to do the actual work and return the results 
+      to the user's browser. These work fine for simple scripts, especially 
+      those where you only want to harness the power of the engine and you don't 
+      need to access an existing stack. There's an easier way to write more 
+      complex scripts though: using stacks themselves as cgi scripts. 
+       
+      Advantages to using stack-based scripts 
+      There are many advantages to this approach, the main one being that you 
+      can debug your scripts directly within Revolution and make use of all its 
+      support structures such as the script editor, debug mode, the variable and 
+      message watchers, and the message box. Once you have a script that runs 
+      successfully within the Revolution IDE, you can move the stack to the 
+      server, open it using a single command in the CGI text file, and have the 
+      stack do all the work. 
+      Some other advantages of this approach are: 
+        a stack can be open for reference in Revolution at same time Apache is 
+        using it
+        the script validator ensures correct syntax during editing
+        you can encrypt the stack by setting a password, making it more secure 
+        than a text file
+        you have access to custom properties and stack objects, as well as other 
+        stacks and libraries. There is no need to store external text or 
+        template files; store them as custom properties or in fields instead. 
+        This reduces clutter in the CGI folder and keeps all the pieces the 
+        script needs in one place: directly within the stack.
+       
+      Changing the Addresses example CGI 
+      The Addresses stack we used in the last example already contains a 
+      disabled stack script that uses a variation on the search CGI we wrote 
+      earlier. (If you haven't downloaded the sample Addresses stack yet, you 
+      can get it here.)The script has a single librarystack handler which does 
+      the same processing as our original CGI text file script. The primary 
+      difference between this script and the previous CGI script is the omission 
+      of the start using command. We don't need to start using the stack, since 
+      the library command in the CGI text file accomplishes that already. 
+      We'll assume you already have the Addresses stack installed in your cgi 
+      folder. Edit the script of the stack and remove the comment hyphens from 
+      the first line, so that the handler is enabled. Save the stack and close 
+      it. 
+      All you need to do now to make this technique work is to change the 
+      addressSearch.cgi file so that it uses only a single line: 
+
+#!revolution
+
+on startup
+    library "addresses.rev"
+end startup
+
+When this CGI runs, it uses the library command to put the Addresses stack 
+      in use. When this happens, a librarystack system message is sent by the 
+      engine. The Addresses stack has an on librarystack handler that catches 
+      the system message, and this handler does the actual data search and 
+      formats the results as HTML to send back to the browser. The bulk of the 
+      handler inside the stack is the same as the one our previous CGI used, but 
+      because it is a stack script, we can debug it far more easily inside 
+      Revolution than we can remotely via the server. 
+      Using this method, it is possible to keep the stack open in Revolution at 
+      the same time you are testing it on the server with the CGI text file. If 
+      you receive errors, you can correct them in the stack, save the stack, and 
+      re-run the CGI to test it again. 
+      Note that if your librarystack handler uses environment variables, you 
+      will need to include some variables in your handler temporarily that 
+      supply the same values when running inside the Revolution IDE. The copy of 
+      the engine running the CGI request is not the same copy of Revolution you 
+      are using for debugging. The debugger will not trigger when the stack is 
+      responding to a CGI request from the server; when you test, you'll need to 
+      call the handler from the message box and supply environment variable 
+      values as parameters, or else fill those values using temporary lines of 
+      script inside the handler. 
+      You do not need to include all your code within the librarystack handler 
+      alone. Your script is free to call other handlers and functions in the 
+      stack just as it does when the stack runs within the GUI environment. You 
+      can put substacks in use, send messages to other parts of the stack, use 
+      database calls, or anything else as long as the commands do not require 
+      the GUI to run. 
+      Nor do you need to place all the code in the stack. You are free to divide 
+      your scripts between the CGI text file and the stack script; for example, 
+      you may prefer to use stacks to gather data and the CGI text file to 
+      format the results as HTML. How you divide the code is up to you. The CGI 
+      text file functions very much like a backscript, and you can use it that 
+      way if you like. 
+       
+      Going farther: The LibCGI library
+      Rodney Tamblyn and Monte Goulding have written a powerful library called 
+      LibCGI that takes the use of library stacks one step farther. They have 
+      constructed a system that works for any number of stacks installed on a 
+      server. The library comes with extensive documentation and many examples. 
+      One big advantage of this library is that only one CGI text file is needed 
+      for any number of stacks or requests. Install the CGI file included with 
+      the library and you can direct all your web page requests to it, 
+      regardless of which stack the request needs to use. 
+      Some advantages of LibCGI are: 
+        Error reporting is more comprehensive and verbosity level can be set
+        Automatic logging
+        Allows your scripts to easily write to the system log. Also, the LibCGI 
+        stack itself displays the system log so you don't have to open Console
+        Only one CGI text file is needed; it can be directed to use any number 
+        of stacks or commands
+        The library parses and extracts the form's parameters for you, so your 
+        scripts don't have to
+        The library has built-in cookie management, send email example (using 
+        Sean Sao's libSMTP stack), database access, and request and error 
+logging
+      Stacks that use LibCGI need to implement certain minimal requirements, 
+      particularly: 
+        The global variable gRequestA must be declared in the librarystack 
+        handler if you need to access parameters.
+        Scripts must use LibCGI's handler libCGI_Response to return the data.
+        The HTML form, or the URL parameters, must include two hidden fields 
+        named "stack" and "cmd".
+      These rules are well explained in the documentation. They also include 
+      some discussion on how to debug CGIs on the server. 
+      LibCGI is available through RevNet (accessible from Revolution's Plugins 
+      menu,) or from http://rodney.weblogs.com/libcgi. 
+        
+
+
+
+
+      Up to top | Introduction to Revolution CGIs - TOC | Next Page 
+
+
+
+
+ 
+
+ 
+
+
+ 
+ 
+ 
+ 
+All contents copyright (C) 1996, HyperActive Software. All rights reserved.
+Revised: April 25, 2004
+URL: http://www.hyperactivesw.com/cgitutorial/tutorialtoc.html 
