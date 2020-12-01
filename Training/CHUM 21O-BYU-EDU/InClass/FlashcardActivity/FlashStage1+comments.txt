@@ -1,0 +1,48 @@
+STAGE 1 - Beginnings
+
+# button "Choose"
+on mouseUp
+  # ask the user which language they want to practice
+  answer "Select the language you want to drill yourself on." with "French" or "English"
+  put it into fld "testLang" # remember the answer command uses 'it'
+  
+  # Set custom properties to store which language is used for the prompt
+  #  and which is used for the response. Then you can use this info later.
+  if it is "English" then
+    set the promptLanguage of this card to "French"
+    set the responseLanguage of this card to "English"
+  else
+    set the promptLanguage of this card to "English"
+    set the responseLanguage of this card to "French"
+  end if
+end mouseUp
+
+
+## button "setup"
+on mouseUp
+  # these are things you want to 'clean up' before you start a new session
+  hide field "englishWords"
+  hide field "FrenchWords"
+  put empty into fld "prompt"
+  put empty into fld "response"
+end mouseUp
+
+
+## button "next"
+on mouseUp
+  # Using the custom properties we created earlier, we 'build' the names
+  #  of the fields that will be used as the source for prompts and the source
+  #  for the correct responses.
+  put the promptLanguage of this card & "Words" into promptFldName
+  put the responseLanguage of this card & "Words" into responseFldName
+
+  # The number of lines in either word field will give us the total number of 
+  #  words in the drill, and thus the upper limit of the random function.
+  put number of lines of fld "englishWords" into lineCount
+  # store the randomly-generated number in a variable
+  put random(lineCount) into whichLine
+  # Here we refer to fields by their names, but instead of being literal
+  #  strings, the names are stored in variables.
+  put line whichLine of field promptFldName into fld "prompt"
+  put line whichLine of field responseFldName into fld "response"
+end mouseUp

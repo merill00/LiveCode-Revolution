@@ -1,0 +1,24 @@
+-- set a counter to 1
+put 1 into field "counter"
+
+-- repeat the following things for each line in field "names"
+repeat (the number of lines in field "names") times
+   -- take the line corresponding to the counter
+   -- put the first name of that line into the same line of field "results"
+   put word 1 of line (field "counter") of field "names" into line (field "counter") of field "results"
+   -- put a space after the first name 
+   put space after line (field "counter") of field "results"
+   -- randomly choose any name in field "nicknames"
+   put random(the number of lines in field "nicknames") into field "randomNumber"
+   -- put that randomly chosen nickname after current counter line of "results"
+  put line (field "randomNumber") of  field "nicknames" after line (field "counter") of field "results"
+   -- put another space after the nickname on the current counter line 
+   put space after line (field "counter") of field "results"
+   -- put the last name of the person on current counter line at the end of the results line
+   put word 2 of line (field "counter") of field "names" after field "results"
+   -- remove the randomly chosen nickname from the nickname field
+   delete line (field "randomNumber") of field "nicknames" 
+   -- add one to the counter number
+   add 1 to field "counter"
+-- End of repeat
+end repeat

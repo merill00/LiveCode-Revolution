@@ -1,0 +1,206 @@
+BYU Home page <http://www.byu.edu>BRIGHAM YOUNG UNIVERSITY
+  Humanities Technology and Research Support Center
+Back <javascript:history.go(-1)>     CHum Revolution Gateway
+<http://revolution.byu.edu>
+------------------------------------------------------------------------
+
+
+      Introduction to Audio Playback and Recording
+
+The concepts introduced here are demonstrated in a stack called
+"AudioJukebox.rev" in the In-class folder on the class file server.
+Remember that it can be accessed over the internet by running this
+command in the Revolution message box:
+
+    |go to stack URL "http://chum210.byu.edu/resources/AudioJukebox.rev"| 
+
+As you would expect for a multimedia development environment, Revolution
+has a robust set of audio playback and recording tools. Let's look at
+the basic tools for playing and recording in common audio formats. This
+introduction will only scratch the surface of what is possible. Later
+when we look at player objects in depth we will discover many more
+capabilities.
+
+
+        Common Audio Formats
+
+Revolution was designed to play back several of the most common audio
+formats. Since it was developed as a cross-platform development tool,
+the original author designed it to play the following formats natively;
+that is, without the need for a special player. These formats are WAVE,
+most common on the Windows platform, Audio Interchange File Format (AIFF
+or AIF) used most commonly on the Macintosh operating system, and Sun
+Microsystems' µ-law ("mu-law", usually denoted by a .au file extension),
+common in Unix-based operating systems. Note that with the exception of
+µ-law, Revolution will only play back /uncompressed/ files of this type
+natively. Any other file types such as MP3 or compressed AIFF must be
+played using a *player object* <../video/QTinRev.php#playerintro>.
+
+Import audio file menu in RevRevolution can play these audio formats as
+imported audio clips or as external files. To import an audio file use
+the File menu > Import as Control > Audio Clip. Once imported, the clip
+becomes part of the stack file and will always be available for
+playback, regardless of where the stack resides. However, just as in the
+case of imported images, these audio clips can exponentially increase
+the size of the stack. Therefore you may find it more appropriate to
+leave the audio files as external files and play them back by
+referencing the file path.
+
+
+        The |play| command
+
+Not surprisingly, the command to play audio files is *play*. It has the
+following basic syntax:
+
+    |play {/filePath /| /clipName/} [looping] -- For playing a clip.|
+
+    -->
+
+    |play stop -- For stopping playback. |
+
+If an audio clip has been imported you would play it back like this:
+
+    |play mySound.aif |
+
+Playing an external audio file differs only in the requirement to
+specify the whole file path:
+
+    |play "/Users/myuser/Desktop/mySound.aif" --Mac or Unix file path
+    play "c:/Documents and Settings/localuser/My Documents/mySound.wav"
+    --Windows file path |
+
+Naturally, you can also set the *defaultFolder* property to give you the
+folder that contains the sound file, just as you can with external image
+or text files.
+
+You can also play sound files from the web, assuming they are in one of
+the three allowed formats. Simply specify the URL following the play
+command:
+
+play "http://chum210.byu.edu/resources/audio/kewl.wav"
+
+If you want to play a clip repeatedly use the *looping* option, like this:
+
+    |play mySound.aif looping|
+
+Stopping playback is equally straightforward, using the somewhat
+paradoxical form:
+
+    |play stop|
+
+Remember that the play command only works with WAVE, µ-law (.au) and
+/uncompressed/ AIFF files.
+
+
+          The |sound| function
+
+There is a function called *|the sound|* that tells us if there is a
+currently playing audio clip. If there is an audio clip playing, the
+function returns the name of the clip. If there is no clip playing the
+function returns the constant *|done|*. Here are some examples:
+
+    If you are playing the audio clip "mySound.aif" and you check the
+    sound function:
+
+        |put the sound into currSndName|
+
+    the value of the currSndName variable would be "mySound.aif". Once
+    the clip was through playing the value of currSndName would be "done".
+
+This means that you can use the sound function to prevent anything else
+from happening until the sound is through playing:
+
+    |
+    play "mySound.aif" 
+    wait until the sound is done
+    answer "The clip has finished playing." -- (or whatever you want to do here.) |
+
+
+        Recording audio files
+
+Revolution also has a very easy-to-use audio recording capability. Of
+course, it depends upon the host computer having a sound card that
+supports audio input (virtually all Mac and Windows systems today do, as
+well as many Linux systems.) You must have a microphone connected to the
+computer, with the computer's sound input setting set to recognize the
+microphone.
+
+The record command has the following basic syntax:
+
+    |record sound file /filePath/|
+
+This command will /*start*/ the recording process. The audio will be
+recorded to the file named in the /filePath/ parameter. As expected,
+this will record to the defaultFolder if you only give a file name, or
+to the file path if you designate an absolute file path
+<../extfiles/exFiles.php#paths>.
+
+The record sound file command will keep recording forever, or until the
+hard drive runs out of memory, whichever comes first. So it's important
+to remember to */stop/* the recording with the command:
+
+    |stop recording|
+
+If you intend to play back this recording using the play command, you
+must also make sure the following two recording-related properties are set:
+
+    |set the recordFormat to "aiff" -- or "wave" or "ulaw"
+    set the recordCompression to "raw " -- note the trailing space!|
+
+An easy way to set the recordCompression property, as well as several
+other recording properties is to use the |*answer record*| command:
+
+    |answer record|
+
+This will present a dialog box with several options for setting
+recording parameters:
+
+We will not deal with all of these options at this point, but in general
+these options affect the size and quality of the audio file created by
+the *record to file* command. Remember that, with the exception of µ-law
+format (which allows µlaw 2:1 compression), you can't use compression if
+you're going to use the *play* command to play these files. Remember
+also that the recordFormat is set to "aiff" by default, and that it must
+be set explicitly using a *set* command, as shown above.
+
+
+        More Useful Commands
+
+We used the following commands and functions to help us in building the
+Audio Jukebox stack.
+
+    |*answer folder*| - Brings up a standard system "folder picker"
+    dialog box. The folder chosen is put into the *it* variable.
+
+    *|the files|* - returns a list of all the files in the defaultFolder
+
+      answer folder "Where are the sound files?"
+      if it is not empty then
+        set the defaultFolder to it
+      end if 
+      put the files into field "playlist"
+
+    *|the selectedText|* - While not really new (we covered it in the
+    lesson on Working with Text <../textfind/TextandFind.php>,) we
+    haven't seen it in the context of a list style field. A list field
+    is a field with its listbehavior property set to true. Lines in a
+    list field automatically highlight when they are clicked, and you
+    can get the text of the selected line with *the selectedText* function:
+
+        |put the selectedText of field "playlist" into sndName
+        play sndName|
+
+
+        Summary
+
+We've seen that using just a few simple commands we can play back audio,
+either imported or external to the stack. It is equally simple to start
+and stop a recording in Revolution. It's another example of how
+Revolution takes care of the behind-the-scenes details to allow us to
+rapidly implement powerful multimedia capabilities in our projects.
+
+------------------------------------------------------------------------
+Back <javascript:history.go(-1)>     CHum Revolution Gateway
+<http://revolution.byu.edu>
+Maintained by Devin Asay <mailto:devin_asay@byu.edu>.
+Copyright © 2005 Brigham Young University

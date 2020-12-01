@@ -1,0 +1,49 @@
+CHum 210
+Miscellanea
+Things we have skipped over or don't fall into some broader category
+
+Menu style buttons 
+	Show all styles but focus on option menu
+	the menuPick message
+	how the Rev IDE helps you start scripting menus
+	Show the Menu Builder
+	
+Scrollbars
+	Progress bar - showing progress toward a goal--download, install, save, etc.
+	Slider - changing a setting
+	Little Arrows - for incrementing/decrementing dates, times, etc.
+		# note these seem "backwards" because they correspond to line increment and decrement of field scrollbars
+		
+		on scrollbarLineDec
+		   add 1 to fld "date"
+		end scrollbarLineDec
+		
+		on scrollbarLineInc
+		   subtract 1 from fld "date"
+		end scrollbarLineInc
+		
+	Scrollbar - revealing hidden contents of objects
+		Most of the time, Rev does the work for you. See scrollbar properties in fields and groups
+		the scroll property (the vscroll, the hscroll)
+		the formattedHeight, the formattedWidth
+		
+Fields
+	tab stops
+	horizontal and vertical grid lines
+	text baselines
+
+Some tab-delimited text:
+Grades Table
+points	grade	percentage
+0	 E 	0
+474	 D-	60
+496	 D	64
+518	 D+	67
+540	 C-	70
+562	 C	74
+584	 C+	77
+606	 B-	80
+628	 B	84
+650	 B+ 	87
+672	 A-	90
+694	 A 	94

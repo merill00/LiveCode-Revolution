@@ -1,0 +1,310 @@
+BYU Home page <http://www.byu.edu>BRIGHAM YOUNG UNIVERSITY
+  Humanities Technology and Research Support Center
+Back <javascript:history.go(-1)>     CHum Revolution Gateway
+<http://revolution.byu.edu>
+------------------------------------------------------------------------
+
+
+    Revolution Scripting Language: Scripting Examples
+
+This page is designed to provide examples of much of the basic scripting
+vocabulary in the Revolution scripting language (sometimes called
+/Transcript/.) Remember that all such statements must be employed within
+a message handler in order to work.
+
+See examples of the use of:
+
+    variables <#variables>
+    constants and literals <#constants>
+    arithmetic operators <#arithoperators>
+    arithmetic commands <arithcommands>
+    math functions <#mathfunctions>
+    concatenation operators <#concatenation>
+    boolean operators <#booleanoperators>
+    if ... then ... else structures <#ifthen>
+    repeat loops <#repeat>
+    	
+
+    reading properties <#properties>
+    setting properties <#properties>
+    text chunks <../textfind/TextandFind.php#chunks>
+    text functions <../textfind/TextandFind.php#functions>
+       the *offset* functions <../textfind/TextandFind.php#offset>
+    text comparison operators <../textfind/TextandFind.php#comparisons>
+    the *find* command <../textfind/TextandFind.php#find>
+       the *found* functions <../textfind/TextandFind.php#foundfunctions>
+    selection functions <../textfind/TextandFind.php#select>
+    click functions <../textfind/TextandFind.php#click>
+
+    	
+
+    common commands <../scripts/Scripts.php#commands>
+    comments in scripts <../scripts/Scripts.php#comments>
+
+    common messages <../messages/Messages.php>
+       mouse <../messages/Messages.php#mouse>
+       open and close <../messages/Messages.php#openclose>
+       keyboard <../messages/Messages.php#keyboard>
+    the *pass* command <../messages/Messages.php#pass>
+    the *send* command <../messages/Messages.php#send>
+
+------------------------------------------------------------------------
+
+
+        Variables/Containers
+
+Rules for variable names:
+
+    The names of variables must consist of a single word and may contain
+    any combination
+    of letters, digits, and underscores (_). The first character must be
+    either a letter or an
+    underscore. You cannot use any Revolution Transcript language word
+    as a name of a
+    variable. /-Revolution User Guide, p. 121 /
+
+| |
+
+put 2 into holder   
+put holder into field "result" --> 2   
+put 5 into field "result"  --> 5
+add 12 to field "result"  --> 17 
+
+get the long time   
+put it into field "result" --> e.g., 2:53:56 PM
+
+
+        Constants/Literals
+
+| |
+
+put seven into field "result"  --> 7 
+put pi into field "result" --> 3.14159265358979323846     
+put "whatever is here" --> puts string into message box     
+put "hello" into greeting   
+put greeting into field "result"   --> hello
+put "greeting" into field "result"  --> greeting     
+put 2 + 6 into message  --> 8 (in message box) 
+put "2 + 6" into message  --> 2 + 6
+put fruit   --> fruit
+put "banana" into fruit   
+put fruit  --> banana
+
+
+        Arithmetic Operators
+
+| |
+
+put 4 + 9 into field "Result"
+put 3 - 7 into field "result"  
+put 5 * 2 into field "Result" 
+put 13 / 3 into field "Result"   
+put 7 ^ 4 into field "Result" --> exponentiation  
+put 2 + 3 * 4 + 1 into fld "Result"  --> 15 
+put (2 + 3) * (4 + 1) into fld "Result" --> 25     
+put 4 div 2 into field "Result"   -- returns whole number; no remainder
+put 7 div 2 into field "Result"   --> 3
+put 3.99 div 2 into field "Result" --> 1     
+put 4 mod 2 into field "Result"  -- returns remainder only 
+put 7 mod 2 into field "Result"  --> 1 
+put 3.99 mod 2 into field "Result" --> 1.99
+
+
+        Arithmetic Commands
+
+Use these commands to perform arithmetic operations directly on a value
+in a container
+
+||
+
+put 9 into field "result"   
+put 4 after field "Result"   
+put 2 before field "Result"      
+add 9 to field "Result"   
+subtract 4 from field "Result"   
+multiply field "Result" by 7   
+divide field "Result" by 2      
+put card field "Result" / 2 into card field "Result"
+
+
+        Math Functions
+
+||
+
+put the sqrt of 25 into field 1   
+put "aa" into line 2 of fld 1   
+put "bb" into line sqrt(4) of fld 1      
+put the abs of -23 into field 1   
+put abs (-23) into field 1      
+put average(12,3,5,19) into fld 1   
+put max(12,3,5,19) into fld 1   
+put min(12, 3, 5, 19) into fld 1   
+put average(cd fld "list") into fld 1   
+put max(cd fld "list") into fld 1   
+put min(cd fld "list") into fld 1   
+put random (10) into field 1
+
+
+        Concatenation
+
+| |
+
+put "abc" & "def" into fld 1  --> abcdef 
+put "The" && "cat" into fld 1  --> The cat 
+put "ano" & "the" & "r" && "exam" & "ple" into fld 1  -- another example     
+put "mine", "yours" into fld 1   -- a comma combines two elements separated by a comma  --> mine,yours
+put fld 1, "ours" into fld 1  --> mine,yours,ours    
+put "mine" & comma & "yours" into fld 1  --> mine,yours 
+put "a "hot" car" into fld 1  --> ERROR!! 
+put "a" && quote & "hot" & quote && "car" into fld 1  --> a "hot" car  
+put "first" & return & "second" into fld 1  -- the words are on separate lines 
+put "aa" & space & "bb" into fld 1   --> aa bb
+put "xxx" & tab & "yyy" into fld 1   -- xxx    yyy (space between strings determined by tab settings in field
+put empty into fld 1
+
+
+        Boolean Operators
+
+| |
+
+put 80 > field "Average" into fld 1  
+put 80 < field "Average" into fld 1   
+put 60 >= field "Average" into fld 1   
+put 60 <> field "Average" into fld 1 -- not equal to 
+put 40 is not field "Average" into fld 1      
+put "house" = "home" into fld 1   
+put "elephant" < "mouse" into isBefore 
+put "lightning" > "lightning bug" into fld 1   
+put "AAA" = "aaa" into sameText   
+put "schon" = "schön" into fld 1   
+put "schon" <> "schön" into fld 1
+
+
+        If...Then...Else Control Structure
+
+| |
+
+on mouseUp      
+  put empty into field "result"      
+  put random(6) into field "yours"      
+  if field "yours" = field "Lucky" then
+    put "You win!" into field "result"
+  end if
+end mouseUp      
+
+on mouseUp      
+  put empty into field "result"      
+  put random(6) into field "yours"      
+  if field "yours" = field "Lucky" then 
+    put "You win!" into field "result"      
+  else
+    put "Try again." into field "result"    
+  end if
+end mouseUp   
+
+on mouseUp      
+  put empty into field "result"
+  put random(6) into field "yours"
+  if field "yours" = field "Lucky" then
+    put "You win!" into field "result"
+    wait 3 seconds
+    put "Click to continue." into field "result"
+    wait until the mouseClick 
+    put empty into fld "yours" 
+    put empty into fld "result" 
+  else     
+    beep    
+    put "Try again." into field "result"
+  end if
+end mouseUp
+
+
+        Repeat Control Structure
+
+| |
+
+# repeat a set number of times
+on mouseUp      
+  put empty into field "result"      
+  repeat fld "reps" times         
+    put "X" after fld "result"         
+    beep         
+    wait 20 ticks      
+  end repeat   
+end mouseUp      
+
+# repeat using a counting variable
+on mouseUp
+  put empty into field "result"      
+  repeat with countVar = 1 to field "reps"         
+    put countVar into fld "counter"          
+    put "X" after fld "result"         
+    beep         
+    wait 20 ticks      
+  end repeat   
+end mouseUp   
+
+# repeat while a certain condition is true
+on mouseUp      
+  put empty into fld "result"      
+  put 0 into fld "counter"      
+  repeat while fld "counter" < fld "reps"         
+    add 1 to fld "counter"         
+    put "X" after fld "result"         
+    beep         
+    wait 30 ticks      
+  end repeat    
+end mouseUp
+   
+# repeat until a certain condition is true
+on mouseUp      
+  put empty into field "result"      
+  put 0 into fld "counter"      
+  repeat until fld "counter" = fld "reps"         
+    add 1 to fld "counter" -- increment counter         
+    put "X" after fld "result"         
+    beep         
+    wait 30 ticks      
+  end repeat   
+end mouseUp
+
+# repeat for each chunk in a container; can use line, word, item, etc.
+on mouseUp
+  put empty into field "sentence"
+  put 0 into fld "counter"
+  repeat for each line thisLine in fld "list"
+    add 1 to fld "counter" -- increment counter
+    put thisLine & space after fld "sentence"
+    beep
+    wait 30 ticks
+  end repeat
+end mouseUp
+
+
+        Properties - Reading and Changing Properties by Scripting
+
+Reading property settings
+
+|
+put the name of field 1 into fldName
+get the short name of button i of group "allButtons"
+put the label of button "check" into tLabel
+put the loc of this stack into currLoc
+|
+
+Changing property settings - use the |*set*| command
+
+|
+set the label of btn "check" to "Continue"
+set the width of field "nameList" to 300
+set the backgroundColor of this card to the backgroundColor of card 2
+set the textColor of fld "title" to blue
+set the lockText of fld "instructions" to not the lockText of fld "instructions" -- toggle between true and false
+set the enabled of btn "next" to the hilite of btn "allowNext"
+|
+
+------------------------------------------------------------------------
+Back <javascript:history.go(-1)>     CHum Revolution Gateway
+<http://revolution.byu.edu>
+Maintained by Devin Asay <mailto:devin_asay@byu.edu>.
+Copyright © 2005 Brigham Young University

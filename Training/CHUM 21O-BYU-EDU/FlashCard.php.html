@@ -1,0 +1,486 @@
+BYU Home page <http://www.byu.edu>BRIGHAM YOUNG UNIVERSITY
+  Humanities Technology and Research Support Center
+Back <javascript:history.go(-1)>     CHum Revolution Gateway
+<http://revolution.byu.edu>
+------------------------------------------------------------------------
+
+
+      Computers & the Humanities 210
+
+
+    Flash Card Application: Vocabulary Drill
+
+These notes are designed to walk you through the process of creating a
+simple application that emulates a set of flash cards. Use the stack
+FlashCardTemplate.rev, located in the Templates folder on the CHum 210
+server, to build this project. Or, if you are connected to the internet
+you can launch it from Revolution by entering into the message box:
+
+go to stack URL "http://chum210.byu.edu/InClass/FlashCardActivity/FlashCardTemplate.rev"
+
+There is also a stack called FlashCard Stages.rev, with examples of the
+various stages described here, in the In-Class folder on the CHum 210
+server. You can launch it by entering into the message box:
+
+go to stack URL "http://chum210.byu.edu/InClass/FlashCardActivity/FlashCard Stages.rev"
+
+Remember the purpose of flash cards: An item is presented, the user
+attempts to recall the associated word or phrase, and then turns the
+card over to check whether he/she was correct or not. We can emulate
+this behavior with a Revolution stack. For the purposes of an example,
+we will do a vocabulary drill. Think carefully about what you would like
+to accomplish and that will determine how you create your stack.
+
+
+      Stage 1: Beginnings
+
+In order to have an effective vocabulary drill, we need vocabulary
+words. We could start with two parallel fields of words to drill, one
+with English words, and one in the target language (French, for
+example.) In order to work properly, the drill items must correspond
+line for line (e.g., the first line of one must correspond to the first
+line of the other, and so forth). We will need a field in which to
+display the vocabulary word being used as a prompt and another field for
+the corresponding word in the target language.
+
+To begin with, it would be nice to have the ability to switch the
+drilling between the two languages in which we are working, to reinforce
+the vocabulary. In the Choose button, use an |*answer*| command to give
+the user a choice between having an English word given (the "prompt")
+and then require the French equivalent to be given (the "repsonse",) or
+vice versa. We need to show which language they chose, perhaps by
+placing it in a field directly above where the prompt will be presented.
+
+The user?s choice of prompt and response languages needs to be stored
+somewhere so we can know what it is later. One approach to this (among
+many possible) would be to create some *custom properties* of the card
+that correspond to the prompt language and the response language chosen.
+By employing custom properties, it becomes easy to determine which
+language holds which position in the drill. Custom properties work just
+like the built-in properties we?ve been using all along, except that you
+get to decide what to call the property and what kind of information the
+property stores. Just use it in a |*set*| command, like in the sample
+script:
+
+# button "Choose"
+on mouseUp
+  # ask the user which language they want to practice
+  *answer "Select the language you want to drill yourself on." with "French" or "English"*
+  put it into fld "testLang" # remember the answer command uses 'it'
+  
+  # Set custom properties to store which language is used for the prompt
+  #  and which is used for the response. Then you can use this info later.
+  if it is "English" then
+    *set the promptLanguage of this card to "French" # setting a custom property*
+    set the responseLanguage of this card to "English" # setting a custom property
+  else
+    set the promptLanguage of this card to "English" # setting a custom property
+    set the responseLanguage of this card to "French" # setting a custom property
+  end if
+end mouseUp
+
+
+We shouldn't forget to add and script some sort of start button that
+will initialize the card. We could call it "start", and script it to do
+things like hide the lists of French and English words and empty out the
+prompt and response fields.
+
+## button "start"
+on mouseUp
+  # these are things you want to 'clean up' before you start a new session
+  hide field "englishWords"
+  hide field "FrenchWords"
+  put empty into fld "prompt"
+  put empty into fld "response"
+end mouseUp
+
+We then need to create a button "next" that will choose a prompt and its
+corresponding vocabulary word from the lists we have created and place
+them in the appropriate locations. We could move in order through the
+lists, but the drill would be enhanced (and the learning more complete)
+if the words were randomized. We can easily generate a random number
+between 1 and the number of words in the list, then use this random
+number to get the item located on that particular line from each list,
+and put each word into its corresponding field for display for the user.
+
+But remember that we let the user choose the prompt and response
+language. This is where we need to access the results of that user
+decision. In this case we look at the custom properties we created
+earlier, and ?build? the names of the fields that should serve as the
+sources of the prompt and response words.
+
+## button "next"
+on mouseUp
+  # Using the custom properties we created earlier, we 'build' the names
+  #  of the fields that will be used as the source for prompts and the source
+  #  for the correct responses.
+  put the promptLanguage of this card & "Words" into promptFldName
+  put the responseLanguage of this card & "Words" into responseFldName
+
+  # The number of lines in either word field will give us the total number of 
+  #  words in the drill, and thus the upper limit of the random function.
+  put number of lines of fld "englishWords" into lineCount
+  # store the randomly-generated number in a variable
+  put random(lineCount) into whichLine
+  # Here we refer to fields by their names, but instead of being literal
+  #  strings, the names are stored in variables.
+  put line whichLine of field promptFldName into fld "prompt"
+  put line whichLine of field responseFldName into fld "response"
+end mouseUp
+
+
+      Stage 2: Improving the User Experience
+
+Stage 2 of flash cardEven though this works after a fashion, it requires
+too many clicks to make it work, and therefore feels clumsy. Why not go
+ahead and just set up the quiz when we choose the language, in the
+Choose button? That would just involve copying the commands from the
+mouseUp handler in the "setup" button into the Choose button. We could
+also pick the first word right after we choose the language, in the
+Choose button. This would use the same process as the "next" button
+does: determine how many lines, pick random number, copy that line from
+lists into flash card fields. Actually, we could just copy and paste
+code, because we still want to be able to pick new words from the "next"
+button.
+
+Wait a second. Does it bother you to have the same code in two places?
+What if we find a bug, or wanted to augment/amend the process? We would
+have to remember to fix it in both places. *Red Flag**:* Identical code
+in more than one place is bad form. It is smarter to put the code in one
+place and invoke it from different places (much like a subroutine). In
+Revolution we can create our own messages by writing *custom handlers*.
+Let's write one called *|on pick|* in the card script. Now we can call
+this handler from both the Choose button and the Next button.
+
+While we're at it, let's also create a custom handler in the card called
+*|on setup|*. We will copy the contents of the mouseUp handler in the
+"setup" button into this new custom handler, and just call *|setup|*
+from the Choose button. Doing the setup from the Choose eliminates the
+need for a separate Setup button, so we can just delete it. It also
+unclutters the interface and simplifies the user experience by reducing
+the number of clicks needed to begin the quiz.
+
+##### card script custom handlers
+
+#  The handlers here were formerly in buttons "setup" and "pick"
+#   Now that they are here, any control on the card can use them.
+on pick
+  # Designate which word field holds the prompts (questions)
+  #  and which word field holds the responses (answers)
+  put the promptLanguage of this card & "Words" into promptFldName
+  put the responseLanguage of this card & "Words" into responseFldName
+  
+  # choose a line randomly for the question-answer pair
+  put number of lines of fld "englishWords" into lineCount
+  put random(lineCount) into whichLine
+  put line whichLine of field promptFldName into fld "prompt"
+  put line whichLine of field responseFldName into fld "response"
+end pick
+
+# Also in Card script
+on setup
+  hide field "englishWords"
+  hide field "FrenchWords"
+  put empty into fld "prompt"
+  put empty into fld "response"
+end setup
+
+Here?s what our Choose button script looks like now:
+
+# button "Choose"
+
+on mouseUp
+  # initialize everything by calling the new setup handler
+  setup
+  
+  answer "Select the language you want to drill yourself on." with "French" or "English"
+  put it into fld "testLang"
+ 
+  if it is "English" then
+    set the promptLanguage of this card to "French"
+    set the responseLanguage of this card to "English"
+  else
+    set the promptLanguage of this card to "English"
+    set the responseLanguage of this card to "French"
+  end if
+  
+  # Call the new pick handler
+  pick
+end mouseUp
+
+Creating a |setup| handler in the card script makes that routine
+accessible at other times. For instance, we might want to clean up the
+card when we first come to it. We could simply do this:
+
+ on openCard
+   setup
+ end openCard
+
+
+      Stage 3: Improved Random Routine
+
+Flash card stage 3
+
+Now although our flash card application works fairly well, another
+problem has emerged: We get a lot of duplicates. In fact, we often get
+the same item twice (or more) in a row, which would never really happen
+with a true set of flash cards. This is partially due to the small list
+we have, but primarily a result of how we randomly pick words. If we had
+a larger list, the possibility exists of never getting to some words at
+all. We need a technique to guarantee that the words are still presented
+randomly, but once and only once, ensuring that all were presented.
+
+It is easy to see the solution to this if we examine the metaphor with
+which we started. In a true deck of flash cards, once we have reviewed a
+card, we remove that card. That ensures that we don't encounter it again
+before the others are reviewed. It also guarantees that all cards are
+used because the deck gets smaller as we go.
+
+Let's implement this for our application. First we'll modify the *|on
+pick|* handler to delete lines from the lists after copying them. Since
+our random statement uses the number of lines in the field, it will
+continue to work as the number of lines is reduced (the range of numbers
+gets smaller). We also need to add an if-statement to check to see if we
+have run out of words. If so, we need to do something appropriate.
+
+However, this has created another problem. Our application is not like a
+deck of cards in that we can't collect the used cards and reshuffle them
+to recreate the stack. The words are gone because we have deleted them
+and we'll never see them again. To solve this we need a method to
+preserve both lists of words while still maintaining the functionality
+we just created. One way to do this would be to have master word lists,
+then copy these lists to our EnglishWords and FrenchWords fields at the
+beginning of each session with the flash cards. We just need to create
+duplicate fields, rename the originals, and change the *|on setup|*
+handler to refresh the word lists from the master lists.
+
+Notice that since we created the |on pick| and |on setup| handlers in
+the previous stage, and the buttons Choose and Next simply call them, we
+can make all of our changes to those handlers in the card script. We
+haven't had to modify the button scripts at all.
+
+# Card script
+on pick
+  put the promptLanguage of this card & "Words" into promptFld
+  put the responseLanguage of this card & "Words" into responseFld
+  
+  put number of lines of fld "englishWords" into lineCount
+   # check to see if we're out of words, and inform the user.
+  if lineCount = 0 then
+    answer "You?ve finished all the words."
+    put empty into field promptFld
+    put empty into field responseFld
+    exit to top
+  end if
+  put random(lineCount) into whichLine
+  put line whichLine of field promptFld into fld "prompt"
+  put line whichLine of field responseFld into fld "response"
+  
+  # delete the word from the two fields
+  #  (Remember to first create Master fields to hold the lists--
+  #    see the setup handler)
+ * delete line whichLine of field "EnglishWords"
+  delete line whichline of field "FrenchWords"*
+
+end pick
+
+# Also in Card script
+on setup
+  # Since we're going to be deleting words from the lists as we go,
+  #  we have to "reload" the lists from the master lists each time 
+  #  we start the quiz.
+ * put field "englishWords Master" into field "englishWords"
+  put field "frenchWords Master" into field "frenchWords"	
+ * hide field "englishWords"
+  hide field "FrenchWords"
+  # Now we also have to make sure we hide the master list fields.
+*  hide field "englishWords Master"
+  hide field "frenchWords Master"
+*  put empty into fld "prompt"
+  put empty into fld "response"
+end setup
+
+
+      Stage 4: Using a Tabbed Menu & Typed Responses
+
+Tabbed Button on tools paletteWhat we have so far is reasonably
+functional and reliable. But it would also be nice to make it easier to
+choose the language to practice. One way to accomplish this would be to
+create a tabbed button. Drag a tabbed button object from the Tools
+palette to the card and resize it to the size you want. (It should cover
+all of the existing buttons and fields that make up the flash card
+activity.)This button needs two tabs: one tab named "Test English" and
+the other "Test French." You can set these names by typing them into the
+Tabs field of the tabbed button's property inspector. Then send this
+button to the back behind the other items on the card, using Object menu
+> Send to Back. We need to script the tabbed button to start the
+process. Then, we need to get the text of the selected tab to determine
+which the prompt language and which is the response language. If done
+properly, the result is that the English tab would allow us to review
+English words, and the French tab would allow us review French words.
+This makes it much faster and easier to switch languages.
+
+Final stage of the flash card stack
+
+We also want to stop showing the response word. With traditional flash
+cards, we usually present a word and give ourselves the opportunity to
+respond with its equivalent in the target language. There are two
+approaches to this. We can either hide the word and then show it at the
+bequest of the user, giving the user the opportunity to determine if
+he/she remembered the word or not?much like traditional flash cards?or
+we could provide a field in which the user could type what he/she thinks
+the correct response would be and have the computer check the answer. A
+combination of these two is possible as well. You just need to be aware
+of your target audience and tailor the flash card activity to their
+needs. In the example stack we show how to let the user type the answer,
+and provide a Check Answer button in which we compare the typed answer
+to the correct answer.
+
+## button "selectionTabs"
+
+# This is how to find out which tab was clicked and which one was selected previously.
+on menupick thisPick,prevPick
+  setup	
+  
+  set the promptLanguage of this card to last word of prevPick
+  set the responseLanguage of this card to last word of thisPick
+  
+  pick
+end menupick
+
+
+      Recycling Missed Words
+
+When we're drilling vocabulary with real flash cards, we often take the
+cards with words we missed and replace them back in the deck (instead of
+laying them aside) in order to review them until we feel that we know
+them. This is a feature we would want to emulate in our application.
+
+Your approach to this end would depend heavily upon how you decided to
+allow the user to determine if they are responding correctly or to let
+the computer do it for them. If they are governing themselves, then you
+need to add a Right and a Wrong button so the users can indicate the
+ones they know and don't know. The Right button should just pick another
+word (we're not keeping stats or anything at this point). The Wrong
+button should put words back into work lists so they will come up again.
+If the computer is checking the answers, we would want it to do the same
+thing: discard correct responses, and retain words that were missed.
+
+Since the words are already in containers (the fields displaying the
+words), we can use those to place the words back into the lists. We just
+have to make sure that when we put the words back, we maintain the same
+list organization, i.e., one word/phrase per line, with related words on
+corresponding lines. To guarantee there's only one word/phrase per line,
+we'll include a return with each word (remember that a return delimits
+lines). To ensure they're on corresponding lines, we'll put them before
+the other words in the fields, which will place them on the first line
+of each field. We'll then have to pick new words for review. This would
+effectively put the missed words back into the mix where they could come
+up again for review.
+
+# change the setup handler to include this:
+on setup
+  hide field "englishWords"
+  hide field "FrenchWords"
+  hide field "englishWords Master"
+  hide field "frenchWords Master"
+  put empty into fld "prompt"
+  put empty into fld "response"
+  put field "EnglishWords Master" into card field "englishWords"
+  put field "FrenchWords Master" into card field "FrenchWords"	
+  # this line unchecks the checkbox, so it corresponds to the invisible fields
+  set the hilite of button "Edit Vocabulary" to false
+end setup
+
+
+## Create a "check" button to check the user's typed response, and to show feedback.
+## Import two graphics, "happy" and "sad" for visual feedback.
+
+#script of btn "check"
+on mouseUp
+  # check the answer
+  if fld "response" = the correctResponse of fld "response" then
+    # do correct feedback
+    *show image "happy"*
+  else
+    # do incorrect feedback
+    *show image "sad"*
+   * # put the word back in the list so it will come up again
+    if the promptLanguage of this card is "English" then
+      put fld prompt & return before fld "englishWords"
+      put the correctResponse of fld "response" & return before fld "FrenchWords"
+    else
+      put fld prompt & return before fld "FrenchWords"
+      put the correctResponse of fld "response" & return before fld "EnglishWords"
+    end if*
+  end if
+  
+  # Now change the button's purpose, and wait for the user to continue
+  set the label of me to "Click to Continue"
+  wait until the mouseClick
+  hide image "happy"
+  hide image "sad"
+  set the label of me to "Check Answer"
+  pick
+end mouseUp
+
+
+      Administrative Details
+
+Like any deck of flash cards, there will come a time when it will become
+desired to augment/alter the words being drilled. If this is done on a
+regular basis, it becomes tedious to have to manually show the fields.
+We would be better served instead by creating a button to show them for
+editing. This is a perfect situation for a check box button. The script
+would check the hilite of the button and then set the visible of the
+fields to match the hilite of the button. Remember that a check box
+button has different hiliting behavior than regular buttons. When the
+box is checked, the hilite is true; when the box is not checked, the
+hilite is false. Setting the visible of the master word list fields to
+match the hilite of the button will then alternately show the lists and
+hide them. Since the Start button hides the list fields it should also
+de-hilite this Edit Vocabulary button to avoid confusion.
+
+on mouseUp
+  get the hilight of me
+  set the visible of field "EnglishWords Master" to it
+  set the visible of field "FrenchWords Master" to it
+end mouseUp 
+
+
+      Finishing Touches
+
+One finishing touch would be to add scripting to empty the flash card
+fields when the list is exausted and indicate such to the user (probably
+in the Pick handler). This would make the final product clearer and more
+visually interesting. Also, we can also add some visual enhancements by
+changing some field properties to emphasize which language is the object
+of review.
+
+
+      And Now, For an Encore...
+
+Your assignment, then, is to create a flash card activity in a language
+of your choice.
+
+   1. Create a stack and entitle it */YourName/--FlashCard*. Give the
+      stack an appropriate label (based on the language with which you
+      are working).
+   2. Identify at least 10 words you would like to drill and incorporate
+      them in your stack.
+   3. Put a copy of your finished stack in the *Assignments* folder.
+
+There you have it. As before, this is only one of a myriad of ways of
+approaching this type of activity. This is not necessarily the most
+effective or most efficient, but it works and works well. Hopefully,
+this will inspire your minds as to the possibilities that exist with
+Revolution and spark some creativity of your own.
+
+Course Schedule <../schedule.html>
+Main Page <../index.html>
+
+------------------------------------------------------------------------
+Back <javascript:history.go(-1)>     CHum Revolution Gateway
+<http://revolution.byu.edu>
+Maintained by Devin Asay <mailto:devin_asay@byu.edu>.
+Copyright © 2005 Brigham Young University

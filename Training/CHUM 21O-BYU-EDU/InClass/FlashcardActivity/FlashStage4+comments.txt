@@ -1,0 +1,72 @@
+STAGE 4
+
+¥ Create a tabbed button in place of the "choose" button, with two tabs "Test English" and "Test French". This will replace the "choose" button.
+¥ Tabbed buttons are a type of menu button. Menu buttons receive all mouse messages, PLUS a menuPick message when one of the choices is clicked. The menuPick message sends two pieces of information along with it, called "parameters": the first one is the text of the tab being clicked, and the second one is the text of the tab that had been picked previously.
+
+## button "selectionTabs"
+
+# This is how to find out which tab was clicked and which one was selected previously.
+on menupick thisPick,prevPick
+  setup	
+  
+  set the promptLanguage of this card to last word of prevPick
+  set the responseLanguage of this card to last word of thisPick
+  
+  pick
+end menupick
+
+
+## button "next"
+
+on mouseUp
+  pick
+end mouseUp
+
+
+# change the setup handler to include this;
+on setup
+  hide field "englishWords"
+  hide field "FrenchWords"
+  hide field "englishWords Master"
+  hide field "frenchWords Master"
+  put empty into fld "prompt"
+  put empty into fld "response"
+  put field "EnglishWords Master" into card field "englishWords"
+  put field "FrenchWords Master" into card field "FrenchWords"	
+  # this line unchecks the checkbox, so it corresponds to the invisible fields
+  set the hilite of button "Edit Vocabulary" to false
+end setup
+
+
+¥ Create a "check" button to check the user's typed response, and to show feedback.
+¥ Import two graphics, "happy" and "sad" for visual feedback.
+
+#script of btn "check"
+on mouseUp
+  # check the answer
+  if fld "response" = the correctResponse of fld "response" then
+    # do correct feedback
+    show image "happy"
+  else
+    # do incorrect feedback
+    show image "sad"
+    # put the word back in the list so it will come up again
+    if the promptLanguage of this card is "English" then
+      put fld prompt & return before fld "englishWords"
+      put the correctResponse of fld "response" & return before fld "FrenchWords"
+    else
+      put fld prompt & return before fld "FrenchWords"
+      put the correctResponse of fld "response" & return before fld "EnglishWords"
+    end if
+  end if
+  
+  # Now change the button's purpose, and wait for the user to continue
+  set the label of me to "Click to Continue"
+  wait until the mouseClick
+  hide image "happy"
+  hide image "sad"
+  set the label of me to "Check Answer"
+  pick
+end mouseUp
+
+

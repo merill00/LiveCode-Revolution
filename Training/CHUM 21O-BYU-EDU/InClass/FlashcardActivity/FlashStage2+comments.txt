@@ -1,0 +1,55 @@
+STAGE 2 
+
+##### card script custom handlers
+
+#  The handlers here were formerly in buttons "setup" and "pick"
+#   Now that they are here, any control on the card can use them.
+on pick
+  # Designate which word field holds the prompts (questions)
+  #  and which word field holds the responses (answers)
+  put the promptLanguage of this card & "Words" into promptFldName
+  put the responseLanguage of this card & "Words" into responseFldName
+  
+  # choose a line randomly for the question-answer pair
+  put number of lines of fld "englishWords" into lineCount
+  put random(lineCount) into whichLine
+  put line whichLine of field promptFldName into fld "prompt"
+  put line whichLine of field responseFldName into fld "response"
+end pick
+
+# Also in Card script
+on setup
+  hide field "englishWords"
+  hide field "FrenchWords"
+  put empty into fld "prompt"
+  put empty into fld "response"
+end setup
+
+##### end of card script handlers
+
+# button "Choose"
+
+on mouseUp
+  # initialize everything by calling the new setup handler
+  setup
+  
+  answer "Select the language you want to drill yourself on." with "French" or "English"
+  put it into fld "testLang"
+ 
+  if it is "English" then
+    set the promptLanguage of this card to "French"
+    set the responseLanguage of this card to "English"
+  else
+    set the promptLanguage of this card to "English"
+    set the responseLanguage of this card to "French"
+  end if
+  
+  # Call the new pick handler
+  pick
+end mouseUp
+
+
+# button "next" (renamed button "pick")
+on mouseUp
+  pick
+end mouseUp

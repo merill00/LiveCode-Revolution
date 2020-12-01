@@ -1,0 +1,8 @@
+Aqua Icons
+
+Copyright©2006 by
+Economy-x-Talk and
+Mark Schonewille
+Nijmegen, the Netherlands
+
+License Conditions:Although the icons in this stack are free, they are copyrighted. You may use these icons for any project you like, under the condition that you include the following text:"Parts of this software copyright©2006 by Economy-x-Talk, Nijmegen, the Netherlands, http://economy-x-talk.com."This copyright notice must be included in your license conditions, documentation, about box and must be clearly visible to all users of your software.It is not allowed to re-distribute these icons. Please, refer your friends to our web site http://economy-x-talk.com.How to use this stack:You can include this stack into your own project and use Revolution's built-in Image Library to place images in your stacks.You can also include this stack in your libraries folder, which you will find in ~/documents/my revolution/resources/icon libraries/. The actual name of the My Revolution folder depends on your Revolution license.

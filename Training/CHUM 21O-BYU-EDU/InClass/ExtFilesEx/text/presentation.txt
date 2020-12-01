@@ -1,0 +1,88 @@
+RevCon West 2006 
+Using Unicode in Revolution
+or 
+Taming the Unicode Beast
+
+Introduction.
+I am not a unicode expert (nor do I play one on TV.) I'm not even sure there is such a thing as an expert in unicode. The person I know who has the best understanding of unicode and character encoding in general, Dar Scott, describes himself as a "Unicode sophomore." If that is so, then I am surely just starting unicode prep school.
+So why am I here talking to all of you about how to use unicode in Revolution. Mainly because I am a regualr guy who for various reasons HAD to learn how to use it. So I slogged through the docs and hours of trial and error and, even if I have not conquered it, I have at least acheived a peace treaty with favorable terms with Revolution's implementation of unicode.
+I intend to offer advice from a layman's perspective about how anyone who wants to can implement unicode text handling in Revolution. 
+
+Character encoding.
+In order to understand unicode implementation, we must understand a few basic concepts about character encoding. I don't intend to go into great depth, but it helps to start from the same page.
+ASCII 
+American Standard Code for Information Interchange
+Beginning of Unicode
+
+Working with Unicode in Revolution.
+The most important thing to remember about unicode in Rev is that it is always UTF-16. The second most important thing to remember is that unicode data strings in Revolution use the unicode byte order determined by the processor. Intel: little endian; Motorola 68000: big endian; PPC: usually big endian (can be configured to pass data either way, although the G5 family is exclusively big endian).
+This turns out to be a mostly good news, some bad news scenario.
+Tools Revolution provides:
+the useUnicode property
+Common misconception that this property somehow "switches" you over into unicode mode. It's actually very limited: It only affects the amount of data (1 byte or 2) that must be passed to the chartoNum() and numToChar() functions. It might be more accurate to call it the unicodeChars or the twoByteChars or the useTwoByteCharsWithCharToNumAndNumToChar. 
+the unicodeText property
+Just as the htmlText returns the text of a field encoded as html, the unicodeText of a field contains the text encoded as unicode. This is the property you want to use when moving unicode text from one field to another.
+uniDecode() function
+Converts unicode UTF16 to single-byte text. For practical purposes, this is most usefull for converted from UTF16 to UTF8 or some other encoding that uses ascii to encode for double byte languages, like Shift-JIS.
+uniEncode() function
+Converts ASCII text to UTF16. For my purposes, again, most useful for converting UTF8 to UTF16. Remember: For all practical purposes, uniencode ALWAYS results in UTF16 text.
+the fontLangauge function
+Returns the language associated with a unicode font. (Try, e.g., Osaka, Geneva CY.)
+
+
+Examples.
+Discovering if a certain string of text is unicode encoded
+	Examine the textFont of *the chunk* (line, e.g.), not the textFont of the field. If there is a comma in the textFont, it's unicode.
+Examining character values (use of charToNum and numToChar)
+	What we're used to doing:
+		put charToNum(char 1 of fld "myfld") into charCode
+	
+	What you have to do when using unicode:
+		set the useUnicode to true
+		put charToNum(char 1 to 2 of fld "myfld") into uniCharCode
+	
+Entering unicode text
+	Fortunately this is the easiest of all. Just select your system's language input method for the language you want, and type into the field. Revolution automatically sets the textFont of the text you enter to the appropriate font for the language you have chosen.
+Moving chunks between fields.
+	What we're used to doing: 
+		put word 3 of fld 1 into fld 2
+	What you have to do when using unicode: 
+		set the unicodeText of fld 2 to word 3 of the unicodeText of fld 1
+Reading in a text file:
+	What we're used to doing:
+		put url ("file:my.txt") into fld 1
+	What you have to do with unicode:
+		First, you have to know how the file is encoded. It might be unicode UTF-16, UTF-8, or older encoding like Shift-JIS. There is no easy way for Rev to discover this that I know of.
+		If it's unicode:
+			set the unicodeText of fld 1 to url ("binfile:myunicode.utx")
+		If it's some other encoding:
+			set the unicodeText of fld 1 to uniencode(url ("binfile:myUTF8.utx"),"UTF8")
+		Or if you don't like nested functions:
+			get url ("binfile:myUTF8.utx")
+			set the unicodeText of fld 1 to uniencode(it,"UTF8")
+Writing a text file:
+	What we're used to doing:
+		open file "myfile"
+		write fld 1 to file "myfile.txt"
+		close file "myfile"
+		put it into fld 1
+		
+		-OR-
+		
+		put URL "file:myfile" into fld 1
+	What you have to do when using unicode:
+		put the unicodeText of fld 1 into URL "binfile:myfile.utx"
+Gotchas:
+A button label entered as unicode text. Due to byte-order it may be scrambled on a different system.
+ASCII-range characters, like space and period, embedded in unicode text are placed into Rev fields as single-byte characters, throwing off the byte-count if you're parsing through the text. I believe this is done so that chunks like word and line are still recognized.
+
+Problems with Rev's Unicode implementation:
+Right-to-left languages.
+[see bugzilla bugs]
+
+Resources.
+
+Conclusion.
+Unicode implementation in Revolution is, in many respects, "almost there". I was *almost* able to get unicode menus to work right. Sorting some unicode text *almost* works. By mastering the basic concepts you will have the tools to diagnose and solve the inevitable problems that arise.
+
+Questions.
