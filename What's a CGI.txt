@@ -1,0 +1,222 @@
+Introduction to Revolution CGIs - Intro 
+
+
+
+Introduction to Revolution CGIs
+A tutorial based on a presentation by
+Jacqueline Landman Gay, HyperActive Software
+Revolution Seminar
+January 9, 2004
+
+
+      Table of Contents
+      Introduction
+      What's a CGI?
+      How they work
+      Revolution advantages
+      Security
+      Two ways to do Rev CGIs
+      Installing the engine
+      Setting permissions
+
+        
+      Simple CGIs
+      Structure of a CGI script
+      Things to keep in mind
+      "Hello World"
+      Troubleshooting Tips
+      Creating files
+      Expanded "Hello World"
+
+        
+      Working with text files
+      Example: Visitor counter
+      Example: Random content
+
+        
+      Working with stacks
+      Example: Addresses stack
+      Setting up files
+      Environment variables
+      Parsing parameters
+      Putting a stack in use
+      Creating scripted HTML
+
+        
+      Using stacks as libraries
+      The library command
+      Advantages
+      Example: Addresses 2
+      LibCGI library
+
+        
+      Debugging CGIs
+      Quick Checklist
+      Other techniques
+      Environment variables
+      Other online references
+      Introduction
+      What's a CGI? 
+      CGI is an abbreviation for Common Gateway Interface, a standard for 
+      interfacing external applications with information servers such as web 
+      servers. Unlike plain HTML documents, which are static, a CGI program can 
+      create and deliver customized dynamic information in real-time, on the fly 
+      as needed. 
+      Common uses for CGI include processing forms, delivering automated email, 
+      and creating customized or dynamic content for web pages such as database 
+      inquiries, rotating photos, or local time or weather conditions. These 
+      tasks are commonly done using various programming languages such as perl, 
+      java, or php. You can also create CGI scripts using Revolution's 
+      Transcript language. This tutorial will show you how. 
+      How they work 
+      CGIs are requested by a browser as part of the web page URL. When the 
+      server sees such a request, it retrieves the requested script and hands it 
+      off to whatever application the script specifies. The script does whatever 
+      it is programmed to do and returns some data to the server, which then 
+      sends the results back to the user's browser. 
+      Revolution advantages 
+      If you already know Transcript, the strongest advantage in using 
+      Revolution for CGIs is simple familiarity. Transcript is a robust language 
+      that is easy to use, and you can employ the skills you already have. 
+      Another advantage is speed. The Revolution engine is very fast, and 
+      because it runs without the GUI, startup time is virtually instantaneous. 
+      In addition, most servers cache the engine and need to do only minimal 
+      loading to create an instance of your application each time a CGI request 
+      is made. But even the first time the script is run, initialization time is 
+      negligible. While a Revolution CCI is not suitable for sites with 
+      extremely heavy traffic, it does just fine for most. 
+      Security 
+      Revolution CGIs are very safe and difficult to abuse. Of course, CGIs 
+      written in any language are only as secure as you make them, but 
+      Revolution contains no known vulnerabilities that can be exploited 
+      remotely. As long as you don't process parameters indiscriminately with 
+      generic "do" or "send" commands, and if you limit the locations where your 
+      script writes files, a Revolution CGI will be secure. 
+      If your script needs to process parameters, be sure to examine them before 
+      allowing your script to act on them. For example, don't write a script 
+      containing the line do the params; a malicious request could send a 
+      parameter containing a command to delete a file and your script would 
+      blithely execute it. In addition, don't create scripts that write files 
+      outside the CGI folder if those files must be secure. 
+      If your scripts follow these common sense rules, there isn't any good way 
+      to hack into a Revolution CGI. 
+       
+      The two ways to do Revolution CGIs
+      Most CGIs, regardless of the language they are written in, are implemented 
+      using plain text files which contain the scripts that will execute. 
+      Revolution fully supports this standard implementation. In addition, 
+      Revolution also supports the ability to use stacks as CGIs, which opens up 
+      a wide range of possibilities unavailable in other languages. We'll 
+      explore both methods in this tutorial, starting with a standard CGI text 
+      file and moving on later to using stacks. 
+        
+      Installing the Revolution engine
+      To create and run a CGI, you will need at least two things: the Revolution 
+      engine and a script. The remainder of this tutorial addresses the scripts. 
+      But to begin with, make a copy of your Revolution application and place it 
+      in the cgi folder on your server. If you are running Apache, this is most 
+      likely a folder called "cgi" or "cgi-bin" located in your main web 
+      directory. You do not need to install any additional stacks — only the 
+      Revolution executable is required. 
+      Rename the application "revolution" (note the lower-case "r".) All the 
+      examples in the tutorial use this spelling, so if you are following along, 
+      you'll need to make the same change to your copy. 
+      A tool for installing the engine: Andre Garzia has written a Revolution 
+      stack that can access an FTP server, upload the engine file to your cgi 
+      folder, and set the permissions for it. This is another way to get the job 
+      done. You can download his cgiTool from 
+      http://homepage.mac.com/soapdog/rev/cgitool.rev. 
+        Note to Mac OS X users: If you are using Mac OS X, you must download the 
+        "Darwin" version of Revolution, which is used exclusively for CGIs 
+        running in OS X. The Darwin engine is available from Runtime's web site: 
+
+          http://www.runrev.com/downloads/engines/2.1.2/cgi/osx.zip. 
+        Decompress the file and place the engine in the OS X cgi folder, which 
+        is located at /Library/WebServer/CGI-Executables. Note that this is the 
+        main Library folder on the hard drive, not the Library folder inside 
+        your user folder. When referencing the CGI-Executables folder from a 
+        URL, OS X recognizes "cgi-bin" as a valid alias for the 
+        "CGI-Executables" folder, so you can use either of those folder names 
+        interchangeably in URLs. 
+        If you are using OS X, Apache is already preinstalled. All you need to 
+        do is make sure that you have enabled Web Sharing in the Sharing pane of 
+        the System Preferences. 
+        
+        Note to IIS users on Windows XP: If you are using IIS, you can follow 
+        these instructions for installation, which were helpfully submitted to 
+        the Revolution mailing list by Dave Cragg: 
+        You can place the engine anywhere on the XP hard drive. You then just 
+        have to configure IIS to link the extension you use for the cgi scripts 
+        to the Rev cgi engine. (In my case, I use ".mt") You do this in the IIS 
+        administration utility. The general procedure is like this (probably 
+        useful to read the online docs for IIS configuration before starting):
+          In the IIS Admin Utility, create a virtual directory for placing your 
+          cgi scripts. 
+          In the Admin Utility, select the virtual directory and select 
+          properties (File menu or right click??) 
+          Set the Execute Permissions for this directory to "Scripts and 
+          Executables" 
+          Click the Configuration button (You will se a list of mappings between 
+          file extensions and executables) 
+          Click Add 
+          Enter the path to the executable (or use Browse) and the extension of 
+          your scripts (e.g. .mt). IMPORTANT: After the executable path add " %s 
+          %s". For example, in my case the path is: F:\mc_cgi\cmc.exe %s %s 
+        Dave also mentions these two hints (which may make more sense after you 
+        have worked through this tutorial:) 
+          The cgi scripts under IIS don't need the #! line that you use under 
+          Linux/OS X (but will cause no problem if present) 
+          I've found it useful to add a short wait at the end of the startup 
+          handler, like this: 
+    on startup
+      ## usual cgi stuff
+      wait 20 milliseconds
+    end startup
+   
+      Setting permissions
+      Most operating systems require that files have the proper permissions set; 
+      without the right permissions, Revolution will not run. You will need to 
+      set the permissions for every new file you place into the cgi folder on 
+      the server, including the Revolution engine itself. In almost all cases, 
+      file permissions should be set to 755 (readable and executable by all, 
+      writable by owner.) This setting prohibits a script from writing to the 
+      file, however; if you need to write to a file then see the "Working with 
+      text files" section of the tutorial for some suggestions. 
+      You can use either an FTP program or a terminal program to set 
+      permissions. If you are using an FTP program, connect to your remote 
+      server as you normally do, and use its built-in functions to set the 
+      permissions of the Revolution application. Most FTP programs provide a 
+      menu item or some other way to set file permissions. If you want to use an 
+      FTP program to connect to your own machine, you may be able to use 
+      "127.0.0.1" as the local IP, and navigate to your cgi folder from there. 
+      If you are using a terminal program, log into the server, cd to the cgi 
+      folder and issue chmod 755 revolution to set the permissions for the 
+      engine file. Depending on the configuration, some operating systems may 
+      not work with these permissions; if you have trouble, try setting 
+      permissions this way: chmod 555 revolution. We have heard that some Linux 
+      servers require this. 
+      Hint: If setting permissions isn't your thing, then just do it once for 
+      the Revolution engine, and once more for a blank text file stored inside 
+      your cgi folder. After that, whenever you need a new file, make a copy of 
+      the blank and use that. The new copy will retain the old permissions. 
+
+
+
+
+      Up to top | Introduction to Revolution CGIs - TOC | Next Page 
+
+
+
+
+ 
+
+ 
+
+
+ 
+ 
+ 
+ 
+All contents copyright (C) 1996, HyperActive Software. All rights reserved.
+Revised: April 25, 2004
+URL: http://www.hyperactivesw.com/cgitutorial/tutorialtoc.html 
